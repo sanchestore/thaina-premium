@@ -117,7 +117,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
-padding:180px 20px 100px;
+padding:220px 20px 100px;
 }
 
 .hero-content{
@@ -246,7 +246,7 @@ margin:30px 0;
 .procedimento-card{
 display:flex;
 justify-content:space-between;
-align-items:center;
+align-items:flex-start;
 gap:20px;
 background:white;
 padding:22px;
@@ -281,7 +281,7 @@ color:#555;
 width:24px;
 height:24px;
 accent-color:#b08d57;
-flex-shrink:0;
+margin-top:4px;
 }
 
 /* ========================= */
@@ -295,13 +295,24 @@ border-radius:28px;
 box-shadow:0 10px 30px rgba(0,0,0,0.05);
 }
 
-input{
+input,
+select{
 width:100%;
 padding:18px;
 margin-bottom:20px;
-border-radius:14px;
+border-radius:16px;
 border:1px solid #ddd;
 font-size:16px;
+background:white;
+color:#1a1a1a;
+appearance:none;
+-webkit-appearance:none;
+}
+
+.data-label{
+font-weight:600;
+display:block;
+margin-bottom:10px;
 }
 
 /* ========================= */
@@ -360,14 +371,6 @@ text-align:center;
 font-size:42px;
 font-family:'Cormorant Garamond',serif;
 margin-bottom:15px;
-}
-
-/* ========================= */
-/* MAPS */
-/* ========================= */
-
-.maps-btn{
-margin-top:25px;
 }
 
 /* ========================= */
@@ -431,7 +434,7 @@ font-size:14px;
 }
 
 .hero{
-padding-top:240px;
+padding-top:280px;
 }
 
 .hero h1{
@@ -472,29 +475,12 @@ iframe{
 height:450px;
 }
 
-.procedimento-card{
-align-items:flex-start;
-padding:18px;
-}
-
-.procedimento-info h3{
-font-size:20px;
-}
-
-.procedimento-info p{
-font-size:13px;
-}
-
-.procedimento-card input{
-margin-top:5px;
-}
-
 }
 
 @media(max-width:500px){
 
 .hero{
-padding-top:260px;
+padding-top:300px;
 }
 
 .hero h1{
@@ -532,8 +518,6 @@ font-size:20px;
 
 <body>
 
-<!-- HEADER -->
-
 <header>
 
 <div class="logo">
@@ -549,8 +533,6 @@ Thainá mendes beauty
 </nav>
 
 </header>
-
-<!-- HERO -->
 
 <section class="hero">
 
@@ -572,8 +554,6 @@ Agendar atendimento
 
 </section>
 
-<!-- QUEM SOMOS -->
-
 <section id="quem-somos">
 
 <div class="section-title">
@@ -587,8 +567,6 @@ Transformando olhares há mais de 6 anos com excelência, sofisticação e resul
 </div>
 
 </section>
-
-<!-- CATÁLOGO -->
 
 <section id="catalogo">
 
@@ -668,8 +646,6 @@ Agendar
 
 </section>
 
-<!-- ANTES E DEPOIS -->
-
 <section id="resultados">
 
 <div class="section-title">
@@ -699,8 +675,6 @@ Resultados reais e transformações incríveis
 </div>
 
 </section>
-
-<!-- PRODUTOS -->
 
 <section id="produtos">
 
@@ -762,8 +736,6 @@ Comprar
 
 </section>
 
-<!-- AGENDAMENTO -->
-
 <section id="agendamento">
 
 <div class="section-title">
@@ -785,74 +757,84 @@ Escolha seus procedimentos e horário desejado
 <div class="procedimentos-mobile">
 
 <label class="procedimento-card">
-
 <div class="procedimento-info">
 <h3>Design</h3>
 <p>Modelagem sofisticada de sobrancelhas.</p>
 </div>
-
 <input type="checkbox" value="Design">
-
 </label>
 
 <label class="procedimento-card">
-
 <div class="procedimento-info">
 <h3>Design com Henna</h3>
 <p>Preenchimento natural e elegante.</p>
 </div>
-
 <input type="checkbox" value="Design com Henna">
-
 </label>
 
 <label class="procedimento-card">
-
 <div class="procedimento-info">
 <h3>Brow Lamination</h3>
 <p>Alinhamento moderno e sofisticado.</p>
 </div>
-
 <input type="checkbox" value="Brow Lamination">
-
 </label>
 
 <label class="procedimento-card">
-
 <div class="procedimento-info">
 <h3>Lash Lifting</h3>
 <p>Curvatura natural e elegante.</p>
 </div>
-
 <input type="checkbox" value="Lash Lifting">
-
 </label>
 
 <label class="procedimento-card">
-
 <div class="procedimento-info">
 <h3>Remoção de Estrias</h3>
 <p>Tratamento regenerativo premium.</p>
 </div>
-
 <input type="checkbox" value="Remoção de Estrias">
-
 </label>
 
 <label class="procedimento-card">
-
 <div class="procedimento-info">
 <h3>Maquiagem Premium</h3>
 <p>Acabamento sofisticado para eventos.</p>
 </div>
-
 <input type="checkbox" value="Maquiagem Premium">
-
 </label>
 
 </div>
 
-<input type="datetime-local" id="horario">
+<label class="data-label">
+📅 Escolha a data
+</label>
+
+<input type="date" id="data">
+
+<label class="data-label">
+⏰ Escolha o horário
+</label>
+
+<select id="hora">
+
+<option value="">
+Selecione um horário
+</option>
+
+<option>08:00</option>
+<option>09:00</option>
+<option>10:00</option>
+<option>11:00</option>
+<option>12:00</option>
+<option>13:00</option>
+<option>14:00</option>
+<option>15:00</option>
+<option>16:00</option>
+<option>17:00</option>
+<option>18:00</option>
+
+</select>
 
 <button class="btn" onclick="agendar()">
 Confirmar agendamento
@@ -860,13 +842,9 @@ Confirmar agendamento
 
 </div>
 
-<!-- CALENDÁRIO -->
-
 <iframe src="https://calendar.google.com/calendar/embed?src=pt.brazilian%23holiday%40group.v.calendar.google.com&ctz=America%2FSao_Paulo"></iframe>
 
 </section>
-
-<!-- FIDELIDADE -->
 
 <section>
 
@@ -912,8 +890,6 @@ Ganhe design grátis ou 20% OFF em produtos premium.
 
 </section>
 
-<!-- LOCALIZAÇÃO -->
-
 <section id="localizacao">
 
 <div class="section-title">
@@ -924,7 +900,7 @@ Ganhe design grátis ou 20% OFF em produtos premium.
 Rua Dona Eugênia, 877 - São Dimas, Piracicaba - SP
 </p>
 
-<div class="maps-btn">
+<br>
 
 <a 
 class="btn"
@@ -937,11 +913,7 @@ Abrir no Maps
 
 </div>
 
-</div>
-
 </section>
-
-<!-- FOOTER -->
 
 <footer>
 
@@ -950,8 +922,6 @@ Abrir no Maps
 </p>
 
 </footer>
-
-<!-- SCRIPT -->
 
 <script>
 
@@ -963,8 +933,11 @@ document.getElementById("nome").value;
 let telefone =
 document.getElementById("telefone").value;
 
-let horario =
-document.getElementById("horario").value;
+let data =
+document.getElementById("data").value;
+
+let hora =
+document.getElementById("hora").value;
 
 let selecionados = [];
 
@@ -974,7 +947,13 @@ document
 selecionados.push(item.value);
 });
 
-if(nome === "" || telefone === "" || horario === "" || selecionados.length === 0){
+if(
+nome === "" ||
+telefone === "" ||
+data === "" ||
+hora === "" ||
+selecionados.length === 0
+){
 
 alert("Preencha todos os campos.");
 
@@ -986,7 +965,8 @@ let mensagem =
 `Olá, meu nome é ${nome}
 WhatsApp: ${telefone}
 Procedimentos escolhidos: ${selecionados.join(', ')}
-Horário desejado: ${horario}`;
+Data desejada: ${data}
+Horário desejado: ${hora}`;
 
 let url =
 `https://wa.me/5519981397668?text=${encodeURIComponent(mensagem)}`;
@@ -996,8 +976,6 @@ window.open(url,'_blank');
 }
 
 </script>
-
-<!-- WHATSAPP -->
 
 <a class="whatsapp"
 href="https://wa.me/5519981397668">
