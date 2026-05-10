@@ -246,19 +246,24 @@ margin:30px 0;
 .procedimento-card{
 display:flex;
 justify-content:space-between;
-align-items:flex-start;
+align-items:center;
 gap:20px;
 background:white;
 padding:22px;
 border-radius:22px;
-border:1px solid #eadfce;
+border:2px solid transparent;
 cursor:pointer;
 transition:0.3s;
 }
 
 .procedimento-card:hover{
 background:#fcf7f0;
+border-color:#d8c3a5;
+}
+
+.procedimento-card.active{
 border-color:#b08d57;
+background:#fffaf3;
 }
 
 .procedimento-info{
@@ -277,11 +282,25 @@ line-height:1.6;
 color:#555;
 }
 
-.procedimento-card input{
-width:24px;
-height:24px;
-accent-color:#b08d57;
-margin-top:4px;
+.checkbox-custom{
+width:28px;
+height:28px;
+border-radius:10px;
+border:2px solid #b08d57;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:16px;
+font-weight:bold;
+color:white;
+background:white;
+transition:0.3s;
+flex-shrink:0;
+}
+
+.procedimento-card.active .checkbox-custom{
+background:#b08d57;
+color:white;
 }
 
 /* ========================= */
@@ -305,8 +324,6 @@ border:1px solid #ddd;
 font-size:16px;
 background:white;
 color:#1a1a1a;
-appearance:none;
--webkit-appearance:none;
 }
 
 .data-label{
@@ -475,6 +492,10 @@ iframe{
 height:450px;
 }
 
+.procedimento-card{
+padding:18px;
+}
+
 }
 
 @media(max-width:500px){
@@ -498,16 +519,6 @@ font-size:26px;
 
 .section-title h2{
 font-size:34px;
-}
-
-.fidelidade-grid{
-grid-template-columns:1fr 1fr;
-gap:10px;
-}
-
-.fidelidade-grid div{
-padding:18px;
-font-size:20px;
 }
 
 }
@@ -554,28 +565,14 @@ Agendar atendimento
 
 </section>
 
-<section id="quem-somos">
-
-<div class="section-title">
-
-<h2>Quem somos</h2>
-
-<p>
-Transformando olhares há mais de 6 anos com excelência, sofisticação e resultados premium.
-</p>
-
-</div>
-
-</section>
-
 <section id="catalogo">
 
 <div class="section-title">
 
-<h2>Catálogo premium</h2>
+<h2>Procedimentos premium</h2>
 
 <p>
-Conheça nossos procedimentos exclusivos
+Escolha seus procedimentos favoritos
 </p>
 
 </div>
@@ -583,153 +580,27 @@ Conheça nossos procedimentos exclusivos
 <div class="grid">
 
 <div class="card">
-
 <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200">
-
 <div class="card-content">
-
 <h3>Design</h3>
-
-<p>
-Modelagem sofisticada para realçar sua beleza natural.
-</p>
-
-<a href="#agendamento" class="btn">
-Agendar
-</a>
-
+<p>Modelagem sofisticada.</p>
 </div>
-
 </div>
 
 <div class="card">
-
 <img src="https://images.unsplash.com/photo-1509967419530-da38b4704bc6?q=80&w=1200">
-
 <div class="card-content">
-
 <h3>Brow Lamination</h3>
-
-<p>
-Alinhamento moderno e acabamento elegante.
-</p>
-
-<a href="#agendamento" class="btn">
-Agendar
-</a>
-
+<p>Alinhamento moderno.</p>
 </div>
-
 </div>
 
 <div class="card">
-
 <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=1200">
-
 <div class="card-content">
-
-<h3>Maquiagem Premium</h3>
-
-<p>
-Acabamento sofisticado para eventos especiais.
-</p>
-
-<a href="#agendamento" class="btn">
-Agendar
-</a>
-
+<h3>Lash Lifting</h3>
+<p>Curvatura elegante.</p>
 </div>
-
-</div>
-
-</div>
-
-</section>
-
-<section id="resultados">
-
-<div class="section-title">
-
-<h2>Antes e depois</h2>
-
-<p>
-Resultados reais e transformações incríveis
-</p>
-
-</div>
-
-<div class="grid">
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200">
-</div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=1200">
-</div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1200">
-</div>
-
-</div>
-
-</section>
-
-<section id="produtos">
-
-<div class="section-title">
-
-<h2>Produtos premium</h2>
-
-<p>
-Cuidados profissionais para sua rotina
-</p>
-
-</div>
-
-<div class="grid">
-
-<div class="card">
-
-<img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200">
-
-<div class="card-content">
-
-<h3>Sérum para cílios</h3>
-
-<p>
-Fortalecimento e crescimento saudável.
-</p>
-
-<a class="btn"
-href="https://wa.me/5519981397668?text=Olá,%20quero%20comprar%20o%20Sérum%20para%20cílios">
-Comprar
-</a>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200">
-
-<div class="card-content">
-
-<h3>Kit Brow Premium</h3>
-
-<p>
-Cuidados completos para sobrancelhas perfeitas.
-</p>
-
-<a class="btn"
-href="https://wa.me/5519981397668?text=Olá,%20quero%20comprar%20o%20Kit%20Brow">
-Comprar
-</a>
-
-</div>
-
 </div>
 
 </div>
@@ -743,7 +614,7 @@ Comprar
 <h2>Agendamento premium</h2>
 
 <p>
-Escolha seus procedimentos e horário desejado
+Escolha múltiplos procedimentos
 </p>
 
 </div>
@@ -756,53 +627,83 @@ Escolha seus procedimentos e horário desejado
 
 <div class="procedimentos-mobile">
 
-<label class="procedimento-card">
+<div class="procedimento-card" onclick="toggleProcedimento(this,'Design')">
+
 <div class="procedimento-info">
 <h3>Design</h3>
 <p>Modelagem sofisticada de sobrancelhas.</p>
 </div>
-<input type="checkbox" name="procedimentos" value="Design">
-</label>
 
-<label class="procedimento-card">
+<div class="checkbox-custom">
+✓
+</div>
+
+</div>
+
+<div class="procedimento-card" onclick="toggleProcedimento(this,'Design com Henna')">
+
 <div class="procedimento-info">
 <h3>Design com Henna</h3>
 <p>Preenchimento natural e elegante.</p>
 </div>
-<input type="checkbox" name="procedimentos" value="Design com Henna">
-</label>
 
-<label class="procedimento-card">
+<div class="checkbox-custom">
+✓
+</div>
+
+</div>
+
+<div class="procedimento-card" onclick="toggleProcedimento(this,'Brow Lamination')">
+
 <div class="procedimento-info">
 <h3>Brow Lamination</h3>
 <p>Alinhamento moderno e sofisticado.</p>
 </div>
-<input type="checkbox" name="procedimentos" value="Brow Lamination">
-</label>
 
-<label class="procedimento-card">
+<div class="checkbox-custom">
+✓
+</div>
+
+</div>
+
+<div class="procedimento-card" onclick="toggleProcedimento(this,'Lash Lifting')">
+
 <div class="procedimento-info">
 <h3>Lash Lifting</h3>
 <p>Curvatura natural e elegante.</p>
 </div>
-<input type="checkbox" name="procedimentos" value="Lash Lifting">
-</label>
 
-<label class="procedimento-card">
+<div class="checkbox-custom">
+✓
+</div>
+
+</div>
+
+<div class="procedimento-card" onclick="toggleProcedimento(this,'Remoção de Estrias')">
+
 <div class="procedimento-info">
 <h3>Remoção de Estrias</h3>
 <p>Tratamento regenerativo premium.</p>
 </div>
-<input type="checkbox" name="procedimentos" value="Remoção de Estrias">
-</label>
 
-<label class="procedimento-card">
+<div class="checkbox-custom">
+✓
+</div>
+
+</div>
+
+<div class="procedimento-card" onclick="toggleProcedimento(this,'Maquiagem Premium')">
+
 <div class="procedimento-info">
 <h3>Maquiagem Premium</h3>
 <p>Acabamento sofisticado para eventos.</p>
 </div>
-<input type="checkbox" name="procedimentos" value="Maquiagem Premium">
-</label>
+
+<div class="checkbox-custom">
+✓
+</div>
+
+</div>
 
 </div>
 
@@ -839,52 +740,6 @@ Selecione um horário
 <button class="btn" onclick="agendar()">
 Confirmar agendamento
 </button>
-
-</div>
-
-<iframe src="https://calendar.google.com/calendar/embed?src=pt.brazilian%23holiday%40group.v.calendar.google.com&ctz=America%2FSao_Paulo"></iframe>
-
-</section>
-
-<section>
-
-<div class="section-title">
-
-<h2>Clube VIP fidelidade</h2>
-
-<p>
-Complete 10 agendamentos e desbloqueie benefícios
-</p>
-
-</div>
-
-<div class="fidelidade-grid">
-
-<div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div>
-<div>6</div>
-<div>7</div>
-<div>8</div>
-<div>9</div>
-
-<div class="premio">
-🎁
-</div>
-
-</div>
-
-<div class="voucher">
-
-<h3>
-Voucher exclusivo
-</h3>
-
-<p>
-Ganhe design grátis ou 20% OFF em produtos premium.
-</p>
 
 </div>
 
@@ -925,6 +780,25 @@ Abrir no Maps
 
 <script>
 
+let procedimentosSelecionados = [];
+
+function toggleProcedimento(card,nome){
+
+card.classList.toggle("active");
+
+if(procedimentosSelecionados.includes(nome)){
+
+procedimentosSelecionados =
+procedimentosSelecionados.filter(item => item !== nome);
+
+}else{
+
+procedimentosSelecionados.push(nome);
+
+}
+
+}
+
 function agendar(){
 
 let nome =
@@ -939,25 +813,15 @@ document.getElementById("data").value;
 let hora =
 document.getElementById("hora").value;
 
-let selecionados = [];
-
-document
-.querySelectorAll('input[name="procedimentos"]:checked')
-.forEach((checkbox)=>{
-
-selecionados.push(checkbox.value);
-
-});
-
 if(
 nome === "" ||
 telefone === "" ||
 data === "" ||
 hora === "" ||
-selecionados.length === 0
+procedimentosSelecionados.length === 0
 ){
 
-alert("Preencha todos os campos e selecione ao menos um procedimento.");
+alert("Preencha todos os campos.");
 
 return;
 
@@ -969,7 +833,7 @@ let mensagem =
 WhatsApp: ${telefone}
 
 Procedimentos escolhidos:
-• ${selecionados.join('\n• ')}
+• ${procedimentosSelecionados.join('\n• ')}
 
 Data desejada: ${data}
 
@@ -978,7 +842,7 @@ Horário desejado: ${hora}`;
 let url =
 `https://wa.me/5519981397668?text=${encodeURIComponent(mensagem)}`;
 
-window.open(url, '_blank');
+window.open(url,'_blank');
 
 }
 
