@@ -1,171 +1,177 @@
+<!-- HERO PREMIUM -->
+
+<header class="hero-premium">
+
+<div class="overlay"></div>
+
+<div class="hero-content">
+
+<h1>Thainá mendes beauty</h1>
+
+<p>
+Experiência premium em beleza, estética e sofisticação
+</p>
+
+<br>
+
+<a class="btn" href="#agendamento">
+Agendar atendimento
+</a>
+
+</div>
+
+</header>
+
 <style>
 
-:root {
-  --cor-principal: #d8c3a5;
-  --cor-secundaria: #f7f1ea;
-  --cor-destaque: #b08d57;
-  --cor-texto: #1f1f1f;
-}
+/* FUNDO PREMIUM */
 
 body{
-  background: var(--cor-secundaria);
-  color: var(--cor-texto);
-  font-family:'Poppins',sans-serif;
+margin:0;
+font-family:'Poppins',sans-serif;
+background:#f7f1ea;
+color:#1f1f1f;
+background-image:url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200');
+background-size:cover;
+background-attachment:fixed;
+background-position:center;
 }
 
-/* HEADER PREMIUM */
-
-header{
-  background: var(--cor-principal);
-  padding:80px 20px;
-  text-align:center;
+.overlay{
+position:absolute;
+inset:0;
+background:rgba(247,241,234,0.88);
+backdrop-filter:blur(2px);
 }
 
-header h1{
-  color:#000;
-  letter-spacing:2px;
-  font-weight:600;
-  text-transform:capitalize;
-  font-size:48px;
+.hero-premium{
+position:relative;
+height:85vh;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+overflow:hidden;
 }
 
-header p{
-  margin-top:15px;
-  color:#444;
-  font-size:18px;
+.hero-content{
+position:relative;
+z-index:2;
 }
 
-/* BOTÕES */
+.hero-content h1{
+font-size:56px;
+color:#000;
+letter-spacing:2px;
+text-transform:capitalize;
+}
+
+.hero-content p{
+font-size:20px;
+max-width:700px;
+margin:auto;
+margin-top:20px;
+}
 
 .btn{
-  background: var(--cor-destaque);
-  color:white;
-  padding:16px 28px;
-  border:none;
-  border-radius:16px;
-  text-decoration:none;
-  display:inline-block;
-  font-weight:600;
-  transition:0.3s;
-  cursor:pointer;
+background:#b08d57;
+color:white;
+padding:16px 32px;
+border-radius:18px;
+text-decoration:none;
+display:inline-block;
+font-weight:600;
+transition:0.3s;
+border:none;
+cursor:pointer;
 }
 
 .btn:hover{
-  transform:scale(1.03);
-  opacity:0.95;
+transform:scale(1.03);
+}
+
+/* SEÇÕES */
+
+section{
+padding:80px 20px;
+max-width:1200px;
+margin:auto;
+}
+
+.section-title{
+text-align:center;
+margin-bottom:50px;
+}
+
+.section-title h2{
+font-size:42px;
+color:#000;
 }
 
 /* CARDS */
 
-.card{
-  background:white;
-  border-radius:24px;
-  padding:25px;
-  box-shadow:0 8px 30px rgba(0,0,0,0.05);
-}
-
-/* ÁREA CLIENTE */
-
-.area-cliente{
-  padding:80px 20px;
-}
-
 .grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:25px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:30px;
 }
 
-/* FORMULÁRIO */
-
-form{
-  display:flex;
-  flex-direction:column;
-  gap:18px;
+.card{
+background:rgba(255,255,255,0.92);
+backdrop-filter:blur(5px);
+border-radius:24px;
+overflow:hidden;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
-input{
-  padding:16px;
-  border-radius:14px;
-  border:1px solid #ddd;
-  background:white;
+.card img{
+width:100%;
+height:300px;
+object-fit:cover;
 }
 
-.section-title{
-  text-align:center;
-  margin-bottom:40px;
+.card-content{
+padding:25px;
 }
 
-.section-title h2{
-  font-size:38px;
-  color:#000;
-}
-
-/* CHECKLIST SERVIÇOS */
+/* CHECKLIST */
 
 .servicos-checklist{
 display:flex;
 flex-direction:column;
 gap:15px;
-margin-top:20px;
+margin:25px 0;
 }
 
 .servicos-checklist label{
 background:#fff;
 padding:18px;
 border-radius:16px;
+border:1px solid #e6d7c3;
 cursor:pointer;
-font-size:16px;
-border:1px solid #e5d8c7;
 transition:0.3s;
+font-size:16px;
 }
 
 .servicos-checklist label:hover{
-background:#f3ece4;
-transform:scale(1.01);
+background:#f5eee6;
 }
 
 .servicos-checklist input{
 margin-right:10px;
-transform:scale(1.2);
 accent-color:#b08d57;
+transform:scale(1.2);
 }
 
-/* AGENDA */
+/* INPUTS */
 
-.agenda{
-  margin-top:30px;
-}
-
-iframe{
-  border-radius:20px;
-}
-
-/* FIDELIDADE */
-
-.fidelidade{
-  margin-top:50px;
-}
-
-.fidelidade-grid{
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:15px;
-margin-top:25px;
-}
-
-.fidelidade-grid div{
-background:white;
-padding:25px;
-border-radius:18px;
-text-align:center;
-font-weight:bold;
-font-size:22px;
-}
-
-.premio{
-background:var(--cor-destaque)!important;
-color:white;
+input{
+width:100%;
+padding:16px;
+border-radius:14px;
+border:1px solid #ddd;
+margin-bottom:18px;
+font-size:16px;
 }
 
 /* WHATSAPP */
@@ -174,79 +180,78 @@ color:white;
 position:fixed;
 bottom:25px;
 right:25px;
+width:72px;
+height:72px;
 background:#25D366;
-width:70px;
-height:70px;
 border-radius:50%;
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:30px;
+font-size:32px;
 text-decoration:none;
 color:white;
-box-shadow:0 8px 20px rgba(0,0,0,0.2);
+box-shadow:0 8px 25px rgba(0,0,0,0.2);
+z-index:999;
 }
 
 </style>
 
-<header>
+<!-- ANTES E DEPOIS -->
 
-<h1>Thainá mendes beauty</h1>
-
-<p>
-Experiência premium em estética e beleza sofisticada
-</p>
-
-<br>
-
-<a class="btn" href="#cadastro">
-Agendar atendimento
-</a>
-
-</header>
-
-<section class="area-cliente">
+<section id="resultados">
 
 <div class="section-title">
-<h2>Área exclusiva</h2>
-<p>Escolha a opção desejada</p>
+<h2>Antes e depois</h2>
+<p>Transformações reais das clientes</p>
 </div>
 
 <div class="grid">
 
 <div class="card">
 
-<h3>✨ Novo membro</h3>
+<img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200">
 
-<br>
+<div class="card-content">
+
+<h3>Alongamento de cílios</h3>
 
 <p>
-Cadastre-se para participar do clube premium.
+Resultado sofisticado e natural.
 </p>
 
-<br>
-
-<a class="btn" href="#cadastro">
-Criar cadastro
-</a>
+</div>
 
 </div>
 
 <div class="card">
 
-<h3>📅 Já sou cliente</h3>
+<img src="https://images.unsplash.com/photo-1509967419530-da38b4704bc6?q=80&w=1200">
 
-<br>
+<div class="card-content">
+
+<h3>Brow lamination</h3>
 
 <p>
-Realize seu reagendamento rapidamente.
+Sobrancelhas alinhadas e elegantes.
 </p>
 
-<br>
+</div>
 
-<a class="btn" href="#agendamento">
-Agendar horário
-</a>
+</div>
+
+<div class="card">
+
+<img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=1200">
+
+<div class="card-content">
+
+<h3>Maquiagem premium</h3>
+
+<p>
+Acabamento sofisticado para eventos.
+</p>
+
+</div>
 
 </div>
 
@@ -254,129 +259,169 @@ Agendar horário
 
 </section>
 
-<section id="cadastro">
+<!-- PRODUTOS -->
+
+<section id="produtos">
 
 <div class="section-title">
-<h2>Cadastro premium</h2>
+<h2>Produtos premium</h2>
+<p>Cuidados profissionais para sua rotina</p>
+</div>
+
+<div class="grid">
+
+<div class="card">
+
+<img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200">
+
+<div class="card-content">
+
+<h3>Sérum crescimento</h3>
+
+<p>
+Fortalece cílios e sobrancelhas.
+</p>
+
+<br>
+
+<a class="btn"
+href="https://wa.me/5519981397668?text=Quero%20comprar%20o%20Sérum">
+Comprar
+</a>
+
+</div>
+
 </div>
 
 <div class="card">
 
-<form>
+<img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200">
 
-<input type="text" placeholder="Nome completo">
+<div class="card-content">
 
-<input type="tel" placeholder="WhatsApp">
+<h3>Kit Brow Designer</h3>
 
-<input type="email" placeholder="Email">
+<p>
+Kit premium para manutenção perfeita.
+</p>
 
-<div class="servicos-checklist">
+<br>
 
-<label>
-<input type="checkbox">
-Design
-</label>
-
-<label>
-<input type="checkbox">
-Design com Henna
-</label>
-
-<label>
-<input type="checkbox">
-Brow Lamination
-</label>
-
-<label>
-<input type="checkbox">
-Lash Lifting
-</label>
-
-<label>
-<input type="checkbox">
-Remoção de Estrias
-</label>
-
-<label>
-<input type="checkbox">
-Maquiagem Premium
-</label>
+<a class="btn"
+href="https://wa.me/5519981397668?text=Quero%20comprar%20o%20Kit%20Brow">
+Comprar
+</a>
 
 </div>
 
-<input type="datetime-local">
+</div>
 
-<button class="btn">
-Finalizar cadastro
+</div>
+
+</section>
+
+<!-- AGENDAMENTO -->
+
+<section id="agendamento">
+
+<div class="section-title">
+<h2>Agendamento premium</h2>
+<p>
+Escolha seus procedimentos
+</p>
+</div>
+
+<div class="card">
+
+<div class="card-content">
+
+<form id="agendamentoForm">
+
+<input 
+type="text" 
+id="nome"
+placeholder="Seu nome">
+
+<input 
+type="tel" 
+id="telefone"
+placeholder="WhatsApp">
+
+<div class="servicos-checklist">
+
+<label><input type="checkbox" value="Design">Design</label>
+
+<label><input type="checkbox" value="Design com Henna">Design com Henna</label>
+
+<label><input type="checkbox" value="Brow Lamination">Brow Lamination</label>
+
+<label><input type="checkbox" value="Lash Lifting">Lash Lifting</label>
+
+<label><input type="checkbox" value="Remoção de Estrias">Remoção de Estrias</label>
+
+<label><input type="checkbox" value="Maquiagem Premium">Maquiagem Premium</label>
+
+</div>
+
+<input 
+type="datetime-local" 
+id="horario">
+
+<button type="button"
+class="btn"
+onclick="enviarWhatsapp()">
+Confirmar agendamento
 </button>
 
 </form>
 
 </div>
 
-</section>
-
-<section id="agendamento">
-
-<div class="section-title">
-<h2>Horários disponíveis</h2>
-</div>
-
-<div class="card agenda">
-
-<iframe 
-src="https://calendar.google.com/calendar/embed?src=pt.brazilian%23holiday%40group.v.calendar.google.com&ctz=America%2FSao_Paulo" 
-style="border:0" 
-width="100%" 
-height="600">
-</iframe>
-
 </div>
 
 </section>
 
-<section class="fidelidade">
+<!-- SCRIPT WHATSAPP -->
 
-<div class="section-title">
+<script>
 
-<h2>Clube VIP fidelidade</h2>
+function enviarWhatsapp(){
 
-<p>
-Complete 10 agendamentos e ganhe benefícios
-</p>
+let nome =
+document.getElementById('nome').value;
 
-</div>
+let telefone =
+document.getElementById('telefone').value;
 
-<div class="fidelidade-grid">
+let horario =
+document.getElementById('horario').value;
 
-<div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div>
-<div>6</div>
-<div>7</div>
-<div>8</div>
-<div>9</div>
+let servicos = [];
 
-<div class="premio">
-🎁
-</div>
+document
+.querySelectorAll('input[type=checkbox]:checked')
+.forEach((item)=>{
+servicos.push(item.value);
+});
 
-</div>
+let mensagem =
+`Olá, meu nome é ${nome}%0A
+WhatsApp: ${telefone}%0A
+Procedimentos: ${servicos.join(', ')}%0A
+Horário desejado: ${horario}`;
 
-<br><br>
+window.open(
+`https://wa.me/5519981397668?text=${mensagem}`,
+'_blank'
+);
 
-<div class="card">
+}
 
-<p>
-✨ Ganhe 1 design grátis ou 20% OFF em produtos ao completar 10 agendamentos.
-</p>
+</script>
 
-</div>
+<!-- WHATSAPP -->
 
-</section>
-
-<a class="whatsapp" href="https://wa.me/5519981397668">
+<a class="whatsapp"
+href="https://wa.me/5519981397668">
 💬
 </a>
