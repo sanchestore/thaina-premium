@@ -14,20 +14,12 @@
 
 <style>
 
-/* ========================= */
-/* RESET */
-/* ========================= */
-
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 scroll-behavior:smooth;
 }
-
-/* ========================= */
-/* CORES */
-/* ========================= */
 
 :root{
 --bege:#d8c3a5;
@@ -37,10 +29,6 @@ scroll-behavior:smooth;
 --branco:#ffffff;
 }
 
-/* ========================= */
-/* BODY */
-/* ========================= */
-
 body{
 font-family:'Poppins',sans-serif;
 background:var(--bege-claro);
@@ -48,10 +36,6 @@ color:var(--preto);
 overflow-x:hidden;
 position:relative;
 }
-
-/* ========================= */
-/* MARCA D'ÁGUA */
-/* ========================= */
 
 body::before{
 content:"";
@@ -63,10 +47,6 @@ background-position:center;
 opacity:0.03;
 z-index:-1;
 }
-
-/* ========================= */
-/* HEADER */
-/* ========================= */
 
 header{
 position:fixed;
@@ -88,7 +68,6 @@ font-family:'Cormorant Garamond',serif;
 font-size:38px;
 font-weight:600;
 color:#000;
-text-transform:capitalize;
 }
 
 nav{
@@ -107,10 +86,6 @@ nav a:hover{
 color:var(--dourado);
 }
 
-/* ========================= */
-/* HERO */
-/* ========================= */
-
 .hero{
 min-height:100vh;
 display:flex;
@@ -125,9 +100,8 @@ max-width:900px;
 }
 
 .hero h1{
-font-size:78px;
+font-size:76px;
 font-family:'Cormorant Garamond',serif;
-font-weight:600;
 margin-bottom:20px;
 line-height:1.1;
 }
@@ -138,10 +112,6 @@ line-height:1.8;
 margin-bottom:35px;
 }
 
-/* ========================= */
-/* BOTÕES */
-/* ========================= */
-
 .btn{
 background:var(--dourado);
 color:white;
@@ -150,19 +120,14 @@ border-radius:18px;
 text-decoration:none;
 font-weight:600;
 display:inline-block;
-transition:0.3s;
 border:none;
 cursor:pointer;
+transition:0.3s;
 }
 
 .btn:hover{
 transform:translateY(-4px);
-opacity:0.95;
 }
-
-/* ========================= */
-/* SEÇÕES */
-/* ========================= */
 
 section{
 padding:110px 8%;
@@ -185,19 +150,11 @@ margin:auto;
 line-height:1.7;
 }
 
-/* ========================= */
-/* GRID */
-/* ========================= */
-
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
 gap:30px;
 }
-
-/* ========================= */
-/* CARDS */
-/* ========================= */
 
 .card{
 background:white;
@@ -231,10 +188,6 @@ font-family:'Cormorant Garamond',serif;
 line-height:1.7;
 margin-bottom:20px;
 }
-
-/* ========================= */
-/* PROCEDIMENTOS */
-/* ========================= */
 
 .procedimentos-mobile{
 display:flex;
@@ -276,12 +229,6 @@ margin-bottom:6px;
 font-family:'Cormorant Garamond',serif;
 }
 
-.procedimento-info p{
-font-size:14px;
-line-height:1.6;
-color:#555;
-}
-
 .checkbox-custom{
 width:28px;
 height:28px;
@@ -295,17 +242,11 @@ font-weight:bold;
 color:white;
 background:white;
 transition:0.3s;
-flex-shrink:0;
 }
 
 .procedimento-card.active .checkbox-custom{
 background:#b08d57;
-color:white;
 }
-
-/* ========================= */
-/* FORMULÁRIO */
-/* ========================= */
 
 .form-box{
 background:white;
@@ -322,8 +263,6 @@ margin-bottom:20px;
 border-radius:16px;
 border:1px solid #ddd;
 font-size:16px;
-background:white;
-color:#1a1a1a;
 }
 
 .data-label{
@@ -332,67 +271,39 @@ display:block;
 margin-bottom:10px;
 }
 
-/* ========================= */
-/* CALENDÁRIO */
-/* ========================= */
-
-iframe{
-width:100%;
-height:650px;
-border:none;
-border-radius:28px;
-box-shadow:0 10px 30px rgba(0,0,0,0.06);
+.before-after{
+display:none;
 margin-top:40px;
+animation:fade 0.4s ease;
 }
 
-/* ========================= */
-/* FIDELIDADE */
-/* ========================= */
+.before-after.active{
+display:block;
+}
 
-.fidelidade-grid{
+.before-grid{
 display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:18px;
-margin-top:40px;
+grid-template-columns:1fr 1fr;
+gap:20px;
+margin-top:20px;
 }
 
-.fidelidade-grid div{
-background:white;
-padding:28px;
-border-radius:18px;
-font-size:24px;
-font-weight:bold;
-text-align:center;
-box-shadow:0 5px 20px rgba(0,0,0,0.05);
+.before-grid img{
+width:100%;
+height:320px;
+object-fit:cover;
+border-radius:24px;
 }
 
-.premio{
-background:var(--dourado)!important;
+.badge{
+background:#b08d57;
 color:white;
-}
-
-/* ========================= */
-/* VOUCHER */
-/* ========================= */
-
-.voucher{
-margin-top:40px;
-background:linear-gradient(135deg,#d8c3a5,#b08d57);
-padding:45px;
-border-radius:28px;
-color:white;
-text-align:center;
-}
-
-.voucher h3{
-font-size:42px;
-font-family:'Cormorant Garamond',serif;
+padding:10px 18px;
+border-radius:14px;
+display:inline-block;
 margin-bottom:15px;
+font-weight:600;
 }
-
-/* ========================= */
-/* FOOTER */
-/* ========================= */
 
 footer{
 background:#efe5d7;
@@ -400,10 +311,6 @@ padding:50px 20px;
 text-align:center;
 margin-top:60px;
 }
-
-/* ========================= */
-/* WHATSAPP */
-/* ========================= */
 
 .whatsapp{
 position:fixed;
@@ -423,9 +330,16 @@ box-shadow:0 10px 25px rgba(0,0,0,0.2);
 z-index:999;
 }
 
-/* ========================= */
-/* RESPONSIVO */
-/* ========================= */
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(15px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
 
 @media(max-width:900px){
 
@@ -435,32 +349,12 @@ flex-direction:column;
 gap:15px;
 }
 
-.logo{
-font-size:30px;
-text-align:center;
-}
-
-nav{
-flex-wrap:wrap;
-justify-content:center;
-gap:12px;
-}
-
-nav a{
-font-size:14px;
-}
-
 .hero{
-padding-top:280px;
+padding-top:300px;
 }
 
 .hero h1{
 font-size:42px;
-}
-
-.hero p{
-font-size:16px;
-padding:0 10px;
 }
 
 .section-title h2{
@@ -471,54 +365,13 @@ font-size:40px;
 grid-template-columns:1fr;
 }
 
-.card img{
-height:260px;
+.before-grid{
+grid-template-columns:1fr;
 }
 
-.form-box{
-padding:25px;
-}
-
-.btn{
-width:100%;
-text-align:center;
-}
-
-.fidelidade-grid{
-grid-template-columns:repeat(2,1fr);
-}
-
-iframe{
-height:450px;
-}
-
-.procedimento-card{
-padding:18px;
-}
-
-}
-
-@media(max-width:500px){
-
-.hero{
-padding-top:300px;
-}
-
-.hero h1{
-font-size:34px;
-}
-
-.hero p{
-font-size:15px;
-line-height:1.7;
-}
-
-.logo{
-font-size:26px;
-}
-
-.section-title h2{
-font-size:34px;
+nav{
+flex-wrap:wrap;
+justify-content:center;
 }
 
 }
@@ -537,8 +390,7 @@ Thainá mendes beauty
 
 <nav>
 <a href="#quem-somos">Quem somos</a>
-<a href="#catalogo">Catálogo</a>
-<a href="#resultados">Antes e depois</a>
+<a href="#catalogo">Procedimentos</a>
 <a href="#agendamento">Agendamento</a>
 <a href="#localizacao">Localização</a>
 </nav>
@@ -565,14 +417,15 @@ Agendar atendimento
 
 </section>
 
-<section id="catalogo">
+<section id="quem-somos">
 
 <div class="section-title">
 
-<h2>Procedimentos premium</h2>
+<h2>Quem somos</h2>
 
 <p>
-Escolha seus procedimentos favoritos
+Há mais de 6 anos transformando olhares com excelência, sofisticação e resultados premium.
+Cada atendimento é pensado para elevar autoestima, beleza e elegância.
 </p>
 
 </div>
@@ -580,27 +433,205 @@ Escolha seus procedimentos favoritos
 <div class="grid">
 
 <div class="card">
-<img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200">
+<img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=1200">
 <div class="card-content">
+<h3>Atendimento premium</h3>
+<p>
+Experiência sofisticada e ambiente acolhedor para cada cliente.
+</p>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1200">
+<div class="card-content">
+<h3>Especialização</h3>
+<p>
+Procedimentos modernos e técnicas avançadas de beleza.
+</p>
+</div>
+</div>
+
+</div>
+
+</section>
+
+<section id="catalogo">
+
+<div class="section-title">
+
+<h2>Procedimentos premium</h2>
+
+<p>
+Clique no procedimento para visualizar resultados reais
+</p>
+
+</div>
+
+<div class="procedimentos-mobile">
+
+<div class="procedimento-card" onclick="toggleProcedimento(this,'Design','resultado1')">
+
+<div class="procedimento-info">
 <h3>Design</h3>
 <p>Modelagem sofisticada.</p>
 </div>
+
+<div class="checkbox-custom">✓</div>
+
 </div>
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1509967419530-da38b4704bc6?q=80&w=1200">
-<div class="card-content">
+<div class="procedimento-card" onclick="toggleProcedimento(this,'Design com Henna','resultado2')">
+
+<div class="procedimento-info">
+<h3>Design com Henna</h3>
+<p>Preenchimento elegante.</p>
+</div>
+
+<div class="checkbox-custom">✓</div>
+
+</div>
+
+<div class="procedimento-card" onclick="toggleProcedimento(this,'Brow Lamination','resultado3')">
+
+<div class="procedimento-info">
 <h3>Brow Lamination</h3>
-<p>Alinhamento moderno.</p>
-</div>
+<p>Alinhamento sofisticado.</p>
 </div>
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=1200">
-<div class="card-content">
-<h3>Lash Lifting</h3>
-<p>Curvatura elegante.</p>
+<div class="checkbox-custom">✓</div>
+
 </div>
+
+<div class="procedimento-card" onclick="toggleProcedimento(this,'Lash Lifting','resultado4')">
+
+<div class="procedimento-info">
+<h3>Lash Lifting</h3>
+<p>Curvatura natural premium.</p>
+</div>
+
+<div class="checkbox-custom">✓</div>
+
+</div>
+
+<div class="procedimento-card" onclick="toggleProcedimento(this,'Remoção de Estrias','resultado5')">
+
+<div class="procedimento-info">
+<h3>Remoção de Estrias</h3>
+<p>Tratamento regenerativo.</p>
+</div>
+
+<div class="checkbox-custom">✓</div>
+
+</div>
+
+<div class="procedimento-card" onclick="toggleProcedimento(this,'Maquiagem Premium','resultado6')">
+
+<div class="procedimento-info">
+<h3>Maquiagem Premium</h3>
+<p>Acabamento sofisticado.</p>
+</div>
+
+<div class="checkbox-custom">✓</div>
+
+</div>
+
+</div>
+
+<!-- RESULTADOS -->
+
+<div id="resultado1" class="before-after">
+
+<div class="badge">
+Antes e depois — Design
+</div>
+
+<div class="before-grid">
+
+<img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200">
+
+<img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=1200">
+
+</div>
+
+</div>
+
+<div id="resultado2" class="before-after">
+
+<div class="badge">
+Antes e depois — Design com Henna
+</div>
+
+<div class="before-grid">
+
+<img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1200">
+
+<img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200">
+
+</div>
+
+</div>
+
+<div id="resultado3" class="before-after">
+
+<div class="badge">
+Antes e depois — Brow Lamination
+</div>
+
+<div class="before-grid">
+
+<img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200">
+
+<img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=1200">
+
+</div>
+
+</div>
+
+<div id="resultado4" class="before-after">
+
+<div class="badge">
+Antes e depois — Lash Lifting
+</div>
+
+<div class="before-grid">
+
+<img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=1200">
+
+<img src="https://images.unsplash.com/photo-1509967419530-da38b4704bc6?q=80&w=1200">
+
+</div>
+
+</div>
+
+<div id="resultado5" class="before-after">
+
+<div class="badge">
+Antes e depois — Remoção de Estrias
+</div>
+
+<div class="before-grid">
+
+<img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1200">
+
+<img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1200">
+
+</div>
+
+</div>
+
+<div id="resultado6" class="before-after">
+
+<div class="badge">
+Antes e depois — Maquiagem Premium
+</div>
+
+<div class="before-grid">
+
+<img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=1200">
+
+<img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1200">
+
 </div>
 
 </div>
@@ -624,88 +655,6 @@ Escolha múltiplos procedimentos
 <input type="text" id="nome" placeholder="Seu nome">
 
 <input type="tel" id="telefone" placeholder="WhatsApp">
-
-<div class="procedimentos-mobile">
-
-<div class="procedimento-card" onclick="toggleProcedimento(this,'Design')">
-
-<div class="procedimento-info">
-<h3>Design</h3>
-<p>Modelagem sofisticada de sobrancelhas.</p>
-</div>
-
-<div class="checkbox-custom">
-✓
-</div>
-
-</div>
-
-<div class="procedimento-card" onclick="toggleProcedimento(this,'Design com Henna')">
-
-<div class="procedimento-info">
-<h3>Design com Henna</h3>
-<p>Preenchimento natural e elegante.</p>
-</div>
-
-<div class="checkbox-custom">
-✓
-</div>
-
-</div>
-
-<div class="procedimento-card" onclick="toggleProcedimento(this,'Brow Lamination')">
-
-<div class="procedimento-info">
-<h3>Brow Lamination</h3>
-<p>Alinhamento moderno e sofisticado.</p>
-</div>
-
-<div class="checkbox-custom">
-✓
-</div>
-
-</div>
-
-<div class="procedimento-card" onclick="toggleProcedimento(this,'Lash Lifting')">
-
-<div class="procedimento-info">
-<h3>Lash Lifting</h3>
-<p>Curvatura natural e elegante.</p>
-</div>
-
-<div class="checkbox-custom">
-✓
-</div>
-
-</div>
-
-<div class="procedimento-card" onclick="toggleProcedimento(this,'Remoção de Estrias')">
-
-<div class="procedimento-info">
-<h3>Remoção de Estrias</h3>
-<p>Tratamento regenerativo premium.</p>
-</div>
-
-<div class="checkbox-custom">
-✓
-</div>
-
-</div>
-
-<div class="procedimento-card" onclick="toggleProcedimento(this,'Maquiagem Premium')">
-
-<div class="procedimento-info">
-<h3>Maquiagem Premium</h3>
-<p>Acabamento sofisticado para eventos.</p>
-</div>
-
-<div class="checkbox-custom">
-✓
-</div>
-
-</div>
-
-</div>
 
 <label class="data-label">
 📅 Escolha a data
@@ -782,7 +731,7 @@ Abrir no Maps
 
 let procedimentosSelecionados = [];
 
-function toggleProcedimento(card,nome){
+function toggleProcedimento(card,nome,resultadoId){
 
 card.classList.toggle("active");
 
@@ -796,6 +745,16 @@ procedimentosSelecionados.filter(item => item !== nome);
 procedimentosSelecionados.push(nome);
 
 }
+
+document
+.querySelectorAll('.before-after')
+.forEach(secao => {
+secao.classList.remove('active');
+});
+
+document
+.getElementById(resultadoId)
+.classList.add('active');
 
 }
 
