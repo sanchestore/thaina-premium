@@ -35,7 +35,29 @@ background:var(--bege-claro);
 color:var(--preto);
 overflow-x:hidden;
 position:relative;
-}
+}<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyDnVGemI0SUYl2i5gk7dog2qwiZkmpa-nM",
+    authDomain: "agendamento-thaina-beauty.firebaseapp.com",
+    projectId: "agendamento-thaina-beauty",
+    storageBucket: "agendamento-thaina-beauty.firebasestorage.app",
+    messagingSenderId: "880630863294",
+    appId: "1:880630863294:web:ddb74cbbdda08369ba15ef",
+    measurementId: "G-5E8Z72TFV0"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 
 body::before{
 content:"";
@@ -796,7 +818,7 @@ Selecione os procedimentos desejados — o valor total aparece automaticamente e
 <h2>Cartão fidelidade</h2>
 
 <p>
-A cada 9 atendimentos realizados (qualquer procedimento), o 10º vem com um Design de sobrancelha grátis. Depois disso, o cartão recomeça do zero.
+A cada 9 atendimentos concluídos (qualquer procedimento), o 10º vem com um Design de sobrancelha grátis. O selo é adicionado pela Thainá após o atendimento acontecer — não no momento do agendamento. Depois de completo, o cartão recomeça do zero.
 </p>
 
 </div>
@@ -819,6 +841,17 @@ A cada 9 atendimentos realizados (qualquer procedimento), o 10º vem com um Desi
 Informe seu WhatsApp acima para ver quantos selos você já tem.
 </div>
 
+</div>
+
+<div style="text-align:center;margin-top:24px;">
+<a href="#" onclick="return abrirPainelProfissional()" style="font-size:13px;color:#999;text-decoration:underline;">Área da profissional</a>
+</div>
+
+<div class="form-box" id="painel-profissional" style="display:none;margin-top:20px;max-width:520px;margin-left:auto;margin-right:auto;">
+<h3 style="font-family:'Cormorant Garamond',serif;margin-bottom:16px;font-size:24px;">Registrar atendimento concluído</h3>
+<p style="font-size:14px;margin-bottom:16px;color:#666;">Use somente depois que a cliente já foi atendida.</p>
+<input type="tel" id="profissional-telefone" placeholder="WhatsApp da cliente (com DDD)">
+<button class="btn" style="width:100%;" onclick="registrarAtendimentoConcluido()">Adicionar selo</button>
 </div>
 
 </section>
@@ -1032,8 +1065,6 @@ let url =
 
 window.open(url,'_blank');
 
-registrarSeloFidelidade(telefone);
-
 }
 
 /* ---------------- Cartão fidelidade (armazenado neste navegador/dispositivo) ---------------- */
@@ -1108,13 +1139,48 @@ status.innerHTML = "🎉 Parabéns! Você completou o cartão e ganhou <strong>1
 }else{
 const faltam = TOTAL_SELOS - 1 - selos;
 if(selos === 0){
-status.textContent = "Você ainda não tem selos neste cartão. Cada atendimento agendado pelo site soma 1 selo.";
+status.textContent = "Você ainda não tem selos neste cartão. Cada atendimento concluído soma 1 selo.";
 }else if(faltam <= 0){
 status.textContent = "Faltam 0 atendimentos — no próximo você ganha o Design grátis! 🎁";
 }else{
 status.textContent = `Você tem ${selos} selo(s). Faltam ${faltam} atendimento(s) para o Design de sobrancelha grátis.`;
 }
 }
+
+}
+
+/* ---------------- Área da profissional (registro manual após o atendimento) ---------------- */
+
+const SENHA_PROFISSIONAL = "thaina2026"; // troque por uma senha de sua preferência
+
+function abrirPainelProfissional(){
+
+const senha = prompt("Digite a senha da área da profissional:");
+
+if(senha === SENHA_PROFISSIONAL){
+document.getElementById("painel-profissional").style.display = "block";
+}else if(senha !== null){
+alert("Senha incorreta.");
+}
+
+return false;
+
+}
+
+function registrarAtendimentoConcluido(){
+
+const telefone = document.getElementById("profissional-telefone").value.trim();
+
+if(telefone === ""){
+alert("Digite o WhatsApp da cliente.");
+return;
+}
+
+registrarSeloFidelidade(telefone);
+
+document.getElementById("profissional-telefone").value = "";
+
+alert("Selo registrado para " + telefone);
 
 }
 
