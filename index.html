@@ -623,6 +623,7 @@ Selecione os procedimentos desejados — o valor total aparece automaticamente e
 <div class="categoria-tab" data-categoria="cilios">Cílios</div>
 <div class="categoria-tab" data-categoria="labial">Revitalização Labial</div>
 <div class="categoria-tab" data-categoria="maquiagem">Maquiagem</div>
+<div class="categoria-tab" data-categoria="estrias">Remoção de Estrias</div>
 </div>
 
 <!-- SOBRANCELHAS -->
@@ -791,6 +792,25 @@ Selecione os procedimentos desejados — o valor total aparece automaticamente e
 </div>
 </div>
 
+<!-- ESTRIAS -->
+<div class="categoria-painel" id="painel-estrias">
+
+<img class="resultado-foto-grande" id="foto-estrias" src="heroi-capa.jpg" alt="Remoção de estrias">
+
+<div class="procedimentos-mobile">
+
+<div class="procedimento-card" data-nome="Avaliação de Estrias" data-preco="0" data-foto="heroi-capa.jpg" onclick="toggleProcedimento(this)">
+<img class="procedimento-foto" src="heroi-capa.jpg" alt="">
+<div class="procedimento-info">
+<h3>Avaliação para Remoção de Estrias</h3>
+<span class="procedimento-preco">Valores informados na avaliação</span>
+</div>
+<div class="checkbox-custom">✓</div>
+</div>
+
+</div>
+</div>
+
 <div class="resumo-flutuante">
 <span id="resumo-texto">Nenhum procedimento selecionado</span>
 <strong id="resumo-total">R$ 0,00</strong>
@@ -841,6 +861,19 @@ Informe seu WhatsApp acima para ver quantos selos você já tem.
 <button class="btn" style="width:100%;" onclick="registrarAtendimentoConcluido()">Adicionar selo</button>
 </div>
 
+<div class="form-box" id="painel-extras" style="display:none;margin-top:20px;max-width:520px;margin-left:auto;margin-right:auto;">
+<h3 style="font-family:'Cormorant Garamond',serif;margin-bottom:16px;font-size:24px;">Horários extras</h3>
+<p style="font-size:14px;margin-bottom:16px;color:#666;">Use para abrir um dia ou horário fora do expediente normal (terça a sexta 9h–18h, sábado 9h–13h). As clientes passam a ver esses horários no agendamento.</p>
+<label class="data-label">Data</label>
+<input type="date" id="extra-data">
+<label class="data-label">Das</label>
+<input type="time" id="extra-ini" value="09:00">
+<label class="data-label">Até</label>
+<input type="time" id="extra-fim" value="12:00">
+<button class="btn" style="width:100%;margin-bottom:20px;" onclick="adicionarExtra()">Adicionar horário extra</button>
+<div id="extras-lista" style="font-size:14px;line-height:1.9;"></div>
+</div>
+
 </section>
 
 <section id="agendamento">
@@ -881,17 +914,6 @@ Escolha os procedimentos no catálogo acima, preencha seus dados e escolha a dat
 Selecione um horário
 </option>
 
-<option>08:00</option>
-<option>09:00</option>
-<option>10:00</option>
-<option>11:00</option>
-<option>12:00</option>
-<option>13:00</option>
-<option>14:00</option>
-<option>15:00</option>
-<option>16:00</option>
-<option>17:00</option>
-<option>18:00</option>
 
 </select>
 
@@ -949,12 +971,13 @@ Abrir no Maps
 /* Substitua pelos dados do SEU projeto: Configurações do projeto > Seus aplicativos > firebaseConfig */
 
 const firebaseConfig = {
-apiKey: "COLE_AQUI_SUA_API_KEY",
-authDomain: "SEU-PROJETO.firebaseapp.com",
-projectId: "SEU-PROJETO",
-storageBucket: "SEU-PROJETO.appspot.com",
-messagingSenderId: "COLE_AQUI",
-appId: "COLE_AQUI"
+  apiKey: "AIzaSyDnVGemI0SUYl2i5gk7dog2qwiZkmpa-nM",
+  authDomain: "agendamento-thaina-beauty.firebaseapp.com",
+  projectId: "agendamento-thaina-beauty",
+  storageBucket: "agendamento-thaina-beauty.firebasestorage.app",
+  messagingSenderId: "880630863294",
+  appId: "1:880630863294:web:16b2650e7404dd89ba15ef",
+  measurementId: "G-36ELJH3FTJ"
 };
 
 let db = null;
@@ -1010,7 +1033,7 @@ return;
 texto.textContent = procedimentosSelecionados.map(p => p.nome).join(", ");
 
 const soma = procedimentosSelecionados.reduce((acc,p) => acc + p.preco, 0);
-total.textContent = "R$ " + soma.toFixed(2).replace(".",",");
+total.textContent = soma === 0 ? "Na avaliação" : "R$ " + soma.toFixed(2).replace(".",",");
 
 }
 
@@ -1052,7 +1075,8 @@ const DURACOES = {
 "Volume 4D": 150,
 "Foxy Eyes": 150,
 "Revitalização Labial": 120,
-"Maquiagem Premium": 60
+"Maquiagem Premium": 60,
+"Avaliação de Estrias": 30
 };
 const DURACAO_PADRAO = 60;
 
@@ -1069,6 +1093,7 @@ return `${h}h${String(m).padStart(2,"0")}`;
 }
 
 function formatarReais(valor){
+if(valor === 0) return "a definir na avaliação";
 return "R$ " + valor.toFixed(2).replace(".",",");
 }
 
@@ -1265,7 +1290,7 @@ campoData.min = hoje.getFullYear() + "-" + String(hoje.getMonth()+1).padStart(2,
 const nota = document.getElementById("nota-agendamento");
 
 if(URL_AGENDA){
-nota.innerHTML = "📌 <strong>Como funciona:</strong> escolha os procedimentos, a data e um horário livre. O horário já fica reservado na agenda da Thainá assim que você confirmar.";
+nota.innerHTML = "📌 <strong>Como funciona:</strong> escolha os procedimentos, a data e um horário livre (terça a sexta, das 9h às 18h; sábado, das 9h às 13h). O horário já fica reservado na agenda da Thainá assim que você confirmar.";
 }else{
 nota.innerHTML = "📌 <strong>Importante:</strong> o envio deste formulário gera um <strong>pedido</strong> de horário, ele só é confirmado quando você recebe a resposta da Thainá pelo WhatsApp.";
 }
@@ -1388,19 +1413,100 @@ status.textContent = `Você tem ${selos} selo(s). Faltam ${faltam} atendimento(s
 
 /* ---------------- Área da profissional (selo só depois do atendimento) ---------------- */
 
-const SENHA_PROFISSIONAL = "thaina2026"; // troque por uma senha de sua preferência
+// A senha fica só no Apps Script (Code.gs, SENHA_PROFISSIONAL), não neste arquivo.
+let senhaProfissional = "";
 
-function abrirPainelProfissional(){
+async function chamarAdmin(corpo){
+const resp = await fetch(URL_AGENDA,{
+method:"POST",
+headers:{"Content-Type":"text/plain;charset=utf-8"},
+body:JSON.stringify(Object.assign({senha:senhaProfissional},corpo))
+});
+return await resp.json();
+}
+
+async function abrirPainelProfissional(){
 
 const senha = prompt("Digite a senha da área da profissional:");
 
-if(senha === SENHA_PROFISSIONAL){
+if(senha === null) return false;
+
+senhaProfissional = senha;
+
+try{
+const json = await chamarAdmin({acao:"extras_listar"});
+if(!json.ok){
+senhaProfissional = "";
+alert(json.erro || "Senha incorreta.");
+return false;
+}
 document.getElementById("painel-profissional").style.display = "block";
-}else if(senha !== null){
-alert("Senha incorreta.");
+document.getElementById("painel-extras").style.display = "block";
+document.getElementById("extra-data").min = document.getElementById("data").min;
+renderizarExtras(json.extras);
+}catch(erro){
+senhaProfissional = "";
+alert("Não foi possível conferir a senha agora. Tente de novo.");
 }
 
 return false;
+
+}
+
+function renderizarExtras(lista){
+
+const caixa = document.getElementById("extras-lista");
+caixa.innerHTML = "";
+
+if(!lista || lista.length === 0){
+caixa.textContent = "Nenhum horário extra cadastrado.";
+return;
+}
+
+lista.forEach(x => {
+const linha = document.createElement("div");
+linha.textContent = `${formatarDataBR(x.data)} · ${x.ini} às ${x.fim} `;
+const remover = document.createElement("a");
+remover.href = "#";
+remover.textContent = "remover";
+remover.style.color = "#b00020";
+remover.onclick = async () => { await removerExtra(x.id); return false; };
+linha.appendChild(remover);
+caixa.appendChild(linha);
+});
+
+}
+
+async function adicionarExtra(){
+
+const data = document.getElementById("extra-data").value;
+const ini = document.getElementById("extra-ini").value;
+const fim = document.getElementById("extra-fim").value;
+
+if(!data || !ini || !fim){
+alert("Preencha data, início e fim.");
+return;
+}
+
+try{
+const json = await chamarAdmin({acao:"extras_add",data,ini,fim});
+if(!json.ok){ alert(json.erro || "Não foi possível adicionar."); return; }
+renderizarExtras(json.extras);
+}catch(erro){
+alert("Não foi possível adicionar agora. Tente de novo.");
+}
+
+}
+
+async function removerExtra(id){
+
+try{
+const json = await chamarAdmin({acao:"extras_remover",id});
+if(!json.ok){ alert(json.erro || "Não foi possível remover."); return; }
+renderizarExtras(json.extras);
+}catch(erro){
+alert("Não foi possível remover agora. Tente de novo.");
+}
 
 }
 
