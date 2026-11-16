@@ -124,9 +124,9 @@ section{padding:64px 20px;}
 .btn{padding:16px 24px;}
 .resumo-flutuante{border-radius:22px;padding:14px 18px;bottom:10px;}
 .resumo-flutuante span{font-size:13px;flex:1 1 100%;}
-.categoria-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:0 -20px 28px;padding:0 20px 6px;scrollbar-width:none;}
+.categoria-tabs{flex-wrap:wrap;justify-content:center;margin:0 0 28px;padding:0;gap:8px;}
 .categoria-tabs::-webkit-scrollbar{display:none;}
-.categoria-tab{flex:0 0 auto;}
+.categoria-tab{flex:0 0 auto;padding:10px 16px;font-size:13px;}
 .fidelidade-card{padding:28px 20px;}
 .whatsapp{width:54px;height:54px;font-size:24px;right:14px;bottom:86px;}
 }
@@ -144,6 +144,8 @@ textarea:focus{border-color:var(--dourado);box-shadow:0 0 0 3px rgba(194,155,87,
 .resumo-btn{padding:10px 24px;font-size:14px;background:linear-gradient(135deg,var(--dourado-claro),var(--dourado));color:var(--vinho-escuro);border-color:var(--dourado);font-weight:600;box-shadow:none;}
 #pro-procs{max-height:240px;overflow:auto;border:1.5px solid #e6d8cc;border-radius:16px;padding:10px 14px;}
 @media(max-width:900px){.resumo-flutuante strong{flex:1;}}
+.grupo-titulo{font-family:var(--serif);font-style:italic;font-weight:500;font-size:22px;color:var(--vinho);margin:22px 0 4px;display:flex;align-items:center;gap:14px;}
+.grupo-titulo::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--dourado),transparent);}
 </style>
 
 <meta name="theme-color" content="#3f0716">
@@ -170,14 +172,14 @@ textarea:focus{border-color:var(--dourado);box-shadow:0 0 0 3px rgba(194,155,87,
 
 <div class="hero-content">
 
-<span class="eyebrow">Cílios · Sobrancelhas · Lábios · Maquiagem</span>
+<span class="eyebrow">Cílios · Sobrancelhas · Micropigmentação · Maquiagem</span>
 
 <h1>
 Beleza <em>sofisticada</em> e experiência única
 </h1>
 
 <p>
-Especialistas em cílios, sobrancelhas, revitalização labial e maquiagem. Piracicaba - SP.
+Especialistas em cílios, sobrancelhas, micropigmentação e maquiagem. Piracicaba - SP.
 </p>
 
 <div class="hero-botoes">
@@ -244,7 +246,6 @@ Selecione os procedimentos desejados — o valor total aparece automaticamente e
 <div class="categoria-tab ativa" data-categoria="sobrancelhas">Sobrancelhas</div>
 <div class="categoria-tab" data-categoria="cilios">Cílios</div>
 <div class="categoria-tab" data-categoria="micro">Micropigmentação</div>
-<div class="categoria-tab" data-categoria="labial">Revitalização Labial</div>
 <div class="categoria-tab" data-categoria="maquiagem">Maquiagem</div>
 <div class="categoria-tab" data-categoria="estrias">Remoção de Estrias</div>
 </div>
@@ -311,6 +312,8 @@ Selecione os procedimentos desejados — o valor total aparece automaticamente e
 
 <div class="procedimentos-mobile">
 
+<h4 class="grupo-titulo">Aplicação</h4>
+
 <div class="procedimento-card" data-nome="Lash Lifting" data-preco="119.90" data-foto="cilios-lash-lifting.jpg" onclick="toggleProcedimento(this)">
 <img class="procedimento-foto" src="cilios-lash-lifting.jpg" alt="">
 <div class="procedimento-info">
@@ -372,6 +375,8 @@ Selecione os procedimentos desejados — o valor total aparece automaticamente e
 <span class="procedimento-preco">R$ 200,00</span>
 </div>
 <div class="checkbox-custom">✓</div>
+<h4 class="grupo-titulo">Manutenção</h4>
+
 <div class="procedimento-card" data-nome="Manutenção Volume Brasileiro" data-preco="100.00" data-foto="cilios-volume-brasileiro.jpg" onclick="toggleProcedimento(this)">
 <img class="procedimento-foto" src="cilios-volume-brasileiro.jpg" alt="">
 <div class="procedimento-info">
@@ -432,25 +437,6 @@ Selecione os procedimentos desejados — o valor total aparece automaticamente e
 <div class="procedimento-info">
 <h3>Retoque de Micropigmentação</h3>
 <span class="procedimento-preco">Valor informado no atendimento</span>
-</div>
-<div class="checkbox-custom">✓</div>
-</div>
-
-</div>
-</div>
-
-<!-- LABIAL -->
-<div class="categoria-painel" id="painel-labial">
-
-<img class="resultado-foto-grande" id="foto-labial" src="labial-revitalizacao-1.jpg" alt="Resultado do procedimento">
-
-<div class="procedimentos-mobile">
-
-<div class="procedimento-card" data-nome="Revitalização Labial" data-preco="399.90" data-foto="labial-revitalizacao-1.jpg" onclick="toggleProcedimento(this)">
-<img class="procedimento-foto" src="labial-revitalizacao-1.jpg" alt="">
-<div class="procedimento-info">
-<h3>Revitalização Labial</h3>
-<span class="procedimento-preco">R$ 399,90</span>
 </div>
 <div class="checkbox-custom">✓</div>
 </div>
@@ -826,7 +812,6 @@ const DURACOES = {
 "Efeito Rímel": 120,
 "Volume 4D": 120,
 "Foxy Eyes": 120,
-"Revitalização Labial": 120,
 "Maquiagem Premium": 60,
 "Avaliação de Estrias": 30,
 "Retorno": 30,
