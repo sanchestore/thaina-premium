@@ -10,522 +10,129 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-scroll-behavior:smooth;
-}
-
-:root{
---bege:#d8c3a5;
---bege-claro:#f7f1ea;
---dourado:#b08d57;
---preto:#1a1a1a;
---branco:#ffffff;
-}
-
-body{
-font-family:'Poppins',sans-serif;
-background:var(--bege-claro);
-color:var(--preto);
-overflow-x:hidden;
-position:relative;
-}
-
-body::before{
-content:"";
-position:fixed;
-inset:0;
-background-image:url('heroi-capa.jpg');
-background-size:cover;
-background-position:center;
-opacity:0.03;
-z-index:-1;
-}
-
-header{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-background:rgba(247,241,234,0.96);
-backdrop-filter:blur(10px);
-padding:18px 50px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-z-index:999;
-box-shadow:0 2px 15px rgba(0,0,0,0.05);
-}
-
-.logo{
-font-family:'Cormorant Garamond',serif;
-font-size:38px;
-font-weight:600;
-color:#000;
-}
-
-nav{
-display:flex;
-gap:24px;
-flex-wrap:wrap;
-}
-
-nav a{
-text-decoration:none;
-color:#222;
-font-weight:500;
-transition:0.3s;
-}
-
-nav a:hover{
-color:var(--dourado);
-}
-
-.hero{
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:220px 20px 100px;
-background:linear-gradient(rgba(247,241,234,0.55),rgba(247,241,234,0.75)),url('heroi-capa.jpg');
-background-size:cover;
-background-position:center top;
-}
-
-.hero-content{
-max-width:900px;
-}
-
-.hero h1{
-font-size:76px;
-font-family:'Cormorant Garamond',serif;
-margin-bottom:20px;
-line-height:1.1;
-}
-
-.hero p{
-font-size:20px;
-line-height:1.8;
-margin-bottom:35px;
-}
-
-.btn{
-background:var(--dourado);
-color:white;
-padding:18px 35px;
-border-radius:18px;
-text-decoration:none;
-font-weight:600;
-display:inline-block;
-border:none;
-cursor:pointer;
-transition:0.3s;
-font-size:16px;
-}
-
-.btn:hover{
-transform:translateY(-4px);
-}
-
-.btn.secundario{
-background:transparent;
-border:2px solid var(--dourado);
-color:var(--dourado);
-}
-
-section{
-padding:110px 8%;
-}
-
-.section-title{
-text-align:center;
-margin-bottom:50px;
-}
-
-.section-title h2{
-font-size:54px;
-font-family:'Cormorant Garamond',serif;
-margin-bottom:15px;
-}
-
-.section-title p{
-max-width:700px;
-margin:auto;
-line-height:1.7;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-gap:30px;
-}
-
-.card{
-background:white;
-border-radius:28px;
-overflow:hidden;
-box-shadow:0 10px 30px rgba(0,0,0,0.06);
-transition:0.3s;
-}
-
-.card:hover{
-transform:translateY(-6px);
-}
-
-.card img{
-width:100%;
-height:320px;
-object-fit:cover;
-}
-
-.card-content{
-padding:28px;
-}
-
-.card-content h3{
-font-size:28px;
-margin-bottom:10px;
-font-family:'Cormorant Garamond',serif;
-}
-
-.card-content p{
-line-height:1.7;
-margin-bottom:20px;
-}
-
-/* ---- Catálogo por categoria ---- */
-
-.categoria-tabs{
-display:flex;
-justify-content:center;
-flex-wrap:wrap;
-gap:12px;
-margin-bottom:40px;
-}
-
-.categoria-tab{
-padding:12px 26px;
-border-radius:30px;
-border:2px solid var(--bege);
-background:white;
-font-weight:600;
-cursor:pointer;
-transition:0.3s;
-font-family:'Poppins',sans-serif;
-font-size:15px;
-}
-
-.categoria-tab.ativa,
-.categoria-tab:hover{
-background:var(--dourado);
-border-color:var(--dourado);
-color:white;
-}
-
-.categoria-painel{
-display:none;
-}
-
-.categoria-painel.ativa{
-display:block;
-animation:fade 0.4s ease;
-}
-
-.procedimentos-mobile{
-display:flex;
-flex-direction:column;
-gap:18px;
-margin:0 0 30px;
-}
-
-.procedimento-card{
-display:flex;
-align-items:center;
-gap:18px;
-background:white;
-padding:16px;
-border-radius:22px;
-border:2px solid transparent;
-cursor:pointer;
-transition:0.3s;
-}
-
-.procedimento-card:hover{
-background:#fcf7f0;
-border-color:#d8c3a5;
-}
-
-.procedimento-card.active{
-border-color:#b08d57;
-background:#fffaf3;
-}
-
-.procedimento-foto{
-width:78px;
-height:78px;
-border-radius:16px;
-object-fit:cover;
-flex-shrink:0;
-}
-
-.procedimento-info{
-flex:1;
-}
-
-.procedimento-info h3{
-font-size:21px;
-margin-bottom:4px;
-font-family:'Cormorant Garamond',serif;
-}
-
-.procedimento-preco{
-color:var(--dourado);
-font-weight:600;
-font-size:16px;
-}
-
-.checkbox-custom{
-width:28px;
-height:28px;
-border-radius:10px;
-border:2px solid #b08d57;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:16px;
-font-weight:bold;
-color:white;
-background:white;
-transition:0.3s;
-flex-shrink:0;
-}
-
-.procedimento-card.active .checkbox-custom{
-background:#b08d57;
-}
-
-.resultado-foto-grande{
-width:100%;
-max-width:420px;
-margin:0 auto 40px;
-display:block;
-border-radius:24px;
-box-shadow:0 10px 30px rgba(0,0,0,0.08);
-}
-
-/* ---- Resumo / orçamento ---- */
-
-.resumo-flutuante{
-position:sticky;
-bottom:20px;
-margin-top:30px;
-background:var(--preto);
-color:white;
-border-radius:22px;
-padding:20px 26px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-flex-wrap:wrap;
-gap:14px;
-box-shadow:0 10px 30px rgba(0,0,0,0.25);
-}
-
-.resumo-flutuante span{
-font-size:18px;
-}
-
-.resumo-flutuante strong{
-color:var(--dourado);
-font-size:22px;
-}
-
-/* ---- Cartão fidelidade ---- */
-
-.fidelidade-card{
-max-width:520px;
-margin:0 auto;
-background:linear-gradient(135deg,#1a1a1a,#3a2f22);
-color:white;
-border-radius:28px;
-padding:36px;
-box-shadow:0 15px 40px rgba(0,0,0,0.25);
-}
-
-.fidelidade-card h3{
-font-family:'Cormorant Garamond',serif;
-font-size:32px;
-margin-bottom:6px;
-}
-
-.fidelidade-card p.sub{
-opacity:0.75;
-margin-bottom:24px;
-font-size:14px;
-}
-
-.selos{
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:12px;
-margin-bottom:24px;
-}
-
-.selo{
-aspect-ratio:1;
-border-radius:14px;
-border:2px dashed rgba(255,255,255,0.35);
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:22px;
-}
-
-.selo.preenchido{
-background:var(--dourado);
-border:2px solid var(--dourado);
-}
-
-.selo.premio{
-border:2px dashed rgba(255,255,255,0.6);
-}
-
-.selo.premio.preenchido{
-background:linear-gradient(135deg,#d8c3a5,#b08d57);
-}
-
-.fidelidade-status{
-font-size:15px;
-line-height:1.6;
-margin-bottom:20px;
-}
-
-.fidelidade-form input{
-margin-bottom:14px;
-}
-
-.form-box{
-background:white;
-padding:40px;
-border-radius:28px;
-box-shadow:0 10px 30px rgba(0,0,0,0.05);
-}
-
-input,
-select{
-width:100%;
-padding:18px;
-margin-bottom:20px;
-border-radius:16px;
-border:1px solid #ddd;
-font-size:16px;
-font-family:'Poppins',sans-serif;
-}
-
-.data-label{
-font-weight:600;
-display:block;
-margin-bottom:10px;
-}
-
-.badge{
-background:#b08d57;
-color:white;
-padding:10px 18px;
-border-radius:14px;
-display:inline-block;
-margin-bottom:15px;
-font-weight:600;
-}
-
-.nota-agendamento{
-background:#fff6ea;
-border:1px solid #eddcc0;
-border-radius:16px;
-padding:18px 22px;
-font-size:14px;
-line-height:1.7;
-margin-bottom:30px;
-}
-
-footer{
-background:#efe5d7;
-padding:50px 20px;
-text-align:center;
-margin-top:60px;
-}
-
-.whatsapp{
-position:fixed;
-right:20px;
-bottom:20px;
-width:72px;
-height:72px;
-border-radius:50%;
-background:#25D366;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:32px;
-color:white;
-text-decoration:none;
-box-shadow:0 10px 25px rgba(0,0,0,0.2);
-z-index:999;
-}
-
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(15px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
+*{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth;-webkit-tap-highlight-color:transparent;}
+:root{--vinho:#6b0f24;--vinho-escuro:#3f0716;--vinho-medio:#8a1a35;--creme:#f8f2ec;--creme-2:#efe3d8;--dourado:#c29b57;--dourado-claro:#e2c68f;--texto:#2a1218;--bege:#e5d3bf;--bege-claro:#f8f2ec;--preto:#2a1218;--branco:#ffffff;--serif:'Playfair Display','Cormorant Garamond',serif;}
+html{scroll-padding-top:96px;}
+body{font-family:'Poppins',sans-serif;background:var(--creme);color:var(--texto);overflow-x:hidden;line-height:1.6;-webkit-font-smoothing:antialiased;}
+header{position:fixed;top:0;left:0;width:100%;background:rgba(248,242,236,0.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;gap:20px;z-index:999;border-bottom:1px solid rgba(194,155,87,0.45);}
+.logo{font-family:var(--serif);font-style:italic;font-size:28px;font-weight:500;color:var(--vinho);white-space:nowrap;}
+.logo span{color:var(--dourado);}
+nav{display:flex;gap:26px;flex-wrap:wrap;}
+nav a{text-decoration:none;color:var(--texto);font-size:12px;font-weight:500;letter-spacing:1.6px;text-transform:uppercase;transition:0.3s;}
+nav a:hover{color:var(--vinho-medio);}
+.hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:140px 7% 90px;background:linear-gradient(100deg,rgba(63,7,22,0.94) 0%,rgba(107,15,36,0.82) 45%,rgba(107,15,36,0.25) 100%),url('heroi-capa.jpg');background-size:cover;background-position:center top;color:var(--creme);}
+.hero-content{max-width:620px;text-align:left;}
+.eyebrow{display:inline-block;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--dourado-claro);border-top:1px solid var(--dourado);padding-top:12px;margin-bottom:22px;}
+.hero h1{font-family:var(--serif);font-weight:500;font-size:68px;line-height:1.08;margin-bottom:22px;}
+.hero h1 em{font-style:italic;color:var(--dourado-claro);}
+.hero p{font-size:18px;line-height:1.8;margin-bottom:34px;color:rgba(248,242,236,0.88);}
+.hero-botoes{display:flex;gap:14px;flex-wrap:wrap;}
+.btn{background:linear-gradient(135deg,var(--vinho-medio),var(--vinho));color:var(--creme);padding:16px 34px;border-radius:50px;text-decoration:none;font-weight:500;letter-spacing:0.6px;display:inline-block;border:1px solid var(--vinho);cursor:pointer;transition:0.3s;font-size:15px;font-family:'Poppins',sans-serif;text-align:center;box-shadow:0 8px 20px rgba(107,15,36,0.22);}
+.btn:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(107,15,36,0.3);}
+.btn:disabled{opacity:0.6;cursor:wait;transform:none;}
+.btn.secundario{background:transparent;border:1.5px solid var(--vinho);color:var(--vinho);box-shadow:none;}
+.hero .btn{background:linear-gradient(135deg,var(--dourado-claro),var(--dourado));border-color:var(--dourado);color:var(--vinho-escuro);font-weight:600;}
+.hero .btn.secundario{background:transparent;border:1.5px solid var(--dourado-claro);color:var(--creme);}
+section{padding:96px 7%;}
+.section-title{text-align:center;margin-bottom:46px;}
+.section-title h2{font-family:var(--serif);font-style:italic;font-weight:500;font-size:48px;line-height:1.15;color:var(--vinho);margin-bottom:18px;}
+.section-title h2::after{content:"";display:block;width:56px;height:2px;margin:16px auto 0;background:linear-gradient(90deg,transparent,var(--dourado),transparent);}
+.section-title p{max-width:680px;margin:auto;line-height:1.8;color:#5b4047;font-size:15px;}
+#catalogo{background:var(--creme-2);}
+#fidelidade{background:linear-gradient(160deg,var(--vinho-escuro),var(--vinho));color:var(--creme);}
+#fidelidade .section-title h2{color:var(--creme);}
+#fidelidade .section-title p{color:rgba(248,242,236,0.85);}
+#fidelidade a[onclick*="abrirPainelProfissional"]{color:var(--dourado-claro) !important;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;}
+.card{background:#fff;border-radius:26px;overflow:hidden;box-shadow:0 14px 34px rgba(63,7,22,0.09);transition:0.3s;}
+.card:hover{transform:translateY(-5px);}
+.card img{width:100%;height:320px;object-fit:cover;display:block;}
+.card-content{padding:26px;}
+.card-content h3{font-family:var(--serif);font-style:italic;font-weight:500;font-size:26px;color:var(--vinho);margin-bottom:8px;}
+.card-content p{line-height:1.7;color:#5b4047;}
+.categoria-tabs{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:36px;}
+.categoria-tab{padding:11px 22px;border-radius:50px;border:1.5px solid rgba(107,15,36,0.25);background:transparent;color:var(--vinho);font-weight:500;cursor:pointer;transition:0.3s;font-family:'Poppins',sans-serif;font-size:14px;}
+.categoria-tab.ativa,.categoria-tab:hover{background:var(--vinho);border-color:var(--vinho);color:var(--creme);}
+.categoria-painel{display:none;}
+.categoria-painel.ativa{display:block;animation:fade 0.4s ease;}
+.procedimentos-mobile{display:flex;flex-direction:column;gap:14px;margin:0 auto 30px;max-width:820px;}
+.procedimento-card{display:flex;align-items:center;gap:16px;background:#fff;padding:14px;border-radius:22px;border:1.5px solid transparent;box-shadow:0 6px 18px rgba(63,7,22,0.06);cursor:pointer;transition:0.25s;}
+.procedimento-card:hover{border-color:var(--dourado);}
+.procedimento-card.active{border-color:var(--vinho);background:#fff8f6;}
+.procedimento-foto{width:78px;height:78px;border-radius:18px;object-fit:cover;flex-shrink:0;}
+.procedimento-info{flex:1;min-width:0;}
+.procedimento-info h3{font-family:var(--serif);font-weight:500;font-size:18px;line-height:1.25;color:var(--vinho-escuro);margin-bottom:4px;}
+.procedimento-preco{color:#9a7432;font-weight:600;font-size:16px;}
+.checkbox-custom{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--vinho);display:flex;justify-content:center;align-items:center;font-size:15px;font-weight:bold;color:#fff;background:#fff;transition:0.25s;flex-shrink:0;}
+.procedimento-card.active .checkbox-custom{background:var(--vinho);}
+.resultado-foto-grande{width:100%;max-width:420px;margin:0 auto 36px;display:block;border-radius:26px;box-shadow:0 14px 34px rgba(63,7,22,0.15);}
+.resumo-flutuante{position:sticky;bottom:14px;margin:30px auto 0;max-width:820px;background:linear-gradient(135deg,var(--vinho-escuro),var(--vinho));color:var(--creme);border:1px solid rgba(226,198,143,0.5);border-radius:50px;padding:16px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 14px;box-shadow:0 14px 34px rgba(63,7,22,0.35);z-index:5;}
+.resumo-flutuante span{font-size:15px;}
+.resumo-flutuante strong{color:var(--dourado-claro);font-size:21px;font-family:var(--serif);}
+.fidelidade-card{max-width:520px;margin:0 auto;background:rgba(255,255,255,0.07);border:1px solid rgba(226,198,143,0.55);color:var(--creme);border-radius:28px;padding:34px 28px;box-shadow:0 20px 44px rgba(0,0,0,0.25);}
+.fidelidade-card h3{font-family:var(--serif);font-style:italic;font-weight:500;font-size:28px;margin-bottom:6px;color:var(--dourado-claro);}
+.fidelidade-card p.sub{opacity:0.8;margin-bottom:22px;font-size:14px;}
+.selos{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:22px;}
+.selo{aspect-ratio:1;border-radius:50%;border:1.5px dashed rgba(226,198,143,0.5);display:flex;justify-content:center;align-items:center;font-size:20px;}
+.selo.preenchido{background:var(--dourado);border:1.5px solid var(--dourado-claro);}
+.selo.premio{border:1.5px dashed var(--dourado-claro);}
+.selo.premio.preenchido{background:linear-gradient(135deg,var(--dourado-claro),var(--dourado));}
+.fidelidade-status{font-size:15px;line-height:1.7;margin-bottom:6px;}
+.fidelidade-form input{margin-bottom:14px;}
+.fidelidade-card .btn{background:linear-gradient(135deg,var(--dourado-claro),var(--dourado));color:var(--vinho-escuro);border-color:var(--dourado);font-weight:600;}
+.form-box{background:#fff;padding:36px;border-radius:28px;box-shadow:0 14px 34px rgba(63,7,22,0.08);max-width:640px;margin-left:auto;margin-right:auto;color:var(--texto);}
+.form-box h3{font-family:var(--serif) !important;font-style:italic;font-weight:500;color:var(--vinho);}
+input,select{width:100%;padding:16px 18px;margin-bottom:18px;border-radius:16px;border:1.5px solid #e6d8cc;background:#fffdfb;font-size:16px;font-family:'Poppins',sans-serif;color:var(--texto);outline:none;transition:0.2s;-webkit-appearance:none;appearance:none;}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--vinho) 50%),linear-gradient(135deg,var(--vinho) 50%,transparent 50%);background-position:calc(100% - 22px) 50%,calc(100% - 16px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:40px;}
+input:focus,select:focus{border-color:var(--dourado);box-shadow:0 0 0 3px rgba(194,155,87,0.22);}
+input[type=checkbox]{width:auto;margin:0 8px 0 0 !important;accent-color:var(--vinho);-webkit-appearance:auto;appearance:auto;}
+.data-label{font-weight:500;display:block;margin-bottom:8px;color:var(--vinho);font-size:14px;letter-spacing:0.3px;}
+.badge{background:var(--vinho);color:#fff;padding:10px 18px;border-radius:50px;display:inline-block;margin-bottom:15px;font-weight:500;}
+.nota-agendamento{max-width:640px;margin:0 auto 26px;background:#fff;border-left:4px solid var(--dourado);border-radius:14px;padding:18px 22px;font-size:14px;line-height:1.7;color:#5b4047;box-shadow:0 6px 18px rgba(63,7,22,0.06);}
+#agendamento-sucesso{display:none;margin-top:26px;background:linear-gradient(160deg,var(--vinho-escuro),var(--vinho));color:var(--creme);border:1px solid var(--dourado);border-radius:24px;padding:26px 22px;line-height:1.7;text-align:center;}
+#agendamento-sucesso strong{display:block;font-family:var(--serif);font-style:italic;font-weight:500;font-size:26px;color:var(--dourado-claro);margin-bottom:8px;}
+#agendamento-sucesso .passo{background:rgba(255,255,255,0.1);border-radius:16px;padding:14px 16px;margin:16px 0;font-size:15px;}
+#agendamento-sucesso .passo b{color:var(--dourado-claro);}
+#agendamento-sucesso .btn-zap{display:block;width:100%;margin-top:6px;padding:17px 20px;background:#25D366;color:#fff;border:none;border-radius:50px;font-weight:600;font-size:16px;text-decoration:none;box-shadow:0 10px 24px rgba(0,0,0,0.25);}
+#agendamento-sucesso .aviso{font-size:13px;opacity:0.85;margin-top:12px;}
+#agendamento-sucesso .codigo{font-size:13px;opacity:0.9;margin-top:12px;}
+#meu-resumo{color:var(--vinho-escuro);}
+footer{background:var(--vinho-escuro);color:rgba(248,242,236,0.8);padding:44px 20px;text-align:center;margin-top:0;font-size:14px;}
+.whatsapp{position:fixed;right:18px;bottom:18px;width:62px;height:62px;border-radius:50%;background:#25D366;display:flex;justify-content:center;align-items:center;font-size:28px;color:#fff;text-decoration:none;box-shadow:0 10px 25px rgba(0,0,0,0.25);z-index:999;}
+@keyframes fade{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
 @media(max-width:900px){
-
-header{
-padding:18px 20px;
-flex-direction:column;
-gap:15px;
+html{scroll-padding-top:104px;}
+header{flex-direction:column;align-items:stretch;gap:8px;padding:10px 0 0;}
+.logo{font-size:24px;text-align:center;}
+nav{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;gap:6px;padding:6px 16px 10px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+nav::-webkit-scrollbar{display:none;}
+nav a{flex:0 0 auto;font-size:11px;letter-spacing:1.2px;padding:8px 14px;border-radius:50px;background:rgba(107,15,36,0.07);color:var(--vinho);}
+.hero{align-items:flex-end;padding:150px 24px 56px;background:linear-gradient(180deg,rgba(63,7,22,0.35) 0%,rgba(63,7,22,0.78) 55%,rgba(63,7,22,0.97) 100%),url('heroi-capa.jpg');background-size:cover;background-position:center top;}
+.hero h1{font-size:40px;}
+.hero p{font-size:16px;margin-bottom:26px;}
+.hero-botoes .btn{flex:1 1 100%;}
+section{padding:64px 20px;}
+.section-title{margin-bottom:34px;}
+.section-title h2{font-size:36px;}
+.grid{grid-template-columns:1fr;}
+.card img{height:260px;}
+.form-box{padding:26px 20px;border-radius:24px;}
+.btn{padding:16px 24px;}
+.resumo-flutuante{border-radius:22px;padding:14px 18px;bottom:10px;}
+.resumo-flutuante span{font-size:13px;flex:1 1 100%;}
+.categoria-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:0 -20px 28px;padding:0 20px 6px;scrollbar-width:none;}
+.categoria-tabs::-webkit-scrollbar{display:none;}
+.categoria-tab{flex:0 0 auto;}
+.fidelidade-card{padding:28px 20px;}
+.whatsapp{width:54px;height:54px;font-size:24px;right:14px;bottom:86px;}
 }
-
-.hero{
-padding-top:300px;
-}
-
-.hero h1{
-font-size:42px;
-}
-
-.section-title h2{
-font-size:40px;
-}
-
-.grid{
-grid-template-columns:1fr;
-}
-
-nav{
-justify-content:center;
-}
-
-.selos{
-grid-template-columns:repeat(5,1fr);
-}
-
-}
-
 </style>
+
+<meta name="theme-color" content="#3f0716">
 
 </head>
 
@@ -533,9 +140,7 @@ grid-template-columns:repeat(5,1fr);
 
 <header>
 
-<div class="logo">
-Thainá mendes beauty
-</div>
+<div class="logo">Thainá Mendes <span>Beauty</span></div>
 
 <nav>
 <a href="#quem-somos">Quem somos</a>
@@ -551,17 +156,20 @@ Thainá mendes beauty
 
 <div class="hero-content">
 
+<span class="eyebrow">Cílios · Sobrancelhas · Lábios · Maquiagem</span>
+
 <h1>
-Beleza sofisticada e experiência única
+Beleza <em>sofisticada</em> e experiência única
 </h1>
 
 <p>
-Especialistas em cílios, sobrancelhas, revitalização labial e maquiagem.
+Especialistas em cílios, sobrancelhas, revitalização labial e maquiagem. Piracicaba - SP.
 </p>
 
-<a href="#agendamento" class="btn">
-Agendar atendimento
-</a>
+<div class="hero-botoes">
+<a href="#agendamento" class="btn">Agendar atendimento</a>
+<a href="#catalogo" class="btn secundario">Ver procedimentos</a>
+</div>
 
 </div>
 
@@ -912,7 +520,7 @@ Escolha os procedimentos no catálogo acima, preencha seus dados e escolha a dat
 </div>
 
 <div class="nota-agendamento" id="nota-agendamento">
-📌 <strong>Importante:</strong> o envio deste formulário gera um <strong>pedido</strong> de horário, ele só é confirmado quando você recebe a resposta da Thainá pelo WhatsApp. Isso evita qualquer conflito com a agenda oficial do salão.
+📌 <strong>Importante:</strong> depois de solicitar seu horário, envie a mensagem para o WhatsApp da Thainá para <strong>confirmar o agendamento</strong>. Ele só fica garantido quando ela responder.
 </div>
 
 <div class="form-box">
@@ -945,10 +553,10 @@ Selecione um horário
 <p id="horarios-aviso" style="font-size:14px;color:#666;margin:-8px 0 20px;"></p>
 
 <button class="btn" id="btn-agendar" style="width:100%;" onclick="agendar()">
-Confirmar agendamento
+Solicitar agendamento
 </button>
 
-<div id="agendamento-sucesso" style="display:none;margin-top:24px;background:#f1f8ee;border:1px solid #cfe5c6;border-radius:16px;padding:20px 22px;line-height:1.7;"></div>
+<div id="agendamento-sucesso"></div>
 
 </div>
 
@@ -1201,42 +809,39 @@ aviso.textContent = "Não foi possível carregar os horários agora. Tente de no
 }
 
 function mostrarSucesso(nome, data, hora, duracao, totalFormatado, lista, codigo, telefone){
-
 const caixa = document.getElementById("agendamento-sucesso");
 caixa.innerHTML = "";
-
 const titulo = document.createElement("strong");
-titulo.textContent = "✅ Agendamento confirmado!";
+titulo.textContent = "Quase lá! Falta confirmar 💌";
 caixa.appendChild(titulo);
-
 const detalhe = document.createElement("div");
-detalhe.textContent = `${nome}, você está agendada para ${formatarDataBR(data)} às ${hora} (duração estimada ${formatarDuracao(duracao)}). Valor estimado: ${totalFormatado}.`;
+detalhe.textContent = nome + ", recebemos seu pedido para " + formatarDataBR(data) + " às " + hora + " (duração estimada " + formatarDuracao(duracao) + "). Valor estimado: " + totalFormatado + ".";
 caixa.appendChild(detalhe);
-
+const passo = document.createElement("div");
+passo.className = "passo";
+passo.innerHTML = "<b>Último passo:</b> toque no botão abaixo e envie a mensagem para o WhatsApp da Thainá para <b>confirmar o seu agendamento</b>.";
+caixa.appendChild(passo);
+const mensagem = "Olá, Thainá! Sou " + nome + ". Fiz um agendamento pelo site e gostaria de confirmar:\n" + lista + "\nData: " + formatarDataBR(data) + " às " + hora + "\nValor estimado: " + totalFormatado + (codigo ? "\nCódigo: " + codigo : "");
+const link = document.createElement("a");
+link.className = "btn-zap";
+link.target = "_blank";
+link.rel = "noopener";
+link.href = "https://wa.me/" + WHATSAPP_NUMERO + "?text=" + encodeURIComponent(mensagem);
+link.textContent = "Enviar mensagem para confirmar";
+caixa.appendChild(link);
+const aviso = document.createElement("div");
+aviso.className = "aviso";
+aviso.textContent = "Seu horário só fica garantido depois que a Thainá responder confirmando pelo WhatsApp.";
+caixa.appendChild(aviso);
 if(codigo){
 const cod = document.createElement("div");
-cod.style.marginTop = "10px";
-cod.textContent = `Seu código de agendamento: ${codigo}. Guarde-o: com ele (e seu WhatsApp) você altera ou cancela o horário na seção "Já agendou?" mais abaixo.`;
-cod.style.fontWeight = "600";
+cod.className = "codigo";
+cod.textContent = "Seu código: " + codigo + ". Guarde-o: com ele (e seu WhatsApp) você altera ou cancela o horário em \"Já agendou?\" mais abaixo.";
 caixa.appendChild(cod);
 lembrarMeu(telefone, codigo);
 }
-
-const mensagem =
-`Olá, sou ${nome}. Acabei de agendar pelo site:\n${lista}\nData: ${formatarDataBR(data)} às ${hora}\nValor estimado: ${totalFormatado}${codigo ? "\nCódigo: " + codigo : ""}`;
-
-const link = document.createElement("a");
-link.className = "btn";
-link.style.marginTop = "14px";
-link.target = "_blank";
-link.rel = "noopener";
-link.href = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagem)}`;
-link.textContent = "Avisar a Thainá no WhatsApp";
-caixa.appendChild(link);
-
 caixa.style.display = "block";
 caixa.scrollIntoView({behavior:"smooth", block:"center"});
-
 }
 
 async function agendar(){
@@ -1335,7 +940,7 @@ alert("Não foi possível concluir o agendamento agora. Tente de novo ou chame a
 }finally{
 
 botao.disabled = false;
-botao.textContent = "Confirmar agendamento";
+botao.textContent = "Solicitar agendamento";
 
 }
 
@@ -1519,7 +1124,7 @@ campoData.min = hoje.getFullYear() + "-" + String(hoje.getMonth()+1).padStart(2,
 const nota = document.getElementById("nota-agendamento");
 
 if(URL_AGENDA){
-nota.innerHTML = "📌 <strong>Como funciona:</strong> escolha os procedimentos, a data e um horário livre (terça a sexta, das 9h às 18h; sábado, das 9h às 13h). O horário já fica reservado na agenda da Thainá assim que você confirmar.";
+nota.innerHTML = "📌 <strong>Como funciona:</strong> escolha os procedimentos, a data e um horário livre (terça a sexta, das 9h às 18h; sábado, das 9h às 13h). Depois de solicitar, você envia uma mensagem para o WhatsApp da Thainá para confirmar o agendamento.";
 }else{
 nota.innerHTML = "📌 <strong>Importante:</strong> o envio deste formulário gera um <strong>pedido</strong> de horário, ele só é confirmado quando você recebe a resposta da Thainá pelo WhatsApp.";
 }
