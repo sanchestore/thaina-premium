@@ -139,6 +139,11 @@ section{padding:64px 20px;}
 .hero::before{width:380px;height:380px;right:-170px;top:130px;margin-top:0;}
 .hero::after{font-size:200px;right:14px;top:120px;margin-top:0;}
 }
+textarea{width:100%;padding:16px 18px;margin-bottom:18px;border-radius:16px;border:1.5px solid #e6d8cc;background:#fffdfb;font-size:16px;font-family:'Poppins',sans-serif;color:var(--texto);outline:none;resize:vertical;}
+textarea:focus{border-color:var(--dourado);box-shadow:0 0 0 3px rgba(194,155,87,0.22);}
+.resumo-btn{padding:10px 24px;font-size:14px;background:linear-gradient(135deg,var(--dourado-claro),var(--dourado));color:var(--vinho-escuro);border-color:var(--dourado);font-weight:600;box-shadow:none;}
+#pro-procs{max-height:240px;overflow:auto;border:1.5px solid #e6d8cc;border-radius:16px;padding:10px 14px;}
+@media(max-width:900px){.resumo-flutuante strong{flex:1;}}
 </style>
 
 <meta name="theme-color" content="#3f0716">
@@ -238,6 +243,7 @@ Selecione os procedimentos desejados — o valor total aparece automaticamente e
 <div class="categoria-tabs">
 <div class="categoria-tab ativa" data-categoria="sobrancelhas">Sobrancelhas</div>
 <div class="categoria-tab" data-categoria="cilios">Cílios</div>
+<div class="categoria-tab" data-categoria="micro">Micropigmentação</div>
 <div class="categoria-tab" data-categoria="labial">Revitalização Labial</div>
 <div class="categoria-tab" data-categoria="maquiagem">Maquiagem</div>
 <div class="categoria-tab" data-categoria="estrias">Remoção de Estrias</div>
@@ -366,6 +372,68 @@ Selecione os procedimentos desejados — o valor total aparece automaticamente e
 <span class="procedimento-preco">R$ 200,00</span>
 </div>
 <div class="checkbox-custom">✓</div>
+<div class="procedimento-card" data-nome="Manutenção Volume Brasileiro" data-preco="100.00" data-foto="cilios-volume-brasileiro.jpg" onclick="toggleProcedimento(this)">
+<img class="procedimento-foto" src="cilios-volume-brasileiro.jpg" alt="">
+<div class="procedimento-info">
+<h3>Manutenção Volume Brasileiro</h3>
+<span class="procedimento-preco">R$ 100,00</span>
+</div>
+<div class="checkbox-custom">✓</div>
+</div>
+
+<div class="procedimento-card" data-nome="Manutenção Foxy Eyes" data-preco="100.00" data-foto="cilios-foxy-eyes.jpg" onclick="toggleProcedimento(this)">
+<img class="procedimento-foto" src="cilios-foxy-eyes.jpg" alt="">
+<div class="procedimento-info">
+<h3>Manutenção Foxy Eyes</h3>
+<span class="procedimento-preco">R$ 100,00</span>
+</div>
+<div class="checkbox-custom">✓</div>
+</div>
+
+<div class="procedimento-card" data-nome="Manutenção Fio a Fio" data-preco="60.00" data-foto="cilios-volume-classico.jpg" onclick="toggleProcedimento(this)">
+<img class="procedimento-foto" src="cilios-volume-classico.jpg" alt="">
+<div class="procedimento-info">
+<h3>Manutenção Fio a Fio</h3>
+<span class="procedimento-preco">R$ 60,00</span>
+</div>
+<div class="checkbox-custom">✓</div>
+</div>
+
+<div class="procedimento-card" data-nome="Manutenção Volume 4D" data-preco="100.00" data-foto="cilios-volume-4d.jpg" onclick="toggleProcedimento(this)">
+<img class="procedimento-foto" src="cilios-volume-4d.jpg" alt="">
+<div class="procedimento-info">
+<h3>Manutenção Volume 4D</h3>
+<span class="procedimento-preco">R$ 100,00</span>
+</div>
+<div class="checkbox-custom">✓</div>
+</div>
+
+</div>
+</div>
+
+<!-- MICROPIGMENTAÇÃO -->
+<div class="categoria-painel" id="painel-micro">
+
+<img class="resultado-foto-grande" id="foto-micro" src="sobrancelha-nanoblading.jpg" alt="Micropigmentação">
+
+<div class="procedimentos-mobile">
+
+<div class="procedimento-card" data-nome="Avaliação de Micropigmentação" data-preco="0" data-foto="sobrancelha-nanoblading.jpg" onclick="toggleProcedimento(this)">
+<img class="procedimento-foto" src="sobrancelha-nanoblading.jpg" alt="">
+<div class="procedimento-info">
+<h3>Avaliação de Micropigmentação</h3>
+<span class="procedimento-preco">Valores informados na avaliação</span>
+</div>
+<div class="checkbox-custom">✓</div>
+</div>
+
+<div class="procedimento-card" data-nome="Retoque de Micropigmentação" data-preco="0" data-foto="sobrancelha-nanoblading.jpg" onclick="toggleProcedimento(this)">
+<img class="procedimento-foto" src="sobrancelha-nanoblading.jpg" alt="">
+<div class="procedimento-info">
+<h3>Retoque de Micropigmentação</h3>
+<span class="procedimento-preco">Valor informado no atendimento</span>
+</div>
+<div class="checkbox-custom">✓</div>
 </div>
 
 </div>
@@ -425,12 +493,22 @@ Selecione os procedimentos desejados — o valor total aparece automaticamente e
 <div class="checkbox-custom">✓</div>
 </div>
 
+<div class="procedimento-card" data-nome="Procedimento de Remoção de Estrias" data-preco="0" data-foto="heroi-capa.jpg" onclick="toggleProcedimento(this)">
+<img class="procedimento-foto" src="heroi-capa.jpg" alt="">
+<div class="procedimento-info">
+<h3>Procedimento de Remoção de Estrias</h3>
+<span class="procedimento-preco">Valores informados na avaliação</span>
+</div>
+<div class="checkbox-custom">✓</div>
+</div>
+
 </div>
 </div>
 
 <div class="resumo-flutuante">
 <span id="resumo-texto">Nenhum procedimento selecionado</span>
 <strong id="resumo-total">R$ 0,00</strong>
+<a href="#agendamento" class="btn resumo-btn">Agendar</a>
 </div>
 
 </section>
@@ -512,6 +590,15 @@ Informe seu WhatsApp acima para ver quantos selos você já tem.
 
 <h3 style="font-family:'Cormorant Garamond',serif;margin:30px 0 8px;font-size:24px;">Próximos agendamentos</h3>
 <div id="pro-lista" style="font-size:14px;line-height:1.7;"></div>
+
+<h3 style="font-family:'Cormorant Garamond',serif;margin:30px 0 8px;font-size:24px;">Clientes salvas</h3>
+<p id="pro-total-clientes" style="font-size:14px;color:#666;margin-bottom:12px;">Carregando...</p>
+<p style="font-size:14px;color:#666;line-height:1.6;margin-bottom:12px;">Para trazer as clientes do Corthy: copie a lista (nome e telefone, uma cliente por linha) e cole abaixo, ou escolha o arquivo CSV exportado. O que já estiver salvo não é apagado.</p>
+<textarea id="pro-importar-texto" rows="6" placeholder="Maria Silva;(19) 99999-0000&#10;Ana Souza;19 98888-1111"></textarea>
+<input type="file" id="pro-importar-arquivo" accept=".csv,.txt,text/csv,text/plain" onchange="lerArquivoClientes(this)">
+<button class="btn" style="width:100%;margin-bottom:12px;" onclick="importarClientes()">Importar clientes</button>
+<button class="btn secundario" style="width:100%;" onclick="varrerAgendaClientes()">Recuperar clientes que já agendaram pelo site</button>
+<p id="pro-importar-aviso" style="font-size:14px;margin-top:12px;"></p>
 </div>
 
 </section>
@@ -742,7 +829,14 @@ const DURACOES = {
 "Revitalização Labial": 120,
 "Maquiagem Premium": 60,
 "Avaliação de Estrias": 30,
-"Retorno": 30
+"Retorno": 30,
+"Manutenção Volume Brasileiro": 60,
+"Manutenção Foxy Eyes": 60,
+"Manutenção Fio a Fio": 60,
+"Manutenção Volume 4D": 60,
+"Avaliação de Micropigmentação": 30,
+"Retoque de Micropigmentação": 60,
+"Procedimento de Remoção de Estrias": 60
 };
 const DURACAO_PADRAO = 60;
 
@@ -1352,7 +1446,55 @@ caixa.appendChild(rotulo);
 
 document.getElementById("pro-data").min = document.getElementById("data").min;
 listarAgendamentosPro();
+atualizarTotalClientes();
 
+}
+
+function preencherRetorno(a){
+document.getElementById("pro-nome").value = a.nome || "";
+document.getElementById("pro-tel").value = a.tel || "";
+document.querySelectorAll("#pro-procs input").forEach(c => { c.checked = (c.value === "Retorno"); });
+somarDuracaoPro();
+document.getElementById("pro-nome").scrollIntoView({behavior:"smooth", block:"center"});
+}
+
+async function atualizarTotalClientes(){
+const p = document.getElementById("pro-total-clientes");
+try{
+const json = await chamarAdmin({acao:"clientes_total"});
+p.textContent = json.ok ? `${json.total} clientes salvas.` : "";
+}catch(erro){ p.textContent = ""; }
+}
+
+function lerArquivoClientes(input){
+const arq = input.files && input.files[0];
+if(!arq) return;
+const leitor = new FileReader();
+leitor.onload = () => { document.getElementById("pro-importar-texto").value = String(leitor.result || ""); };
+leitor.readAsText(arq);
+}
+
+async function enviarImportacao(corpo){
+const aviso = document.getElementById("pro-importar-aviso");
+aviso.textContent = "Importando...";
+try{
+const json = await chamarAdmin(corpo);
+if(!json.ok){ aviso.textContent = json.erro || "Não foi possível importar."; return; }
+aviso.textContent = `Pronto! ${json.lidas} clientes lidas: ${json.novas} novas. Total salvo: ${json.total}.`;
+atualizarTotalClientes();
+}catch(erro){
+aviso.textContent = "Não foi possível importar agora. Tente de novo (listas muito grandes: envie em partes).";
+}
+}
+
+function importarClientes(){
+const texto = document.getElementById("pro-importar-texto").value;
+if(texto.trim() === ""){ alert("Cole a lista de clientes ou escolha o arquivo."); return; }
+enviarImportacao({acao:"clientes_importar", texto});
+}
+
+function varrerAgendaClientes(){
+enviarImportacao({acao:"clientes_varrer"});
 }
 
 function somarDuracaoPro(){
@@ -1507,6 +1649,12 @@ remarcar.href = "#";
 remarcar.textContent = " · remarcar";
 remarcar.onclick = () => { abrirRemarcarPro(item, a); return false; };
 acoes.appendChild(remarcar);
+
+const retorno = document.createElement("a");
+retorno.href = "#";
+retorno.textContent = " · marcar retorno";
+retorno.onclick = () => { preencherRetorno(a); return false; };
+acoes.appendChild(retorno);
 
 const cancelar = document.createElement("a");
 cancelar.href = "#";
