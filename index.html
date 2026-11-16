@@ -24,7 +24,7 @@ header{position:fixed;top:0;left:0;width:100%;background:rgba(248,242,236,0.94);
 nav{display:flex;gap:26px;flex-wrap:wrap;}
 nav a{text-decoration:none;color:var(--texto);font-size:12px;font-weight:500;letter-spacing:1.6px;text-transform:uppercase;transition:0.3s;}
 nav a:hover{color:var(--vinho-medio);}
-.hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:140px 7% 90px;background:linear-gradient(100deg,rgba(63,7,22,0.94) 0%,rgba(107,15,36,0.82) 45%,rgba(107,15,36,0.25) 100%),url('heroi-capa.jpg');background-size:cover;background-position:center top;color:var(--creme);}
+.hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:140px 7% 90px;background:radial-gradient(circle at 82% 28%,rgba(194,155,87,0.30),transparent 42%),radial-gradient(circle at 8% 95%,rgba(138,26,53,0.65),transparent 50%),linear-gradient(135deg,#3f0716 0%,#6b0f24 62%,#4a0a1b 100%);color:var(--creme);}
 .hero-content{max-width:620px;text-align:left;}
 .eyebrow{display:inline-block;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--dourado-claro);border-top:1px solid var(--dourado);padding-top:12px;margin-bottom:22px;}
 .hero h1{font-family:var(--serif);font-weight:500;font-size:68px;line-height:1.08;margin-bottom:22px;}
@@ -111,7 +111,7 @@ header{flex-direction:column;align-items:stretch;gap:8px;padding:10px 0 0;}
 nav{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;gap:6px;padding:6px 16px 10px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 nav::-webkit-scrollbar{display:none;}
 nav a{flex:0 0 auto;font-size:11px;letter-spacing:1.2px;padding:8px 14px;border-radius:50px;background:rgba(107,15,36,0.07);color:var(--vinho);}
-.hero{align-items:flex-end;padding:150px 24px 56px;background:linear-gradient(180deg,rgba(63,7,22,0.35) 0%,rgba(63,7,22,0.78) 55%,rgba(63,7,22,0.97) 100%),url('heroi-capa.jpg');background-size:cover;background-position:center top;}
+.hero{align-items:flex-end;padding:150px 24px 56px;background:radial-gradient(circle at 85% 12%,rgba(194,155,87,0.30),transparent 45%),radial-gradient(circle at 5% 100%,rgba(138,26,53,0.65),transparent 55%),linear-gradient(160deg,#3f0716 0%,#6b0f24 70%,#4a0a1b 100%);}
 .hero h1{font-size:40px;}
 .hero p{font-size:16px;margin-bottom:26px;}
 .hero-botoes .btn{flex:1 1 100%;}
@@ -129,6 +129,15 @@ section{padding:64px 20px;}
 .categoria-tab{flex:0 0 auto;}
 .fidelidade-card{padding:28px 20px;}
 .whatsapp{width:54px;height:54px;font-size:24px;right:14px;bottom:86px;}
+}
+.hero{position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;right:-120px;top:50%;width:560px;height:560px;margin-top:-280px;border-radius:50%;border:1px solid rgba(226,198,143,0.35);box-shadow:0 0 0 34px rgba(226,198,143,0.04);pointer-events:none;}
+.hero::after{content:"T";position:absolute;right:90px;top:50%;margin-top:-170px;font-family:var(--serif);font-style:italic;font-size:340px;line-height:1;color:rgba(226,198,143,0.16);pointer-events:none;}
+.hero-content{position:relative;z-index:1;}
+@media(max-width:900px){
+.hero{align-items:center;padding:150px 24px 70px;}
+.hero::before{width:380px;height:380px;right:-170px;top:130px;margin-top:0;}
+.hero::after{font-size:200px;right:14px;top:120px;margin-top:0;}
 }
 </style>
 
