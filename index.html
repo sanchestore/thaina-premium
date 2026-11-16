@@ -874,6 +874,29 @@ Informe seu WhatsApp acima para ver quantos selos você já tem.
 <div id="extras-lista" style="font-size:14px;line-height:1.9;"></div>
 </div>
 
+<div class="form-box" id="painel-agenda-pro" style="display:none;margin-top:20px;max-width:520px;margin-left:auto;margin-right:auto;">
+<h3 style="font-family:'Cormorant Garamond',serif;margin-bottom:8px;font-size:24px;">Agendar para a cliente</h3>
+<p style="font-size:14px;margin-bottom:16px;color:#666;line-height:1.6;">Digite o nome ou WhatsApp para buscar uma cliente já cadastrada. Todo agendamento (do site ou feito aqui) salva o nome e o número automaticamente, então ela não precisa passar o número de novo.</p>
+<input type="text" id="pro-busca" placeholder="Buscar cliente (nome ou WhatsApp)" oninput="buscarClientePro()">
+<div id="pro-sugestoes" style="margin:-8px 0 14px;font-size:14px;line-height:2;"></div>
+<input type="text" id="pro-nome" placeholder="Nome da cliente">
+<input type="tel" id="pro-tel" placeholder="WhatsApp (com DDD)">
+<input type="email" id="pro-email" placeholder="E-mail (opcional)">
+<label class="data-label">Procedimentos (retorno, manutenção etc.)</label>
+<div id="pro-procs" style="margin-bottom:16px;line-height:2;font-size:14px;"></div>
+<label class="data-label">Duração (minutos)</label>
+<input type="number" id="pro-duracao" min="15" max="480" step="15" value="60" onchange="carregarHorariosPro()">
+<label class="data-label">Data</label>
+<input type="date" id="pro-data" onchange="carregarHorariosPro()">
+<label class="data-label">Horário</label>
+<select id="pro-hora"><option value="">Selecione um horário</option></select>
+<p id="pro-aviso" style="font-size:14px;color:#666;margin:-8px 0 20px;"></p>
+<button class="btn" style="width:100%;" onclick="agendarPelaPro()">Agendar</button>
+
+<h3 style="font-family:'Cormorant Garamond',serif;margin:30px 0 8px;font-size:24px;">Próximos agendamentos</h3>
+<div id="pro-lista" style="font-size:14px;line-height:1.7;"></div>
+</div>
+
 </section>
 
 <section id="agendamento">
@@ -1092,7 +1115,7 @@ const DURACOES = {
 "Design com Henna": 45,
 "Nanoblading Fio a Fio": 150,
 "Brow Lamination": 60,
-"Lash Lifting": 60,
+"Lash Lifting": 90,
 "Volume Brasileiro": 120,
 "Volumão Brasileiro": 120,
 "Volume Clássico": 120,
@@ -1101,7 +1124,8 @@ const DURACOES = {
 "Foxy Eyes": 120,
 "Revitalização Labial": 120,
 "Maquiagem Premium": 60,
-"Avaliação de Estrias": 30
+"Avaliação de Estrias": 30,
+"Retorno": 30
 };
 const DURACAO_PADRAO = 60;
 
@@ -1647,6 +1671,8 @@ return false;
 }
 document.getElementById("painel-profissional").style.display = "block";
 document.getElementById("painel-extras").style.display = "block";
+document.getElementById("painel-agenda-pro").style.display = "block";
+iniciarPainelPro();
 document.getElementById("extra-data").min = document.getElementById("data").min;
 renderizarExtras(json.extras);
 }catch(erro){
@@ -1679,6 +1705,261 @@ remover.onclick = async () => { await removerExtra(x.id); return false; };
 linha.appendChild(remover);
 caixa.appendChild(linha);
 });
+
+}
+
+/* ---------------- Agenda da profissional: clientes salvas, agendar, remarcar, cancelar ---------------- */
+
+function linkWhatsCliente(tel){
+const d = String(tel).replace(/\D/g,"");
+return "https://wa.me/" + (d.length <= 11 ? "55" + d : d);
+}
+
+function iniciarPainelPro(){
+
+const caixa = document.getElementById("pro-procs");
+
+if(!caixa.dataset.pronto){
+caixa.dataset.pronto = "1";
+Object.keys(DURACOES).forEach(nome => {
+const rotulo = document.createElement("label");
+rotulo.style.display = "block";
+const cb = document.createElement("input");
+cb.type = "checkbox";
+cb.value = nome;
+cb.style.width = "auto";
+cb.style.margin = "0 8px 0 0";
+cb.onchange = somarDuracaoPro;
+rotulo.appendChild(cb);
+rotulo.appendChild(document.createTextNode(`${nome} (${formatarDuracao(DURACOES[nome])})`));
+caixa.appendChild(rotulo);
+});
+}
+
+document.getElementById("pro-data").min = document.getElementById("data").min;
+listarAgendamentosPro();
+
+}
+
+function somarDuracaoPro(){
+const marcados = [...document.querySelectorAll("#pro-procs input:checked")];
+const soma = marcados.reduce((acc,c) => acc + (DURACOES[c.value] || DURACAO_PADRAO), 0);
+if(soma > 0) document.getElementById("pro-duracao").value = soma;
+carregarHorariosPro();
+}
+
+let timerBuscaPro = null;
+
+function buscarClientePro(){
+
+clearTimeout(timerBuscaPro);
+
+timerBuscaPro = setTimeout(async () => {
+
+const q = document.getElementById("pro-busca").value.trim();
+const caixa = document.getElementById("pro-sugestoes");
+caixa.innerHTML = "";
+
+if(q.length < 2) return;
+
+try{
+const json = await chamarAdmin({acao:"clientes_buscar", q});
+if(!json.ok) return;
+
+if(json.clientes.length === 0){
+caixa.textContent = "Nenhuma cliente encontrada. Preencha os dados abaixo para cadastrar.";
+return;
+}
+
+json.clientes.forEach(c => {
+const item = document.createElement("a");
+item.href = "#";
+item.style.display = "block";
+item.textContent = `${c.nome} — ${c.tel}`;
+item.onclick = () => {
+document.getElementById("pro-nome").value = c.nome;
+document.getElementById("pro-tel").value = c.tel;
+document.getElementById("pro-email").value = c.email || "";
+document.getElementById("pro-busca").value = "";
+caixa.innerHTML = "";
+return false;
+};
+caixa.appendChild(item);
+});
+}catch(erro){}
+
+}, 300);
+
+}
+
+async function carregarHorariosPro(){
+
+const data = document.getElementById("pro-data").value;
+const duracao = document.getElementById("pro-duracao").value;
+const select = document.getElementById("pro-hora");
+const aviso = document.getElementById("pro-aviso");
+
+select.innerHTML = '<option value="">Selecione um horário</option>';
+
+if(!data){ aviso.textContent = ""; return; }
+
+aviso.textContent = "Buscando horários livres...";
+
+try{
+const json = await chamarAdmin({acao:"pro_horarios", data, duracao});
+if(!json.ok){ aviso.textContent = json.erro || "Erro ao buscar horários."; return; }
+if(json.horarios.length === 0){ aviso.textContent = "Sem horários livres nesse dia (use Horários extras para abrir o dia)."; return; }
+json.horarios.forEach(h => {
+const o = document.createElement("option");
+o.value = h; o.textContent = h;
+select.appendChild(o);
+});
+aviso.textContent = "Escolha o horário.";
+}catch(erro){
+aviso.textContent = "Não foi possível buscar os horários agora.";
+}
+
+}
+
+async function agendarPelaPro(){
+
+const nome = document.getElementById("pro-nome").value.trim();
+const telefone = document.getElementById("pro-tel").value.trim();
+const email = document.getElementById("pro-email").value.trim();
+const procedimentos = [...document.querySelectorAll("#pro-procs input:checked")].map(c => c.value);
+const duracao = document.getElementById("pro-duracao").value;
+const data = document.getElementById("pro-data").value;
+const hora = document.getElementById("pro-hora").value;
+
+if(!nome || !telefone || procedimentos.length === 0 || !data || !hora){
+alert("Preencha nome, WhatsApp, procedimento, data e horário.");
+return;
+}
+
+try{
+const json = await chamarAdmin({acao:"pro_agendar", nome, telefone, email, procedimentos, duracao, data, hora});
+if(!json.ok){ alert(json.erro || "Não foi possível agendar."); return; }
+
+alert(`Agendado! ${nome} — ${formatarDataBR(data)} às ${hora}. Código: ${json.codigo}`);
+
+["pro-nome","pro-tel","pro-email","pro-data"].forEach(id => document.getElementById(id).value = "");
+document.querySelectorAll("#pro-procs input:checked").forEach(c => c.checked = false);
+document.getElementById("pro-hora").innerHTML = '<option value="">Selecione um horário</option>';
+document.getElementById("pro-aviso").textContent = "";
+listarAgendamentosPro();
+}catch(erro){
+alert("Não foi possível agendar agora. Tente de novo.");
+}
+
+}
+
+async function listarAgendamentosPro(){
+
+const caixa = document.getElementById("pro-lista");
+caixa.textContent = "Carregando...";
+
+try{
+const json = await chamarAdmin({acao:"pro_listar"});
+if(!json.ok){ caixa.textContent = json.erro || "Erro ao carregar."; return; }
+
+caixa.innerHTML = "";
+
+if(json.agendamentos.length === 0){
+caixa.textContent = "Nenhum agendamento futuro.";
+return;
+}
+
+json.agendamentos.forEach(a => {
+
+const item = document.createElement("div");
+item.style.borderBottom = "1px solid #eee";
+item.style.padding = "10px 0";
+
+const texto = document.createElement("div");
+texto.textContent = `${formatarDataBR(a.data)} ${a.hora} · ${a.titulo} (${formatarDuracao(a.duracao)}) · ${a.tel}`;
+item.appendChild(texto);
+
+const acoes = document.createElement("div");
+
+const zap = document.createElement("a");
+zap.href = linkWhatsCliente(a.tel);
+zap.target = "_blank";
+zap.rel = "noopener";
+zap.textContent = "WhatsApp";
+acoes.appendChild(zap);
+
+const remarcar = document.createElement("a");
+remarcar.href = "#";
+remarcar.textContent = " · remarcar";
+remarcar.onclick = () => { abrirRemarcarPro(item, a); return false; };
+acoes.appendChild(remarcar);
+
+const cancelar = document.createElement("a");
+cancelar.href = "#";
+cancelar.textContent = " · cancelar";
+cancelar.style.color = "#b00020";
+cancelar.onclick = async () => {
+if(!confirm(`Cancelar o agendamento de ${a.nome || a.titulo}?`)) return false;
+const r = await chamarAdmin({acao:"pro_cancelar", id:a.id});
+if(!r.ok) alert(r.erro || "Não foi possível cancelar.");
+listarAgendamentosPro();
+return false;
+};
+acoes.appendChild(cancelar);
+
+item.appendChild(acoes);
+caixa.appendChild(item);
+
+});
+
+}catch(erro){
+caixa.textContent = "Não foi possível carregar os agendamentos.";
+}
+
+}
+
+function abrirRemarcarPro(item, a){
+
+if(item.querySelector(".remarcar-box")) return;
+
+const box = document.createElement("div");
+box.className = "remarcar-box";
+box.style.marginTop = "10px";
+
+const data = document.createElement("input");
+data.type = "date";
+data.min = document.getElementById("data").min;
+
+const hora = document.createElement("select");
+hora.innerHTML = '<option value="">Selecione um horário</option>';
+
+data.onchange = async () => {
+hora.innerHTML = '<option value="">Selecione um horário</option>';
+if(!data.value) return;
+const r = await chamarAdmin({acao:"pro_horarios", data:data.value, duracao:a.duracao, ignorar:a.id});
+if(!r.ok) return;
+r.horarios.forEach(h => {
+const o = document.createElement("option");
+o.value = h; o.textContent = h;
+hora.appendChild(o);
+});
+};
+
+const ok = document.createElement("button");
+ok.className = "btn";
+ok.style.width = "100%";
+ok.textContent = "Confirmar novo horário";
+ok.onclick = async () => {
+if(!data.value || !hora.value){ alert("Escolha a nova data e o horário."); return; }
+const r = await chamarAdmin({acao:"pro_remarcar", id:a.id, data:data.value, hora:hora.value});
+if(!r.ok){ alert(r.erro || "Não foi possível remarcar."); return; }
+listarAgendamentosPro();
+};
+
+box.appendChild(data);
+box.appendChild(hora);
+box.appendChild(ok);
+item.appendChild(box);
 
 }
 
