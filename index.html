@@ -35,29 +35,7 @@ background:var(--bege-claro);
 color:var(--preto);
 overflow-x:hidden;
 position:relative;
-}<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyDnVGemI0SUYl2i5gk7dog2qwiZkmpa-nM",
-    authDomain: "agendamento-thaina-beauty.firebaseapp.com",
-    projectId: "agendamento-thaina-beauty",
-    storageBucket: "agendamento-thaina-beauty.firebasestorage.app",
-    messagingSenderId: "880630863294",
-    appId: "1:880630863294:web:ddb74cbbdda08369ba15ef",
-    measurementId: "G-5E8Z72TFV0"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+}
 
 body::before{
 content:"";
@@ -690,6 +668,15 @@ Selecione os procedimentos desejados — o valor total aparece automaticamente e
 <div class="checkbox-custom">✓</div>
 </div>
 
+<div class="procedimento-card" data-nome="Buço" data-preco="15.00" data-foto="sobrancelha-design-personalizado.jpg" onclick="toggleProcedimento(this)">
+<img class="procedimento-foto" src="sobrancelha-design-personalizado.jpg" alt="">
+<div class="procedimento-info">
+<h3>Buço</h3>
+<span class="procedimento-preco">R$ 15,00</span>
+</div>
+<div class="checkbox-custom">✓</div>
+</div>
+
 </div>
 </div>
 
@@ -754,8 +741,8 @@ Selecione os procedimentos desejados — o valor total aparece automaticamente e
 <div class="checkbox-custom">✓</div>
 </div>
 
-<div class="procedimento-card" data-nome="Foxy Eyes" data-preco="200.00" data-foto="cilios-olhos-de-raposa.jpg" onclick="toggleProcedimento(this)">
-<img class="procedimento-foto" src="cilios-olhos-de-raposa.jpg" alt="">
+<div class="procedimento-card" data-nome="Foxy Eyes" data-preco="200.00" data-foto="cilios-foxy-eyes.jpg" onclick="toggleProcedimento(this)">
+<img class="procedimento-foto" src="cilios-foxy-eyes.jpg" alt="">
 <div class="procedimento-info">
 <h3>Foxy Eyes</h3>
 <span class="procedimento-preco">R$ 200,00</span>
@@ -818,7 +805,7 @@ Selecione os procedimentos desejados — o valor total aparece automaticamente e
 <h2>Cartão fidelidade</h2>
 
 <p>
-A cada 9 atendimentos concluídos (qualquer procedimento), o 10º vem com um Design de sobrancelha grátis. O selo é adicionado pela Thainá após o atendimento acontecer — não no momento do agendamento. Depois de completo, o cartão recomeça do zero.
+A cada 9 atendimentos concluídos (qualquer procedimento), o 10º vem com um Design de sobrancelha grátis. O selo é adicionado pela Thainá depois que o atendimento acontece — não no momento do agendamento. Depois disso, o cartão recomeça do zero.
 </p>
 
 </div>
@@ -863,12 +850,12 @@ Informe seu WhatsApp acima para ver quantos selos você já tem.
 <h2>Agendamento</h2>
 
 <p>
-Escolha os procedimentos no catálogo acima, preencha seus dados e envie pelo WhatsApp
+Escolha os procedimentos no catálogo acima, preencha seus dados e escolha a data e o horário
 </p>
 
 </div>
 
-<div class="nota-agendamento">
+<div class="nota-agendamento" id="nota-agendamento">
 📌 <strong>Importante:</strong> o envio deste formulário gera um <strong>pedido</strong> de horário, ele só é confirmado quando você recebe a resposta da Thainá pelo WhatsApp. Isso evita qualquer conflito com a agenda oficial do salão.
 </div>
 
@@ -882,7 +869,7 @@ Escolha os procedimentos no catálogo acima, preencha seus dados e envie pelo Wh
 📅 Escolha a data
 </label>
 
-<input type="date" id="data">
+<input type="date" id="data" onchange="carregarHorarios()">
 
 <label class="data-label">
 ⏰ Escolha o horário
@@ -908,9 +895,13 @@ Selecione um horário
 
 </select>
 
-<button class="btn" style="width:100%;" onclick="agendar()">
+<p id="horarios-aviso" style="font-size:14px;color:#666;margin:-8px 0 20px;"></p>
+
+<button class="btn" id="btn-agendar" style="width:100%;" onclick="agendar()">
 Confirmar agendamento
 </button>
+
+<div id="agendamento-sucesso" style="display:none;margin-top:24px;background:#f1f8ee;border:1px solid #cfe5c6;border-radius:16px;padding:20px 22px;line-height:1.7;"></div>
 
 </div>
 
@@ -949,7 +940,29 @@ Abrir no Maps
 
 </footer>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
 <script>
+
+/* ---------------- Configuração do Firebase (cartão fidelidade) ---------------- */
+/* Substitua pelos dados do SEU projeto: Configurações do projeto > Seus aplicativos > firebaseConfig */
+
+const firebaseConfig = {
+apiKey: "COLE_AQUI_SUA_API_KEY",
+authDomain: "SEU-PROJETO.firebaseapp.com",
+projectId: "SEU-PROJETO",
+storageBucket: "SEU-PROJETO.appspot.com",
+messagingSenderId: "COLE_AQUI",
+appId: "COLE_AQUI"
+};
+
+let db = null;
+
+if(!String(firebaseConfig.apiKey).startsWith("COLE_AQUI") && typeof firebase !== "undefined"){
+firebase.initializeApp(firebaseConfig);
+db = firebase.firestore();
+}
 
 /* ---------------- Catálogo / seleção de procedimentos ---------------- */
 
@@ -979,6 +992,7 @@ procedimentosSelecionados.push({nome, preco});
 }
 
 atualizarResumo();
+carregarHorarios();
 
 }
 
@@ -1014,9 +1028,135 @@ document.getElementById("painel-" + tab.dataset.categoria).classList.add("ativa"
 });
 });
 
-/* ---------------- Agendamento via WhatsApp ---------------- */
+/* ---------------- Agendamento (Google Agenda) ---------------- */
 
-function agendar(){
+// Cole aqui a URL do app da web do Google Apps Script (termina em /exec).
+// Enquanto estiver vazio, o site funciona no modo antigo: só envia o pedido pelo WhatsApp.
+const URL_AGENDA = "https://script.google.com/macros/s/AKfycbx5gvuVfGtiW_bv4UkfAgciUask-_TTuYhIJXcMs9Rdd8GG3jPpv3ogJBEV1IxeZBBHEA/exec";
+
+const WHATSAPP_NUMERO = "5519981397668";
+
+// Duração de cada procedimento em MINUTOS. Ajuste aqui quando quiser.
+// (valores iniciais são estimativas — confirme com a Thainá)
+const DURACOES = {
+"Design Personalizado": 30,
+"Buço": 15,
+"Design com Henna": 45,
+"Nanoblading Fio a Fio": 150,
+"Brow Lamination": 60,
+"Lash Lifting": 60,
+"Volume Brasileiro": 120,
+"Volumão Brasileiro": 150,
+"Volume Clássico": 120,
+"Efeito Rímel": 120,
+"Volume 4D": 150,
+"Foxy Eyes": 150,
+"Revitalização Labial": 120,
+"Maquiagem Premium": 60
+};
+const DURACAO_PADRAO = 60;
+
+function duracaoTotal(){
+return procedimentosSelecionados.reduce((acc,p) => acc + (DURACOES[p.nome] || DURACAO_PADRAO), 0);
+}
+
+function formatarDuracao(min){
+const h = Math.floor(min / 60);
+const m = min % 60;
+if(h === 0) return `${m} min`;
+if(m === 0) return `${h}h`;
+return `${h}h${String(m).padStart(2,"0")}`;
+}
+
+function formatarReais(valor){
+return "R$ " + valor.toFixed(2).replace(".",",");
+}
+
+function formatarDataBR(iso){
+const partes = iso.split("-");
+return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}
+
+async function carregarHorarios(){
+
+if(!URL_AGENDA) return;
+
+const data = document.getElementById("data").value;
+const select = document.getElementById("hora");
+const aviso = document.getElementById("horarios-aviso");
+
+select.innerHTML = '<option value="">Selecione um horário</option>';
+
+if(!data){
+aviso.textContent = "";
+return;
+}
+
+if(procedimentosSelecionados.length === 0){
+aviso.textContent = "Escolha os procedimentos acima para ver os horários disponíveis.";
+return;
+}
+
+const duracao = duracaoTotal();
+aviso.textContent = "Buscando horários livres...";
+
+try{
+const resp = await fetch(`${URL_AGENDA}?acao=horarios&data=${encodeURIComponent(data)}&duracao=${duracao}`);
+const json = await resp.json();
+
+if(!json.ok) throw new Error(json.erro || "erro");
+
+if(json.horarios.length === 0){
+aviso.textContent = `Não há horários livres nesse dia para ${formatarDuracao(duracao)} de atendimento. Tente outra data.`;
+return;
+}
+
+json.horarios.forEach(h => {
+const opcao = document.createElement("option");
+opcao.value = h;
+opcao.textContent = h;
+select.appendChild(opcao);
+});
+
+aviso.textContent = `Duração estimada: ${formatarDuracao(duracao)}. Escolha um dos horários livres.`;
+
+}catch(erro){
+aviso.textContent = "Não foi possível carregar os horários agora. Tente de novo ou chame a Thainá no WhatsApp.";
+}
+
+}
+
+function mostrarSucesso(nome, data, hora, duracao, totalFormatado, lista){
+
+const caixa = document.getElementById("agendamento-sucesso");
+caixa.innerHTML = "";
+
+const titulo = document.createElement("strong");
+titulo.textContent = "✅ Agendamento confirmado!";
+caixa.appendChild(titulo);
+
+const detalhe = document.createElement("div");
+detalhe.textContent = `${nome}, você está agendada para ${formatarDataBR(data)} às ${hora} (duração estimada ${formatarDuracao(duracao)}). Valor estimado: ${totalFormatado}.`;
+caixa.appendChild(detalhe);
+
+const mensagem =
+`Olá, sou ${nome}. Acabei de agendar pelo site:\n${lista}\nData: ${formatarDataBR(data)} às ${hora}\nValor estimado: ${totalFormatado}`;
+
+const link = document.createElement("a");
+link.className = "btn";
+link.style.marginTop = "14px";
+link.target = "_blank";
+link.rel = "noopener";
+link.href = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagem)}`;
+link.textContent = "Avisar a Thainá no WhatsApp";
+caixa.appendChild(link);
+
+caixa.style.display = "block";
+caixa.scrollIntoView({behavior:"smooth", block:"center"});
+
+}
+
+async function agendar(){
 
 let nome = document.getElementById("nome").value.trim();
 let telefone = document.getElementById("telefone").value.trim();
@@ -1038,11 +1178,14 @@ return;
 }
 
 const totalNumero = procedimentosSelecionados.reduce((acc,p) => acc + p.preco, 0);
-const totalFormatado = "R$ " + totalNumero.toFixed(2).replace(".",",");
+const totalFormatado = formatarReais(totalNumero);
 
 const listaProcedimentos = procedimentosSelecionados
-.map(p => `• ${p.nome} - R$ ${p.preco.toFixed(2).replace(".",",")}`)
+.map(p => `• ${p.nome} - ${formatarReais(p.preco)}`)
 .join('\n');
+
+/* Modo antigo: sem agenda configurada, só envia o pedido pelo WhatsApp */
+if(!URL_AGENDA){
 
 let mensagem =
 `Olá, meu nome é ${nome}
@@ -1060,59 +1203,153 @@ Horário desejado: ${hora}
 
 (Pedido enviado pelo site - aguardo confirmação de horário)`;
 
-let url =
-`https://wa.me/5519981397668?text=${encodeURIComponent(mensagem)}`;
+window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagem)}`,'_blank');
 
-window.open(url,'_blank');
+return;
 
 }
 
-/* ---------------- Cartão fidelidade (armazenado neste navegador/dispositivo) ---------------- */
+/* Modo agenda: grava direto no Google Agenda */
+const botao = document.getElementById("btn-agendar");
+botao.disabled = true;
+botao.textContent = "Agendando...";
 
-const TOTAL_SELOS = 10; // 9 pagos + 1 grátis
+const duracao = duracaoTotal();
+
+try{
+
+const resp = await fetch(URL_AGENDA,{
+method:"POST",
+headers:{"Content-Type":"text/plain;charset=utf-8"},
+body:JSON.stringify({
+nome,
+telefone,
+data,
+hora,
+duracao,
+procedimentos: procedimentosSelecionados.map(p => p.nome),
+total: totalNumero
+})
+});
+
+const json = await resp.json();
+
+if(!json.ok){
+alert(json.erro || "Não foi possível agendar esse horário. Escolha outro, por favor.");
+await carregarHorarios();
+return;
+}
+
+mostrarSucesso(nome, data, hora, duracao, totalFormatado, listaProcedimentos);
+await carregarHorarios();
+
+}catch(erro){
+
+alert("Não foi possível concluir o agendamento agora. Tente de novo ou chame a Thainá no WhatsApp.");
+
+}finally{
+
+botao.disabled = false;
+botao.textContent = "Confirmar agendamento";
+
+}
+
+}
+
+(function configurarAgendamento(){
+
+const campoData = document.getElementById("data");
+const hoje = new Date();
+campoData.min = hoje.getFullYear() + "-" + String(hoje.getMonth()+1).padStart(2,"0") + "-" + String(hoje.getDate()).padStart(2,"0");
+
+const nota = document.getElementById("nota-agendamento");
+
+if(URL_AGENDA){
+nota.innerHTML = "📌 <strong>Como funciona:</strong> escolha os procedimentos, a data e um horário livre. O horário já fica reservado na agenda da Thainá assim que você confirmar.";
+}else{
+nota.innerHTML = "📌 <strong>Importante:</strong> o envio deste formulário gera um <strong>pedido</strong> de horário, ele só é confirmado quando você recebe a resposta da Thainá pelo WhatsApp.";
+}
+
+})();
+
+/* ---------------- Cartão fidelidade (salvo na nuvem com Firebase) ---------------- */
+
+const TOTAL_SELOS = 10; // 9 atendimentos + o 10º com Design grátis
 
 function normalizarTelefone(telefone){
 return telefone.replace(/\D/g,"");
 }
 
-function obterSelos(telefoneNormalizado){
-const dados = JSON.parse(localStorage.getItem("fidelidade_tmb") || "{}");
-return dados[telefoneNormalizado] || 0;
-}
-
-function salvarSelos(telefoneNormalizado, quantidade){
-const dados = JSON.parse(localStorage.getItem("fidelidade_tmb") || "{}");
-dados[telefoneNormalizado] = quantidade;
-localStorage.setItem("fidelidade_tmb", JSON.stringify(dados));
-}
-
-function registrarSeloFidelidade(telefone){
-
-const tel = normalizarTelefone(telefone);
-if(tel === "") return;
-
-let selos = obterSelos(tel) + 1;
-let ganhouPremio = false;
-
-if(selos >= TOTAL_SELOS){
-selos = 0;
-ganhouPremio = true;
-}
-
-salvarSelos(tel, selos);
-
-document.getElementById("fidelidade-telefone").value = telefone;
-salvarUltimoTelefone(telefone);
-renderizarSelos(selos, ganhouPremio);
-
-}
-
 function salvarUltimoTelefone(telefone){
-localStorage.setItem("fidelidade_tmb_ultimo", telefone);
+try{ localStorage.setItem("fidelidade_tmb_ultimo", telefone); }catch(e){}
 }
 
 function obterUltimoTelefone(){
-return localStorage.getItem("fidelidade_tmb_ultimo") || "";
+try{ return localStorage.getItem("fidelidade_tmb_ultimo") || ""; }catch(e){ return ""; }
+}
+
+// Retorna o número de selos, ou null se não foi possível consultar
+async function obterSelos(telefoneNormalizado){
+
+if(!db) return null;
+
+try{
+const doc = await db.collection("fidelidade").doc(telefoneNormalizado).get();
+return doc.exists ? (doc.data().selos || 0) : 0;
+}catch(erro){
+console.error("Erro ao consultar o cartão:", erro);
+return null;
+}
+
+}
+
+// Soma 1 selo (transação segura). Retorna {selos, ganhou} ou null em caso de erro
+async function registrarSeloFidelidade(telefone){
+
+const tel = normalizarTelefone(telefone);
+if(tel === "") return null;
+
+if(!db){
+alert("O cartão fidelidade ainda não foi configurado (falta a configuração do Firebase no site).");
+return null;
+}
+
+const ref = db.collection("fidelidade").doc(tel);
+
+try{
+
+const resultado = await db.runTransaction(async (t) => {
+
+const doc = await t.get(ref);
+let selos = (doc.exists ? (doc.data().selos || 0) : 0) + 1;
+let ganhou = false;
+
+if(selos >= TOTAL_SELOS){
+selos = 0;
+ganhou = true;
+}
+
+t.set(ref, {
+selos: selos,
+atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+});
+
+return {selos, ganhou};
+
+});
+
+document.getElementById("fidelidade-telefone").value = telefone;
+salvarUltimoTelefone(telefone);
+renderizarSelos(resultado.selos, resultado.ganhou);
+
+return resultado;
+
+}catch(erro){
+console.error("Erro ao salvar o selo:", erro);
+alert("Não foi possível salvar o selo agora. Verifique a internet e tente de novo.");
+return null;
+}
+
 }
 
 function renderizarSelos(selos, ganhouPremio){
@@ -1135,7 +1372,7 @@ container.appendChild(div);
 }
 
 if(ganhouPremio){
-status.innerHTML = "🎉 Parabéns! Você completou o cartão e ganhou <strong>1 Design de sobrancelha grátis</strong> no próximo atendimento. O cartão foi reiniciado.";
+status.innerHTML = "🎉 <strong>Design de sobrancelha grátis</strong> concluído! O cartão foi reiniciado e já pode juntar novos selos.";
 }else{
 const faltam = TOTAL_SELOS - 1 - selos;
 if(selos === 0){
@@ -1149,9 +1386,9 @@ status.textContent = `Você tem ${selos} selo(s). Faltam ${faltam} atendimento(s
 
 }
 
-/* ---------------- Área da profissional (registro manual após o atendimento) ---------------- */
+/* ---------------- Área da profissional (selo só depois do atendimento) ---------------- */
 
-const SENHA_PROFISSIONAL = "161278"; // troque por uma senha de sua preferência
+const SENHA_PROFISSIONAL = "thaina2026"; // troque por uma senha de sua preferência
 
 function abrirPainelProfissional(){
 
@@ -1167,7 +1404,7 @@ return false;
 
 }
 
-function registrarAtendimentoConcluido(){
+async function registrarAtendimentoConcluido(){
 
 const telefone = document.getElementById("profissional-telefone").value.trim();
 
@@ -1176,15 +1413,21 @@ alert("Digite o WhatsApp da cliente.");
 return;
 }
 
-registrarSeloFidelidade(telefone);
+const resultado = await registrarSeloFidelidade(telefone);
+
+if(!resultado) return;
 
 document.getElementById("profissional-telefone").value = "";
 
-alert("Selo registrado para " + telefone);
+if(resultado.ganhou){
+alert("Atendimento grátis registrado. O cartão de " + telefone + " foi reiniciado.");
+}else{
+alert("Selo registrado para " + telefone + " (" + resultado.selos + " selo(s) no cartão).");
+}
 
 }
 
-function consultarFidelidade(){
+async function consultarFidelidade(){
 
 const telefone = document.getElementById("fidelidade-telefone").value.trim();
 
@@ -1193,22 +1436,38 @@ alert("Digite o WhatsApp para consultar o cartão.");
 return;
 }
 
-const tel = normalizarTelefone(telefone);
-const selos = obterSelos(tel);
+const status = document.getElementById("fidelidade-status");
+status.textContent = "Consultando...";
+
+const selos = await obterSelos(normalizarTelefone(telefone));
+
+if(selos === null){
+status.textContent = "Não foi possível consultar o cartão agora. Tente de novo em instantes.";
+return;
+}
+
 salvarUltimoTelefone(telefone);
 renderizarSelos(selos, false);
 
 }
 
-// Ao carregar a página, tenta lembrar o último WhatsApp consultado neste aparelho
-const ultimoTelefone = obterUltimoTelefone();
-if(ultimoTelefone){
-document.getElementById("fidelidade-telefone").value = ultimoTelefone;
-const selosSalvos = obterSelos(normalizarTelefone(ultimoTelefone));
-renderizarSelos(selosSalvos, false);
-}else{
+// Ao abrir a página, mostra o cartão do último WhatsApp consultado neste aparelho
+(async function inicializarCartao(){
+
 renderizarSelos(0, false);
+document.getElementById("fidelidade-status").textContent = "Informe seu WhatsApp acima para ver quantos selos você já tem.";
+
+const ultimoTelefone = obterUltimoTelefone();
+if(!ultimoTelefone) return;
+
+document.getElementById("fidelidade-telefone").value = ultimoTelefone;
+
+const selosSalvos = await obterSelos(normalizarTelefone(ultimoTelefone));
+if(selosSalvos !== null){
+renderizarSelos(selosSalvos, false);
 }
+
+})();
 
 </script>
 
