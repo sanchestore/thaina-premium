@@ -898,6 +898,8 @@ Escolha os procedimentos no catálogo acima, preencha seus dados e escolha a dat
 
 <input type="tel" id="telefone" placeholder="WhatsApp (com DDD)">
 
+<input type="email" id="email" placeholder="E-mail (opcional) — para receber o convite no Google Agenda">
+
 <label class="data-label">
 📅 Escolha a data
 </label>
@@ -924,6 +926,29 @@ Confirmar agendamento
 </button>
 
 <div id="agendamento-sucesso" style="display:none;margin-top:24px;background:#f1f8ee;border:1px solid #cfe5c6;border-radius:16px;padding:20px 22px;line-height:1.7;"></div>
+
+</div>
+
+<div class="form-box" id="meu-agendamento" style="margin-top:30px;">
+
+<h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;margin-bottom:8px;">Já agendou? Altere ou cancele</h3>
+<p style="font-size:14px;color:#666;margin-bottom:16px;line-height:1.6;">Informe o WhatsApp e o código que você recebeu ao agendar. Assim você muda o horário sem ficar com dois agendamentos.</p>
+
+<input type="tel" id="meu-telefone" placeholder="WhatsApp usado no agendamento">
+<input type="text" id="meu-codigo" placeholder="Código do agendamento" maxlength="8" style="text-transform:uppercase;">
+<button class="btn" style="width:100%;" onclick="buscarMeuAgendamento()">Buscar meu agendamento</button>
+
+<div id="meu-resumo" style="display:none;margin-top:20px;line-height:1.7;"></div>
+
+<div id="meu-acoes" style="display:none;margin-top:16px;">
+<label class="data-label">📅 Nova data</label>
+<input type="date" id="meu-data" onchange="carregarHorariosRemarcar()">
+<label class="data-label">⏰ Novo horário</label>
+<select id="meu-hora"><option value="">Selecione um horário</option></select>
+<p id="meu-aviso" style="font-size:14px;color:#666;margin:-8px 0 20px;"></p>
+<button class="btn" style="width:100%;margin-bottom:12px;" onclick="remarcarAgendamento()">Confirmar novo horário</button>
+<button class="btn secundario" style="width:100%;" onclick="cancelarAgendamento()">Cancelar agendamento</button>
+</div>
 
 </div>
 
@@ -1069,11 +1094,11 @@ const DURACOES = {
 "Brow Lamination": 60,
 "Lash Lifting": 60,
 "Volume Brasileiro": 120,
-"Volumão Brasileiro": 150,
+"Volumão Brasileiro": 120,
 "Volume Clássico": 120,
 "Efeito Rímel": 120,
-"Volume 4D": 150,
-"Foxy Eyes": 150,
+"Volume 4D": 120,
+"Foxy Eyes": 120,
 "Revitalização Labial": 120,
 "Maquiagem Premium": 60,
 "Avaliação de Estrias": 30
@@ -1151,7 +1176,7 @@ aviso.textContent = "Não foi possível carregar os horários agora. Tente de no
 
 }
 
-function mostrarSucesso(nome, data, hora, duracao, totalFormatado, lista){
+function mostrarSucesso(nome, data, hora, duracao, totalFormatado, lista, codigo, telefone){
 
 const caixa = document.getElementById("agendamento-sucesso");
 caixa.innerHTML = "";
@@ -1164,8 +1189,17 @@ const detalhe = document.createElement("div");
 detalhe.textContent = `${nome}, você está agendada para ${formatarDataBR(data)} às ${hora} (duração estimada ${formatarDuracao(duracao)}). Valor estimado: ${totalFormatado}.`;
 caixa.appendChild(detalhe);
 
+if(codigo){
+const cod = document.createElement("div");
+cod.style.marginTop = "10px";
+cod.textContent = `Seu código de agendamento: ${codigo}. Guarde-o: com ele (e seu WhatsApp) você altera ou cancela o horário na seção "Já agendou?" mais abaixo.`;
+cod.style.fontWeight = "600";
+caixa.appendChild(cod);
+lembrarMeu(telefone, codigo);
+}
+
 const mensagem =
-`Olá, sou ${nome}. Acabei de agendar pelo site:\n${lista}\nData: ${formatarDataBR(data)} às ${hora}\nValor estimado: ${totalFormatado}`;
+`Olá, sou ${nome}. Acabei de agendar pelo site:\n${lista}\nData: ${formatarDataBR(data)} às ${hora}\nValor estimado: ${totalFormatado}${codigo ? "\nCódigo: " + codigo : ""}`;
 
 const link = document.createElement("a");
 link.className = "btn";
@@ -1187,6 +1221,7 @@ let nome = document.getElementById("nome").value.trim();
 let telefone = document.getElementById("telefone").value.trim();
 let data = document.getElementById("data").value;
 let hora = document.getElementById("hora").value;
+const email = document.getElementById("email").value.trim();
 
 if(
 nome === "" ||
@@ -1249,6 +1284,7 @@ headers:{"Content-Type":"text/plain;charset=utf-8"},
 body:JSON.stringify({
 nome,
 telefone,
+email,
 data,
 hora,
 duracao,
@@ -1265,7 +1301,7 @@ await carregarHorarios();
 return;
 }
 
-mostrarSucesso(nome, data, hora, duracao, totalFormatado, listaProcedimentos);
+mostrarSucesso(nome, data, hora, duracao, totalFormatado, listaProcedimentos, json.codigo, telefone);
 await carregarHorarios();
 
 }catch(erro){
@@ -1277,6 +1313,175 @@ alert("Não foi possível concluir o agendamento agora. Tente de novo ou chame a
 botao.disabled = false;
 botao.textContent = "Confirmar agendamento";
 
+}
+
+}
+
+/* ---------------- Alterar / cancelar agendamento (WhatsApp + código) ---------------- */
+
+const CHAVE_MEU = "agenda_tmb_meu";
+let meuAgendamento = null;
+
+function lembrarMeu(tel, cod){
+try{ localStorage.setItem(CHAVE_MEU, JSON.stringify({tel, cod})); }catch(e){}
+document.getElementById("meu-telefone").value = tel;
+document.getElementById("meu-codigo").value = cod;
+}
+
+(function recuperarMeu(){
+try{
+const salvo = JSON.parse(localStorage.getItem(CHAVE_MEU) || "null");
+if(salvo){
+document.getElementById("meu-telefone").value = salvo.tel || "";
+document.getElementById("meu-codigo").value = salvo.cod || "";
+}
+}catch(e){}
+})();
+
+async function postAgenda(corpo){
+const resp = await fetch(URL_AGENDA,{
+method:"POST",
+headers:{"Content-Type":"text/plain;charset=utf-8"},
+body:JSON.stringify(corpo)
+});
+return await resp.json();
+}
+
+async function buscarMeuAgendamento(){
+
+const telefone = document.getElementById("meu-telefone").value.trim();
+const codigo = document.getElementById("meu-codigo").value.trim().toUpperCase();
+
+if(!telefone || !codigo){
+alert("Informe o WhatsApp e o código do agendamento.");
+return;
+}
+
+try{
+const json = await postAgenda({acao:"meu_buscar", telefone, codigo});
+
+if(!json.ok){
+meuAgendamento = null;
+document.getElementById("meu-resumo").style.display = "none";
+document.getElementById("meu-acoes").style.display = "none";
+alert(json.erro || "Não encontramos esse agendamento.");
+return;
+}
+
+meuAgendamento = {telefone, codigo};
+lembrarMeu(telefone, codigo);
+
+const a = json.agendamento;
+const resumo = document.getElementById("meu-resumo");
+resumo.textContent = `${a.titulo} — ${formatarDataBR(a.data)} às ${a.hora} (${formatarDuracao(a.duracao)})`;
+resumo.style.fontWeight = "600";
+resumo.style.display = "block";
+
+const campoData = document.getElementById("meu-data");
+campoData.min = document.getElementById("data").min;
+campoData.value = "";
+document.getElementById("meu-hora").innerHTML = '<option value="">Selecione um horário</option>';
+document.getElementById("meu-aviso").textContent = "";
+document.getElementById("meu-acoes").style.display = "block";
+
+}catch(erro){
+alert("Não foi possível buscar agora. Tente de novo ou chame a Thainá no WhatsApp.");
+}
+
+}
+
+async function carregarHorariosRemarcar(){
+
+if(!meuAgendamento) return;
+
+const data = document.getElementById("meu-data").value;
+const select = document.getElementById("meu-hora");
+const aviso = document.getElementById("meu-aviso");
+
+select.innerHTML = '<option value="">Selecione um horário</option>';
+
+if(!data){ aviso.textContent = ""; return; }
+
+aviso.textContent = "Buscando horários livres...";
+
+try{
+const json = await postAgenda({acao:"meu_horarios", telefone: meuAgendamento.telefone, codigo: meuAgendamento.codigo, data});
+
+if(!json.ok){ aviso.textContent = json.erro || "Não foi possível carregar os horários."; return; }
+
+if(json.horarios.length === 0){
+aviso.textContent = "Não há horários livres nesse dia. Tente outra data.";
+return;
+}
+
+json.horarios.forEach(h => {
+const opcao = document.createElement("option");
+opcao.value = h;
+opcao.textContent = h;
+select.appendChild(opcao);
+});
+
+aviso.textContent = "Escolha o novo horário.";
+
+}catch(erro){
+aviso.textContent = "Não foi possível carregar os horários agora. Tente de novo.";
+}
+
+}
+
+async function remarcarAgendamento(){
+
+if(!meuAgendamento) return;
+
+const data = document.getElementById("meu-data").value;
+const hora = document.getElementById("meu-hora").value;
+
+if(!data || !hora){
+alert("Escolha a nova data e o novo horário.");
+return;
+}
+
+try{
+const json = await postAgenda({acao:"meu_remarcar", telefone: meuAgendamento.telefone, codigo: meuAgendamento.codigo, data, hora});
+
+if(!json.ok){
+alert(json.erro || "Não foi possível remarcar.");
+await carregarHorariosRemarcar();
+return;
+}
+
+alert(`Pronto! Seu horário foi alterado para ${formatarDataBR(data)} às ${hora}.`);
+await buscarMeuAgendamento();
+
+}catch(erro){
+alert("Não foi possível remarcar agora. Tente de novo ou chame a Thainá no WhatsApp.");
+}
+
+}
+
+async function cancelarAgendamento(){
+
+if(!meuAgendamento) return;
+
+if(!confirm("Tem certeza que deseja cancelar o agendamento?")) return;
+
+try{
+const json = await postAgenda({acao:"meu_cancelar", telefone: meuAgendamento.telefone, codigo: meuAgendamento.codigo});
+
+if(!json.ok){
+alert(json.erro || "Não foi possível cancelar.");
+return;
+}
+
+alert("Agendamento cancelado. Quando quiser, é só agendar um novo horário.");
+meuAgendamento = null;
+try{ localStorage.removeItem(CHAVE_MEU); }catch(e){}
+document.getElementById("meu-resumo").style.display = "none";
+document.getElementById("meu-acoes").style.display = "none";
+document.getElementById("meu-codigo").value = "";
+
+}catch(erro){
+alert("Não foi possível cancelar agora. Tente de novo ou chame a Thainá no WhatsApp.");
 }
 
 }
