@@ -46,7 +46,7 @@ section{padding:96px 7%;}
 #fidelidade{background:linear-gradient(160deg,var(--vinho-escuro),var(--vinho));color:var(--creme);}
 #fidelidade .section-title h2{color:var(--creme);}
 #fidelidade .section-title p{color:rgba(248,242,236,0.85);}
-#fidelidade a[href="admin.html"]{color:var(--dourado-claro) !important;}
+#fidelidade a[onclick*="abrirPainelProfissional"]{color:var(--dourado-claro) !important;}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;}
 .card{background:#fff;border-radius:26px;overflow:hidden;box-shadow:0 14px 34px rgba(63,7,22,0.09);transition:0.3s;}
 .card:hover{transform:translateY(-5px);}
@@ -534,7 +534,7 @@ Informe seu WhatsApp acima para ver quantos selos você já tem.
 </div>
 
 <div style="text-align:center;margin-top:24px;">
-<a href="admin.html" style="font-size:13px;color:#999;text-decoration:underline;">Área da profissional</a>
+<a href="#" onclick="abrirPainelProfissional(); return false;" style="font-size:13px;color:#999;text-decoration:underline;">Área da profissional</a>
 </div>
 
 </section>
@@ -1280,6 +1280,37 @@ status.textContent = "Faltam 0 atendimentos — no próximo você ganha o Design
 status.textContent = `Você tem ${selos} selo(s). Faltam ${faltam} atendimento(s) para o Design de sobrancelha grátis.`;
 }
 }
+
+}
+
+/* Área da profissional: pede a senha aqui e, se estiver certa, abre o painel dela. */
+async function abrirPainelProfissional(){
+
+const senha = prompt("Digite a senha da área da profissional:");
+
+if(senha === null || senha === "") return false;
+
+try{
+const resp = await fetch(URL_AGENDA,{
+method:"POST",
+headers:{"Content-Type":"text/plain;charset=utf-8"},
+body:JSON.stringify({senha:senha,acao:"extras_listar"})
+});
+const json = await resp.json();
+
+if(!json.ok){
+alert(json.erro || "Senha incorreta.");
+return false;
+}
+
+try{ sessionStorage.setItem("thaina_pro", senha); }catch(e){}
+window.location.href = "admin.html";
+
+}catch(erro){
+alert("Não foi possível conferir a senha agora. Tente de novo.");
+}
+
+return false;
 
 }
 
