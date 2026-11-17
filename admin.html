@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Área da Profissional · Thainá Mendes Beauty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--vinho:#6b0f24;--vinho-escuro:#3f0716;--vinho-medio:#8a1a35;--creme:#f8f2ec;--creme-2:#efe3d8;--dourado:#c29b57;--dourado-claro:#e2c68f;--texto:#2a1218;--serif:'Playfair Display',serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{font-family:'Poppins',sans-serif;background:var(--creme);color:var(--texto);line-height:1.6;min-height:100vh;}
+[hidden]{display:none !important;}
+a{color:var(--vinho-medio);}
+
+/* login */
+#tela-login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(160deg,var(--vinho-escuro),var(--vinho) 60%,var(--vinho-medio));}
+.login-box{background:var(--creme);border-radius:28px;padding:40px 30px;width:100%;max-width:380px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.35);}
+.monograma{font-family:var(--serif);font-style:italic;font-size:44px;color:var(--vinho);line-height:1;}
+.login-box h1{font-family:var(--serif);font-style:italic;font-weight:500;font-size:26px;color:var(--vinho);margin:8px 0 4px;}
+.login-box p.sub{font-size:14px;color:#7a5a60;margin-bottom:24px;}
+.login-erro{color:#b00020;font-size:14px;min-height:22px;margin:-6px 0 10px;}
+
+/* campos e botões */
+input,select,textarea{width:100%;padding:15px 18px;margin-bottom:16px;border-radius:16px;border:1.5px solid #e6d8cc;background:#fffdfb;font-size:16px;font-family:'Poppins',sans-serif;color:var(--texto);outline:none;transition:.2s;-webkit-appearance:none;appearance:none;}
+textarea{resize:vertical;}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--vinho) 50%),linear-gradient(135deg,var(--vinho) 50%,transparent 50%);background-position:calc(100% - 22px) 50%,calc(100% - 16px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:44px;}
+input:focus,select:focus,textarea:focus{border-color:var(--dourado);box-shadow:0 0 0 3px rgba(194,155,87,.22);}
+input[type=checkbox]{width:auto;margin:0 10px 0 0;accent-color:var(--vinho);-webkit-appearance:auto;appearance:auto;}
+.rotulo{font-weight:500;display:block;margin-bottom:8px;color:var(--vinho);font-size:14px;}
+.btn{background:linear-gradient(135deg,var(--vinho-medio),var(--vinho));color:var(--creme);padding:15px 26px;border-radius:50px;font-weight:500;font-size:15px;border:1px solid var(--vinho);cursor:pointer;width:100%;font-family:inherit;transition:.2s;}
+.btn:hover{box-shadow:0 10px 22px rgba(107,15,36,.28);}
+.btn:disabled{opacity:.6;cursor:wait;}
+.btn.sec{background:transparent;color:var(--vinho);border:1.5px solid var(--vinho);}
+.btn.peq{width:auto;padding:9px 18px;font-size:13px;}
+
+/* painel */
+.topo{background:linear-gradient(135deg,var(--vinho-escuro),var(--vinho));color:var(--creme);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:20;}
+.topo .marca{font-family:var(--serif);font-style:italic;font-size:20px;line-height:1.2;}
+.topo .marca small{display:block;font-family:'Poppins',sans-serif;font-style:normal;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dourado-claro);}
+.topo a,.topo button{color:var(--creme);background:none;border:1px solid rgba(226,198,143,.6);border-radius:50px;padding:7px 14px;font-size:13px;text-decoration:none;cursor:pointer;font-family:inherit;}
+.topo .acoes{display:flex;gap:8px;}
+nav.abas{display:flex;gap:8px;overflow-x:auto;padding:14px 20px 4px;max-width:760px;margin:0 auto;scrollbar-width:none;}
+nav.abas::-webkit-scrollbar{display:none;}
+nav.abas button{flex:0 0 auto;padding:10px 18px;border-radius:50px;border:1.5px solid #dcc9b8;background:#fff;color:var(--vinho);font-size:14px;font-family:inherit;cursor:pointer;}
+nav.abas button.ativa{background:var(--vinho);color:var(--creme);border-color:var(--vinho);}
+main{max-width:760px;margin:0 auto;padding:16px 20px 60px;}
+.aba{display:none;}
+.aba.ativa{display:block;}
+.cartao{background:#fff;border-radius:24px;padding:26px 22px;box-shadow:0 12px 30px rgba(63,7,22,.08);margin-bottom:20px;}
+.cartao h2{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--vinho);font-size:24px;margin-bottom:6px;}
+.cartao p.dica{font-size:14px;color:#7a5a60;margin-bottom:16px;line-height:1.6;}
+
+/* agenda */
+.dia-titulo{font-family:var(--serif);font-style:italic;color:var(--vinho);font-size:19px;margin:20px 0 8px;display:flex;align-items:center;gap:12px;}
+.dia-titulo::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--dourado),transparent);}
+.dia-titulo:first-child{margin-top:0;}
+.ag{background:var(--creme);border-radius:18px;padding:14px 16px;margin-bottom:10px;}
+.ag .hora{font-weight:600;color:var(--vinho);}
+.ag .quem{font-size:15px;}
+.ag .meta{font-size:13px;color:#7a5a60;}
+.ag .acoes-ag{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.ag .acoes-ag a{font-size:13px;padding:6px 14px;border-radius:50px;border:1px solid #d9c3b0;background:#fff;text-decoration:none;color:var(--vinho);cursor:pointer;}
+.ag .acoes-ag a.perigo{color:#b00020;border-color:#e5b9c0;}
+.remarcar-box{margin-top:12px;padding-top:12px;border-top:1px dashed #d9c3b0;}
+.remarcar-box input,.remarcar-box select{margin-bottom:10px;}
+.vazio{color:#7a5a60;font-size:14px;padding:6px 0;}
+.sug a{display:block;padding:8px 4px;text-decoration:none;border-bottom:1px solid #f0e4d8;}
+.proc-item{display:flex;align-items:center;padding:8px 0;font-size:14px;border-bottom:1px solid #f4ebe1;cursor:pointer;}
+.msg{font-size:14px;margin-top:10px;color:#444;}
+.selos{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 14px;}
+.selo{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--dourado);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--dourado);}
+.selo.cheio{background:var(--vinho);color:var(--creme);border-color:var(--vinho);}
+.busca-global{max-width:760px;margin:0 auto;padding:16px 20px 0;position:relative;}
+.busca-wrap{position:relative;}
+.busca-wrap .lupa{position:absolute;left:18px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none;margin-top:-8px;}
+.busca-wrap input{padding-left:48px;margin-bottom:0;border-radius:50px;box-shadow:0 6px 18px rgba(63,7,22,.08);}
+#busca-resultados{background:#fff;border-radius:18px;margin-top:8px;box-shadow:0 12px 28px rgba(63,7,22,.14);overflow:hidden;}
+#busca-resultados:empty{display:none;}
+#busca-resultados button{display:block;width:100%;text-align:left;padding:13px 18px;border:0;border-bottom:1px solid #f1e6db;background:#fff;font:inherit;font-size:15px;color:var(--texto);cursor:pointer;}
+#busca-resultados button small{display:block;color:#7a5a60;font-size:13px;}
+#busca-resultados button:hover{background:var(--creme);}
+#busca-resultados .nada{padding:14px 18px;font-size:14px;color:#7a5a60;}
+#cliente-card{background:#fff;border-radius:22px;padding:20px;margin-top:12px;box-shadow:0 12px 30px rgba(63,7,22,.08);border-left:4px solid var(--dourado);}
+#cliente-card h3{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--vinho);font-size:22px;}
+#cliente-card .meta{font-size:14px;color:#7a5a60;margin-bottom:12px;}
+#cliente-card .linha-ag{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--creme);border-radius:14px;padding:10px 14px;margin-top:8px;font-size:14px;}
+#cliente-card .botoes{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+#cliente-card .fechar{float:right;background:none;border:0;font-size:22px;color:#999;cursor:pointer;line-height:1;}
+</style>
+</head>
+<body>
+
+<!-- ENTRAR -->
+<div id="tela-login">
+<form class="login-box" id="form-login" autocomplete="off">
+<div class="monograma">TM</div>
+<h1>Área da Profissional</h1>
+<p class="sub">Thainá Mendes Beauty</p>
+<input type="password" id="senha" placeholder="Senha" autocomplete="current-password" required>
+<div class="login-erro" id="login-erro"></div>
+<button class="btn" type="submit" id="btn-entrar">Entrar</button>
+<p style="margin-top:18px;font-size:13px;"><a href="index.html">← Voltar ao site</a></p>
+</form>
+</div>
+
+<!-- PAINEL -->
+<div id="tela-admin" hidden>
+
+<div class="topo">
+<div class="marca">Thainá Mendes Beauty<small>Área da profissional</small></div>
+<div class="acoes">
+<a href="index.html" target="_blank" rel="noopener">Ver site</a>
+<button type="button" id="btn-sair">Sair</button>
+</div>
+</div>
+
+<div class="busca-global">
+<div class="busca-wrap"><span class="lupa">🔍</span><input type="search" id="busca-global" placeholder="Buscar cliente pelo nome ou WhatsApp" autocomplete="off" oninput="buscaGlobal()"></div>
+<div id="busca-resultados"></div>
+<div id="cliente-card" hidden></div>
+</div>
+
+<nav class="abas" id="abas">
+<button data-aba="agenda" class="ativa">Agenda</button>
+<button data-aba="novo">Novo agendamento</button>
+<button data-aba="extras">Horários extras</button>
+<button data-aba="clientes">Clientes</button>
+<button data-aba="selos">Fidelidade</button>
+</nav>
+
+<main>
+
+<!-- AGENDA -->
+<section class="aba ativa" id="aba-agenda">
+<div class="cartao">
+<h2>Próximos agendamentos</h2>
+<p class="dica">Toque em remarcar, cancelar ou marcar o retorno da cliente.</p>
+<div id="pro-lista"><p class="vazio">Carregando...</p></div>
+<button class="btn sec peq" style="margin-top:12px;" onclick="listarAgendamentosPro()">Atualizar</button>
+</div>
+</section>
+
+<!-- NOVO AGENDAMENTO -->
+<section class="aba" id="aba-novo">
+<div class="cartao">
+<h2>Agendar para a cliente</h2>
+<p class="dica">Busque pelo nome ou WhatsApp para usar uma cliente já cadastrada. Todo agendamento salva nome e número automaticamente.</p>
+<input type="text" id="pro-busca" placeholder="Buscar cliente (nome ou WhatsApp)" oninput="buscarClientePro()">
+<div id="pro-sugestoes" class="sug" style="margin:-8px 0 14px;font-size:14px;"></div>
+<input type="text" id="pro-nome" placeholder="Nome da cliente">
+<input type="tel" id="pro-tel" placeholder="WhatsApp (com DDD)">
+<input type="email" id="pro-email" placeholder="E-mail (opcional)">
+<label class="rotulo">Procedimentos (inclui retorno e manutenção)</label>
+<div id="pro-procs" style="margin-bottom:16px;"></div>
+<label class="rotulo">Duração (minutos)</label>
+<input type="number" id="pro-duracao" min="15" max="480" step="15" value="60" onchange="carregarHorariosPro()">
+<label class="rotulo">Data</label>
+<input type="date" id="pro-data" onchange="carregarHorariosPro()">
+<label class="rotulo">Horário</label>
+<select id="pro-hora"><option value="">Selecione um horário</option></select>
+<p id="pro-aviso" class="msg" style="margin:-6px 0 18px;"></p>
+<button class="btn" onclick="agendarPelaPro()">Agendar</button>
+</div>
+</section>
+
+<!-- HORÁRIOS EXTRAS -->
+<section class="aba" id="aba-extras">
+<div class="cartao">
+<h2>Horários extras</h2>
+<p class="dica">Abra um dia ou horário fora do expediente normal (terça a sexta 9h–18h, sábado 9h–13h). As clientes passam a ver esses horários no site.</p>
+<label class="rotulo">Data</label>
+<input type="date" id="extra-data">
+<label class="rotulo">Das</label>
+<input type="time" id="extra-ini" value="09:00">
+<label class="rotulo">Até</label>
+<input type="time" id="extra-fim" value="12:00">
+<button class="btn" onclick="adicionarExtra()">Adicionar horário extra</button>
+<div id="extras-lista" style="margin-top:18px;font-size:14px;line-height:2;"></div>
+</div>
+</section>
+
+<!-- CLIENTES -->
+<section class="aba" id="aba-clientes">
+<div class="cartao">
+<h2>Clientes salvas</h2>
+<p id="pro-total-clientes" class="dica">Carregando...</p>
+<p class="dica">Para trazer clientes de outro sistema: cole a lista (nome e telefone, uma por linha) ou escolha o arquivo CSV. O que já estiver salvo não é apagado.</p>
+<textarea id="pro-importar-texto" rows="6" placeholder="Maria Silva;(19) 99999-0000&#10;Ana Souza;19 98888-1111"></textarea>
+<input type="file" id="pro-importar-arquivo" accept=".csv,.txt,text/csv,text/plain" onchange="lerArquivoClientes(this)">
+<button class="btn" style="margin-bottom:12px;" onclick="importarClientes()">Importar clientes</button>
+<button class="btn sec" onclick="varrerAgendaClientes()">Recuperar clientes que já agendaram pelo site</button>
+<p id="pro-importar-aviso" class="msg"></p>
+</div>
+</section>
+
+<!-- FIDELIDADE -->
+<section class="aba" id="aba-selos">
+<div class="cartao">
+<h2>Cartão fidelidade</h2>
+<p class="dica">Registre o selo só depois que a cliente foi atendida. No 10º atendimento ela ganha o Design de sobrancelha grátis e o cartão reinicia.</p>
+<input type="tel" id="profissional-telefone" placeholder="WhatsApp da cliente (com DDD)">
+<button class="btn" style="margin-bottom:12px;" onclick="registrarAtendimentoConcluido()">Adicionar selo</button>
+<button class="btn sec" onclick="consultarSelosPro()">Só consultar o cartão</button>
+<div class="selos" id="selos-pro" style="margin-top:18px;"></div>
+<p id="selos-aviso" class="msg"></p>
+</div>
+</section>
+
+</main>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+
+const URL_AGENDA = "https://script.google.com/macros/s/AKfycbx5gvuVfGtiW_bv4UkfAgciUask-_TTuYhIJXcMs9Rdd8GG3jPpv3ogJBEV1IxeZBBHEA/exec";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDnVGemI0SUYl2i5gk7dog2qwiZkmpa-nM",
+  authDomain: "agendamento-thaina-beauty.firebaseapp.com",
+  projectId: "agendamento-thaina-beauty",
+  storageBucket: "agendamento-thaina-beauty.firebasestorage.app",
+  messagingSenderId: "880630863294",
+  appId: "1:880630863294:web:16b2650e7404dd89ba15ef",
+  measurementId: "G-36ELJH3FTJ"
+};
+
+let db = null;
+try{
+if(typeof firebase !== "undefined"){
+firebase.initializeApp(firebaseConfig);
+db = firebase.firestore();
+}
+}catch(e){ console.error(e); }
+
+// Duração de cada procedimento em MINUTOS.
+const DURACOES = {
+"Design Personalizado": 30,
+"Buço": 15,
+"Design com Henna": 45,
+"Nanoblading Fio a Fio": 150,
+"Brow Lamination": 60,
+"Lash Lifting": 90,
+"Volume Brasileiro": 120,
+"Volumão Brasileiro": 120,
+"Volume Clássico": 120,
+"Efeito Rímel": 120,
+"Volume 4D": 120,
+"Foxy Eyes": 120,
+"Maquiagem Premium": 60,
+"Avaliação de Estrias": 30,
+"Retorno": 30,
+"Manutenção Volume Brasileiro": 60,
+"Manutenção Foxy Eyes": 60,
+"Manutenção Fio a Fio": 60,
+"Manutenção Volume 4D": 60,
+"Avaliação de Micropigmentação": 30,
+"Retoque de Micropigmentação": 60,
+"Procedimento de Remoção de Estrias": 60
+};
+const DURACAO_PADRAO = 60;
+const TOTAL_SELOS = 10;
+
+function formatarDuracao(min){
+const h = Math.floor(min / 60);
+const m = min % 60;
+if(h === 0) return `${m} min`;
+if(m === 0) return `${h}h`;
+return `${h}h${String(m).padStart(2,"0")}`;
+}
+
+function formatarDataBR(iso){
+const p = iso.split("-");
+return `${p[2]}/${p[1]}/${p[0]}`;
+}
+
+function hojeISO(){
+const d = new Date();
+return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+
+function tituloDia(iso){
+const [a,m,d] = iso.split("-").map(Number);
+const dt = new Date(a, m-1, d);
+const nome = dt.toLocaleDateString("pt-BR",{weekday:"long"});
+return `${nome.charAt(0).toUpperCase()+nome.slice(1)}, ${String(d).padStart(2,"0")}/${String(m).padStart(2,"0")}`;
+}
+
+function linkWhatsCliente(tel){
+const d = String(tel).replace(/\D/g,"");
+return "https://wa.me/" + (d.length <= 11 ? "55" + d : d);
+}
+
+/* ---------------- Entrar / sair ---------------- */
+
+// A senha fica só no Apps Script (SENHA_PROFISSIONAL). Aqui ela só é guardada
+// nesta aba do navegador (sessionStorage) para não pedir de novo ao recarregar.
+let senhaProfissional = "";
+
+async function chamarAdmin(corpo){
+const resp = await fetch(URL_AGENDA,{
+method:"POST",
+headers:{"Content-Type":"text/plain;charset=utf-8"},
+body:JSON.stringify(Object.assign({senha:senhaProfissional},corpo))
+});
+return await resp.json();
+}
+
+async function tentarEntrar(senha, silencioso){
+
+const erro = document.getElementById("login-erro");
+const botao = document.getElementById("btn-entrar");
+senhaProfissional = senha;
+if(!silencioso){ erro.textContent = ""; botao.disabled = true; botao.textContent = "Entrando..."; }
+
+try{
+const json = await chamarAdmin({acao:"extras_listar"});
+if(!json.ok){
+senhaProfissional = "";
+try{ sessionStorage.removeItem("thaina_pro"); }catch(e){}
+if(!silencioso) erro.textContent = json.erro || "Senha incorreta.";
+return;
+}
+try{ sessionStorage.setItem("thaina_pro", senha); }catch(e){}
+document.getElementById("tela-login").hidden = true;
+document.getElementById("tela-admin").hidden = false;
+iniciarPainel(json.extras);
+}catch(e){
+senhaProfissional = "";
+if(!silencioso) erro.textContent = "Não foi possível conferir a senha agora. Tente de novo.";
+}finally{
+botao.disabled = false;
+botao.textContent = "Entrar";
+}
+
+}
+
+document.getElementById("form-login").addEventListener("submit", ev => {
+ev.preventDefault();
+const s = document.getElementById("senha").value;
+if(s) tentarEntrar(s, false);
+});
+
+document.getElementById("btn-sair").addEventListener("click", () => {
+senhaProfissional = "";
+try{ sessionStorage.removeItem("thaina_pro"); }catch(e){}
+location.reload();
+});
+
+(function reentrar(){
+let s = "";
+try{ s = sessionStorage.getItem("thaina_pro") || ""; }catch(e){}
+if(s) tentarEntrar(s, true);
+})();
+
+/* ---------------- Abas ---------------- */
+
+function abrirAba(nome){
+document.querySelectorAll("#abas button").forEach(b => b.classList.toggle("ativa", b.dataset.aba === nome));
+document.querySelectorAll(".aba").forEach(s => s.classList.toggle("ativa", s.id === "aba-" + nome));
+window.scrollTo({top:0, behavior:"smooth"});
+}
+
+document.querySelectorAll("#abas button").forEach(b => {
+b.addEventListener("click", () => abrirAba(b.dataset.aba));
+});
+
+/* ---------------- Início do painel ---------------- */
+
+function iniciarPainel(extras){
+
+const caixa = document.getElementById("pro-procs");
+caixa.innerHTML = "";
+Object.keys(DURACOES).forEach(nome => {
+const rotulo = document.createElement("label");
+rotulo.className = "proc-item";
+const cb = document.createElement("input");
+cb.type = "checkbox";
+cb.value = nome;
+cb.onchange = somarDuracaoPro;
+rotulo.appendChild(cb);
+rotulo.appendChild(document.createTextNode(`${nome} (${formatarDuracao(DURACOES[nome])})`));
+caixa.appendChild(rotulo);
+});
+
+const hoje = hojeISO();
+document.getElementById("pro-data").min = hoje;
+document.getElementById("extra-data").min = hoje;
+
+renderizarExtras(extras);
+listarAgendamentosPro();
+atualizarTotalClientes();
+
+}
+
+/* ---------------- Horários extras ---------------- */
+
+function renderizarExtras(lista){
+
+const caixa = document.getElementById("extras-lista");
+caixa.innerHTML = "";
+
+if(!lista || lista.length === 0){
+caixa.textContent = "Nenhum horário extra cadastrado.";
+return;
+}
+
+lista.forEach(x => {
+const linha = document.createElement("div");
+linha.textContent = `${formatarDataBR(x.data)} · ${x.ini} às ${x.fim} `;
+const remover = document.createElement("a");
+remover.href = "#";
+remover.textContent = "remover";
+remover.style.color = "#b00020";
+remover.onclick = async () => { await removerExtra(x.id); return false; };
+linha.appendChild(remover);
+caixa.appendChild(linha);
+});
+
+}
+
+async function adicionarExtra(){
+
+const data = document.getElementById("extra-data").value;
+const ini = document.getElementById("extra-ini").value;
+const fim = document.getElementById("extra-fim").value;
+
+if(!data || !ini || !fim){ alert("Preencha data, início e fim."); return; }
+
+try{
+const json = await chamarAdmin({acao:"extras_add",data,ini,fim});
+if(!json.ok){ alert(json.erro || "Não foi possível adicionar."); return; }
+renderizarExtras(json.extras);
+}catch(e){
+alert("Não foi possível adicionar agora. Tente de novo.");
+}
+
+}
+
+async function removerExtra(id){
+
+try{
+const json = await chamarAdmin({acao:"extras_remover",id});
+if(!json.ok){ alert(json.erro || "Não foi possível remover."); return; }
+renderizarExtras(json.extras);
+}catch(e){
+alert("Não foi possível remover agora. Tente de novo.");
+}
+
+}
+
+/* ---------------- Clientes ---------------- */
+
+async function atualizarTotalClientes(){
+const p = document.getElementById("pro-total-clientes");
+try{
+const json = await chamarAdmin({acao:"clientes_total"});
+p.textContent = json.ok ? `${json.total} clientes salvas.` : "";
+}catch(e){ p.textContent = ""; }
+}
+
+function lerArquivoClientes(input){
+const arq = input.files && input.files[0];
+if(!arq) return;
+const leitor = new FileReader();
+leitor.onload = () => { document.getElementById("pro-importar-texto").value = String(leitor.result || ""); };
+leitor.readAsText(arq);
+}
+
+async function enviarImportacao(corpo){
+const aviso = document.getElementById("pro-importar-aviso");
+aviso.textContent = "Importando...";
+try{
+const json = await chamarAdmin(corpo);
+if(!json.ok){ aviso.textContent = json.erro || "Não foi possível importar."; return; }
+aviso.textContent = `Pronto! ${json.lidas} clientes lidas: ${json.novas} novas. Total salvo: ${json.total}.`;
+atualizarTotalClientes();
+}catch(e){
+aviso.textContent = "Não foi possível importar agora. Tente de novo (listas muito grandes: envie em partes).";
+}
+}
+
+function importarClientes(){
+const texto = document.getElementById("pro-importar-texto").value;
+if(texto.trim() === ""){ alert("Cole a lista de clientes ou escolha o arquivo."); return; }
+enviarImportacao({acao:"clientes_importar", texto});
+}
+
+function varrerAgendaClientes(){
+enviarImportacao({acao:"clientes_varrer"});
+}
+
+/* ---------------- Novo agendamento ---------------- */
+
+function somarDuracaoPro(){
+const marcados = [...document.querySelectorAll("#pro-procs input:checked")];
+const soma = marcados.reduce((acc,c) => acc + (DURACOES[c.value] || DURACAO_PADRAO), 0);
+if(soma > 0) document.getElementById("pro-duracao").value = soma;
+carregarHorariosPro();
+}
+
+let timerBuscaPro = null;
+
+function buscarClientePro(){
+
+clearTimeout(timerBuscaPro);
+
+timerBuscaPro = setTimeout(async () => {
+
+const q = document.getElementById("pro-busca").value.trim();
+const caixa = document.getElementById("pro-sugestoes");
+caixa.innerHTML = "";
+
+if(q.length < 2) return;
+
+try{
+const json = await chamarAdmin({acao:"clientes_buscar", q});
+if(!json.ok) return;
+
+if(json.clientes.length === 0){
+caixa.textContent = "Nenhuma cliente encontrada. Preencha os dados abaixo para cadastrar.";
+return;
+}
+
+json.clientes.forEach(c => {
+const item = document.createElement("a");
+item.href = "#";
+item.textContent = `${c.nome} — ${c.tel}`;
+item.onclick = () => {
+document.getElementById("pro-nome").value = c.nome;
+document.getElementById("pro-tel").value = c.tel;
+document.getElementById("pro-email").value = c.email || "";
+document.getElementById("pro-busca").value = "";
+caixa.innerHTML = "";
+return false;
+};
+caixa.appendChild(item);
+});
+}catch(e){}
+
+}, 300);
+
+}
+
+async function carregarHorariosPro(){
+
+const data = document.getElementById("pro-data").value;
+const duracao = document.getElementById("pro-duracao").value;
+const select = document.getElementById("pro-hora");
+const aviso = document.getElementById("pro-aviso");
+
+select.innerHTML = '<option value="">Selecione um horário</option>';
+
+if(!data){ aviso.textContent = ""; return; }
+
+aviso.textContent = "Buscando horários livres...";
+
+try{
+const json = await chamarAdmin({acao:"pro_horarios", data, duracao});
+if(!json.ok){ aviso.textContent = json.erro || "Erro ao buscar horários."; return; }
+if(json.horarios.length === 0){ aviso.textContent = "Sem horários livres nesse dia (use Horários extras para abrir o dia)."; return; }
+json.horarios.forEach(h => {
+const o = document.createElement("option");
+o.value = h; o.textContent = h;
+select.appendChild(o);
+});
+aviso.textContent = "Escolha o horário.";
+}catch(e){
+aviso.textContent = "Não foi possível buscar os horários agora.";
+}
+
+}
+
+async function agendarPelaPro(){
+
+const nome = document.getElementById("pro-nome").value.trim();
+const telefone = document.getElementById("pro-tel").value.trim();
+const email = document.getElementById("pro-email").value.trim();
+const procedimentos = [...document.querySelectorAll("#pro-procs input:checked")].map(c => c.value);
+const duracao = document.getElementById("pro-duracao").value;
+const data = document.getElementById("pro-data").value;
+const hora = document.getElementById("pro-hora").value;
+
+if(!nome || !telefone || procedimentos.length === 0 || !data || !hora){
+alert("Preencha nome, WhatsApp, procedimento, data e horário.");
+return;
+}
+
+try{
+const json = await chamarAdmin({acao:"pro_agendar", nome, telefone, email, procedimentos, duracao, data, hora});
+if(!json.ok){ alert(json.erro || "Não foi possível agendar."); return; }
+
+alert(`Agendado! ${nome} — ${formatarDataBR(data)} às ${hora}. Código: ${json.codigo}`);
+
+["pro-nome","pro-tel","pro-email","pro-data"].forEach(id => document.getElementById(id).value = "");
+document.querySelectorAll("#pro-procs input:checked").forEach(c => c.checked = false);
+document.getElementById("pro-hora").innerHTML = '<option value="">Selecione um horário</option>';
+document.getElementById("pro-aviso").textContent = "";
+listarAgendamentosPro();
+abrirAba("agenda");
+}catch(e){
+alert("Não foi possível agendar agora. Tente de novo.");
+}
+
+}
+
+function preencherRetorno(a){
+document.getElementById("pro-nome").value = a.nome || "";
+document.getElementById("pro-tel").value = a.tel || "";
+document.getElementById("pro-email").value = "";
+document.querySelectorAll("#pro-procs input").forEach(c => { c.checked = (c.value === "Retorno"); });
+somarDuracaoPro();
+abrirAba("novo");
+}
+
+/* ---------------- Agenda ---------------- */
+
+let agCache = [];
+let agItens = {};
+
+async function listarAgendamentosPro(){
+
+const caixa = document.getElementById("pro-lista");
+caixa.innerHTML = '<p class="vazio">Carregando...</p>';
+
+try{
+const json = await chamarAdmin({acao:"pro_listar"});
+if(!json.ok){ caixa.textContent = json.erro || "Erro ao carregar."; return; }
+
+caixa.innerHTML = "";
+agCache = json.agendamentos;
+agItens = {};
+
+if(json.agendamentos.length === 0){
+caixa.innerHTML = '<p class="vazio">Nenhum agendamento futuro.</p>';
+return;
+}
+
+let diaAtual = "";
+
+json.agendamentos.forEach(a => {
+
+if(a.data !== diaAtual){
+diaAtual = a.data;
+const t = document.createElement("div");
+t.className = "dia-titulo";
+t.textContent = tituloDia(a.data);
+caixa.appendChild(t);
+}
+
+const item = document.createElement("div");
+item.className = "ag";
+agItens[a.id] = item;
+
+const linha1 = document.createElement("div");
+const hora = document.createElement("span");
+hora.className = "hora";
+hora.textContent = a.hora;
+linha1.appendChild(hora);
+linha1.appendChild(document.createTextNode(` · ${a.titulo}`));
+item.appendChild(linha1);
+
+const meta = document.createElement("div");
+meta.className = "meta";
+meta.textContent = `${formatarDuracao(a.duracao)} · ${a.tel || "sem telefone"}`;
+item.appendChild(meta);
+
+const acoes = document.createElement("div");
+acoes.className = "acoes-ag";
+
+if(a.tel){
+const zap = document.createElement("a");
+zap.href = linkWhatsCliente(a.tel);
+zap.target = "_blank";
+zap.rel = "noopener";
+zap.textContent = "WhatsApp";
+acoes.appendChild(zap);
+}
+
+const remarcar = document.createElement("a");
+remarcar.textContent = "Remarcar";
+remarcar.onclick = () => { abrirRemarcarPro(item, a); };
+acoes.appendChild(remarcar);
+
+const retorno = document.createElement("a");
+retorno.textContent = "Marcar retorno";
+retorno.onclick = () => { preencherRetorno(a); };
+acoes.appendChild(retorno);
+
+const cancelar = document.createElement("a");
+cancelar.className = "perigo";
+cancelar.textContent = "Cancelar";
+cancelar.onclick = async () => {
+if(!confirm(`Cancelar o agendamento de ${a.nome || a.titulo}?`)) return;
+const r = await chamarAdmin({acao:"pro_cancelar", id:a.id});
+if(!r.ok) alert(r.erro || "Não foi possível cancelar.");
+listarAgendamentosPro();
+};
+acoes.appendChild(cancelar);
+
+item.appendChild(acoes);
+caixa.appendChild(item);
+
+});
+
+}catch(e){
+caixa.textContent = "Não foi possível carregar os agendamentos.";
+}
+
+}
+
+function abrirRemarcarPro(item, a){
+
+if(item.querySelector(".remarcar-box")) return;
+
+const box = document.createElement("div");
+box.className = "remarcar-box";
+
+const data = document.createElement("input");
+data.type = "date";
+data.min = hojeISO();
+
+const hora = document.createElement("select");
+hora.innerHTML = '<option value="">Selecione um horário</option>';
+
+data.onchange = async () => {
+hora.innerHTML = '<option value="">Selecione um horário</option>';
+if(!data.value) return;
+const r = await chamarAdmin({acao:"pro_horarios", data:data.value, duracao:a.duracao, ignorar:a.id});
+if(!r.ok) return;
+r.horarios.forEach(h => {
+const o = document.createElement("option");
+o.value = h; o.textContent = h;
+hora.appendChild(o);
+});
+};
+
+const ok = document.createElement("button");
+ok.className = "btn";
+ok.textContent = "Confirmar novo horário";
+ok.onclick = async () => {
+if(!data.value || !hora.value){ alert("Escolha a nova data e o horário."); return; }
+const r = await chamarAdmin({acao:"pro_remarcar", id:a.id, data:data.value, hora:hora.value});
+if(!r.ok){ alert(r.erro || "Não foi possível remarcar."); return; }
+listarAgendamentosPro();
+};
+
+const fechar = document.createElement("button");
+fechar.className = "btn sec";
+fechar.style.marginTop = "8px";
+fechar.textContent = "Fechar";
+fechar.onclick = () => box.remove();
+
+box.appendChild(data);
+box.appendChild(hora);
+box.appendChild(ok);
+box.appendChild(fechar);
+item.appendChild(box);
+
+}
+
+
+/* ---------------- Busca de cliente (lupa) ---------------- */
+
+let timerBuscaGlobal = null;
+
+function soDigitos(t){ return String(t || "").replace(/\D/g,""); }
+
+function buscaGlobal(){
+
+clearTimeout(timerBuscaGlobal);
+const caixa = document.getElementById("busca-resultados");
+
+timerBuscaGlobal = setTimeout(async () => {
+
+const q = document.getElementById("busca-global").value.trim();
+caixa.innerHTML = "";
+if(q.length < 2) return;
+
+try{
+const json = await chamarAdmin({acao:"clientes_buscar", q});
+if(!json.ok) return;
+
+if(json.clientes.length === 0){
+const n = document.createElement("div");
+n.className = "nada";
+n.textContent = "Nenhuma cliente encontrada. Use \"Novo agendamento\" para cadastrar.";
+caixa.appendChild(n);
+return;
+}
+
+json.clientes.slice(0,8).forEach(c => {
+const b = document.createElement("button");
+b.type = "button";
+b.textContent = c.nome;
+const sm = document.createElement("small");
+sm.textContent = c.tel;
+b.appendChild(sm);
+b.onclick = () => selecionarCliente(c);
+caixa.appendChild(b);
+});
+}catch(e){}
+
+}, 250);
+
+}
+
+function selecionarCliente(c){
+
+document.getElementById("busca-resultados").innerHTML = "";
+document.getElementById("busca-global").value = c.nome;
+
+const card = document.getElementById("cliente-card");
+card.innerHTML = "";
+card.hidden = false;
+
+const fechar = document.createElement("button");
+fechar.className = "fechar";
+fechar.type = "button";
+fechar.textContent = "×";
+fechar.onclick = () => { card.hidden = true; document.getElementById("busca-global").value = ""; };
+card.appendChild(fechar);
+
+const h = document.createElement("h3");
+h.textContent = c.nome;
+card.appendChild(h);
+
+const meta = document.createElement("div");
+meta.className = "meta";
+meta.textContent = c.tel + (c.email ? " · " + c.email : "");
+card.appendChild(meta);
+
+const tel = soDigitos(c.tel).slice(-11);
+const dela = agCache.filter(a => tel && soDigitos(a.tel).slice(-11) === tel);
+
+if(dela.length){
+const t = document.createElement("div");
+t.style.cssText = "font-size:13px;font-weight:500;color:var(--vinho);";
+t.textContent = "Próximos agendamentos";
+card.appendChild(t);
+dela.forEach(a => {
+const l = document.createElement("div");
+l.className = "linha-ag";
+const tx = document.createElement("span");
+tx.textContent = `${formatarDataBR(a.data)} às ${a.hora} · ${a.titulo}`;
+l.appendChild(tx);
+const r = document.createElement("button");
+r.className = "btn sec peq";
+r.type = "button";
+r.textContent = "Remarcar";
+r.onclick = () => {
+abrirAba("agenda");
+const item = agItens[a.id];
+if(item){ abrirRemarcarPro(item, a); item.scrollIntoView({behavior:"smooth", block:"center"}); }
+};
+l.appendChild(r);
+card.appendChild(l);
+});
+}else{
+const n = document.createElement("div");
+n.className = "vazio";
+n.textContent = "Sem agendamentos futuros.";
+card.appendChild(n);
+}
+
+const botoes = document.createElement("div");
+botoes.className = "botoes";
+
+const novo = document.createElement("button");
+novo.className = "btn peq";
+novo.type = "button";
+novo.textContent = "Novo agendamento";
+novo.onclick = () => preencherCliente(c, false);
+botoes.appendChild(novo);
+
+const ret = document.createElement("button");
+ret.className = "btn sec peq";
+ret.type = "button";
+ret.textContent = "Marcar retorno";
+ret.onclick = () => preencherCliente(c, true);
+botoes.appendChild(ret);
+
+if(c.tel){
+const z = document.createElement("a");
+z.className = "btn sec peq";
+z.style.cssText = "text-decoration:none;display:inline-block;text-align:center;";
+z.href = linkWhatsCliente(c.tel);
+z.target = "_blank";
+z.rel = "noopener";
+z.textContent = "WhatsApp";
+botoes.appendChild(z);
+}
+
+card.appendChild(botoes);
+
+}
+
+function preencherCliente(c, retorno){
+document.getElementById("pro-nome").value = c.nome || "";
+document.getElementById("pro-tel").value = c.tel || "";
+document.getElementById("pro-email").value = c.email || "";
+document.querySelectorAll("#pro-procs input").forEach(x => { x.checked = retorno && x.value === "Retorno"; });
+if(retorno) somarDuracaoPro();
+abrirAba("novo");
+}
+
+/* ---------------- Fidelidade ---------------- */
+
+function normalizarTelefone(t){ return String(t).replace(/\D/g,""); }
+
+function desenharSelos(selos){
+const c = document.getElementById("selos-pro");
+c.innerHTML = "";
+for(let i = 1; i <= TOTAL_SELOS; i++){
+const d = document.createElement("div");
+d.className = "selo" + (i <= selos ? " cheio" : "");
+d.textContent = i === TOTAL_SELOS ? "🎁" : (i <= selos ? "✓" : i);
+c.appendChild(d);
+}
+}
+
+async function consultarSelosPro(){
+
+const tel = normalizarTelefone(document.getElementById("profissional-telefone").value);
+const aviso = document.getElementById("selos-aviso");
+
+if(!tel){ alert("Digite o WhatsApp da cliente."); return; }
+if(!db){ aviso.textContent = "Cartão fidelidade indisponível agora."; return; }
+
+try{
+const doc = await db.collection("fidelidade").doc(tel).get();
+const selos = doc.exists ? (doc.data().selos || 0) : 0;
+desenharSelos(selos);
+aviso.textContent = `${selos} selo(s) no cartão. Faltam ${TOTAL_SELOS - 1 - selos} atendimento(s) para o Design grátis.`;
+}catch(e){
+aviso.textContent = "Não foi possível consultar agora.";
+}
+
+}
+
+async function registrarAtendimentoConcluido(){
+
+const telefone = document.getElementById("profissional-telefone").value.trim();
+const tel = normalizarTelefone(telefone);
+const aviso = document.getElementById("selos-aviso");
+
+if(!tel){ alert("Digite o WhatsApp da cliente."); return; }
+
+if(!db){
+alert("O cartão fidelidade não está disponível agora.");
+return;
+}
+
+const ref = db.collection("fidelidade").doc(tel);
+
+try{
+
+const resultado = await db.runTransaction(async (t) => {
+const doc = await t.get(ref);
+let selos = (doc.exists ? (doc.data().selos || 0) : 0) + 1;
+let ganhou = false;
+if(selos >= TOTAL_SELOS){ selos = 0; ganhou = true; }
+t.set(ref, {selos: selos, atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()});
+return {selos, ganhou};
+});
+
+document.getElementById("profissional-telefone").value = "";
+desenharSelos(resultado.selos);
+
+if(resultado.ganhou){
+aviso.textContent = `Atendimento grátis registrado! O cartão de ${telefone} foi reiniciado.`;
+}else{
+aviso.textContent = `Selo registrado para ${telefone} (${resultado.selos} selo(s) no cartão).`;
+}
+
+}catch(e){
+console.error(e);
+alert("Não foi possível salvar o selo agora. Verifique a internet e tente de novo.");
+}
+
+}
+
+</script>
+</body>
+</html>
