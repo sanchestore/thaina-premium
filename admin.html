@@ -74,6 +74,12 @@ main{max-width:760px;margin:0 auto;padding:16px 20px 60px;}
 .selos{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 14px;}
 .selo{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--dourado);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--dourado);}
 .selo.cheio{background:var(--vinho);color:var(--creme);border-color:var(--vinho);}
+.fid-alerta{max-width:760px;margin:16px auto 0;background:#fff7e0;border:1.5px solid var(--dourado);border-radius:18px;padding:14px 18px;font-size:14px;line-height:1.6;color:#5b3d00;}
+.fid-alerta b{color:var(--vinho);}
+.fid-item{background:#fff7e0;border:1px solid var(--dourado);color:#5b3d00;border-radius:12px;padding:8px 12px;margin:8px 0;font-size:13px;line-height:1.5;}
+.presenca-linha{background:var(--creme);border-radius:14px;padding:12px 14px;margin-top:10px;font-size:14px;}
+.presenca-linha .acoes-p{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.presenca-linha.feito{opacity:.75;}
 .busca-global{max-width:760px;margin:0 auto;padding:16px 20px 0;position:relative;}
 .busca-wrap{position:relative;}
 .busca-wrap .lupa{position:absolute;left:18px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none;margin-top:-8px;}
@@ -136,6 +142,12 @@ main{max-width:760px;margin:0 auto;padding:16px 20px 60px;}
 
 <!-- AGENDA -->
 <section class="aba ativa" id="aba-agenda">
+<div id="pro-fid-alerta" class="fid-alerta" hidden></div>
+<div class="cartao" id="pro-presenca-box" hidden>
+<h2>Confirmar comparecimento</h2>
+<p class="dica">Confirme quem veio. Ao tocar em "Compareceu", o selo entra sozinho no cartão fidelidade da cliente.</p>
+<div id="pro-presenca"></div>
+</div>
 <div class="cartao">
 <h2>Próximos agendamentos</h2>
 <p class="dica">Toque em remarcar, cancelar ou marcar o retorno da cliente.</p>
@@ -152,7 +164,8 @@ main{max-width:760px;margin:0 auto;padding:16px 20px 60px;}
 <input type="text" id="pro-busca" placeholder="Buscar cliente (nome ou WhatsApp)" oninput="buscarClientePro()">
 <div id="pro-sugestoes" class="sug" style="margin:-8px 0 14px;font-size:14px;"></div>
 <input type="text" id="pro-nome" placeholder="Nome da cliente">
-<input type="tel" id="pro-tel" placeholder="WhatsApp (com DDD)">
+<input type="tel" id="pro-tel" placeholder="WhatsApp (com DDD)" oninput="checarCartaoPro()">
+<p id="pro-fid" class="msg" style="margin:-10px 0 14px;"></p>
 <input type="email" id="pro-email" placeholder="E-mail (opcional)">
 <label class="rotulo">Procedimentos (inclui retorno e manutenção)</label>
 <div id="pro-procs" style="margin-bottom:16px;"></div>
@@ -616,7 +629,9 @@ try{
 const json = await chamarAdmin({acao:"pro_agendar", nome, telefone, email, procedimentos, duracao, data, hora});
 if(!json.ok){ alert(json.erro || "Não foi possível agendar."); return; }
 
-alert(`Agendado! ${nome} — ${formatarDataBR(data)} às ${hora}. Código: ${json.codigo}`);
+const selosCli = await selosDe(telNorm(telefone));
+const avisoGrat = (selosCli !== null && selosCli >= TOTAL_SELOS - 1) ? `\n\n🎁 ATENÇÃO: ${nome} completou o cartão fidelidade. Este atendimento é o Design grátis (10º).` : "";
+alert(`Agendado! ${nome} — ${formatarDataBR(data)} às ${hora}. Código: ${json.codigo}` + avisoGrat);
 
 ["pro-nome","pro-tel","pro-email","pro-data"].forEach(id => document.getElementById(id).value = "");
 document.querySelectorAll("#pro-procs input:checked").forEach(c => c.checked = false);
@@ -638,6 +653,7 @@ document.getElementById("pro-email").value = "";
 document.querySelectorAll("#pro-procs input").forEach(c => { c.checked = (c.value === "Retorno"); });
 somarDuracaoPro();
 abrirAba("novo");
+checarCartaoPro();
 }
 
 /* ---------------- Agenda ---------------- */
@@ -655,17 +671,20 @@ const json = await chamarAdmin({acao:"pro_listar"});
 if(!json.ok){ caixa.textContent = json.erro || "Erro ao carregar."; return; }
 
 caixa.innerHTML = "";
-agCache = json.agendamentos;
+const futuros = json.agendamentos.filter(a => !a.passou);
+agCache = futuros;
 agItens = {};
+renderPresenca(json.agendamentos.filter(a => a.passou));
 
-if(json.agendamentos.length === 0){
+if(futuros.length === 0){
+avisarCartoesCompletos([]);
 caixa.innerHTML = '<p class="vazio">Nenhum agendamento futuro.</p>';
 return;
 }
 
 let diaAtual = "";
 
-json.agendamentos.forEach(a => {
+futuros.forEach(a => {
 
 if(a.data !== diaAtual){
 diaAtual = a.data;
@@ -713,13 +732,24 @@ acoes.appendChild(zap);
 }
 
 const corrigir = document.createElement("a");
-corrigir.textContent = a.tel ? "Corrigir WhatsApp" : "Adicionar WhatsApp";
+corrigir.textContent = a.tel ? "Editar cliente" : "Adicionar WhatsApp";
 corrigir.onclick = async () => {
-const novo = prompt(`WhatsApp de ${a.nome || a.titulo} (com DDD):`, a.tel || "");
+if(!a.tel){
+const novo = prompt(`WhatsApp de ${a.nome || a.titulo} (com DDD):`, "");
 if(novo === null) return;
 const r = await chamarAdmin({acao:"pro_definir_tel", id:a.id, telefone:novo});
 if(!r.ok){ alert(r.erro || "Não foi possível salvar o WhatsApp."); return; }
 listarAgendamentosPro();
+return;
+}
+let c = {nome:a.nome, tel:a.tel, email:""};
+try{
+const r = await chamarAdmin({acao:"clientes_buscar", q:a.tel});
+const achou = (r.clientes || []).find(x => x.nome === a.nome);
+if(achou) c = achou;
+}catch(e){}
+window.scrollTo({top:0, behavior:"smooth"});
+editarClienteForm(c);
 };
 acoes.appendChild(corrigir);
 
@@ -748,6 +778,8 @@ item.appendChild(acoes);
 caixa.appendChild(item);
 
 });
+
+avisarCartoesCompletos(futuros);
 
 }catch(e){
 caixa.textContent = "Não foi possível carregar os agendamentos.";
@@ -878,6 +910,15 @@ meta.className = "meta";
 meta.textContent = c.tel + (c.email ? " · " + c.email : "");
 card.appendChild(meta);
 
+const fid = document.createElement("div");
+fid.className = "meta";
+card.appendChild(fid);
+selosDe(telNorm(c.tel)).then(s => {
+if(s === null) return;
+fid.textContent = textoSelos(s);
+if(s >= TOTAL_SELOS - 1){ fid.style.color = "#b3261e"; fid.style.fontWeight = "600"; }
+});
+
 const tel = soDigitos(c.tel).slice(-11);
 const dela = agCache.filter(a => tel && soDigitos(a.tel).slice(-11) === tel);
 
@@ -928,6 +969,13 @@ ret.textContent = "Marcar retorno";
 ret.onclick = () => preencherCliente(c, true);
 botoes.appendChild(ret);
 
+const ed = document.createElement("button");
+ed.className = "btn sec peq";
+ed.type = "button";
+ed.textContent = "Editar dados";
+ed.onclick = () => editarClienteForm(c);
+botoes.appendChild(ed);
+
 if(c.tel){
 const z = document.createElement("a");
 z.className = "btn sec peq";
@@ -943,6 +991,254 @@ card.appendChild(botoes);
 
 }
 
+/* ---------------- Comparecimento + selo automático ---------------- */
+
+function telNorm(t){
+let d = soDigitos(t);
+if((d.length === 12 || d.length === 13) && d.indexOf("55") === 0) d = d.slice(2);
+return d;
+}
+
+async function selosDe(tel){
+if(!db || !tel) return null;
+try{
+const d = await db.collection("fidelidade").doc(tel).get();
+return d.exists ? (d.data().selos || 0) : 0;
+}catch(e){ return null; }
+}
+
+// +1 selo. No 10º atendimento é o Design grátis e o cartão recomeça.
+async function darSelo(tel){
+if(!db) throw new Error("sem firebase");
+const ref = db.collection("fidelidade").doc(tel);
+return await db.runTransaction(async (t) => {
+const doc = await t.get(ref);
+let selos = (doc.exists ? (doc.data().selos || 0) : 0) + 1;
+let ganhou = false;
+if(selos >= TOTAL_SELOS){ selos = 0; ganhou = true; }
+t.set(ref, {selos: selos, atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()});
+return {selos, ganhou};
+});
+}
+
+// Desfaz o selo (se foi o atendimento grátis, o cartão volta a 9).
+async function tirarSelo(tel, eraGift){
+if(!db) throw new Error("sem firebase");
+const ref = db.collection("fidelidade").doc(tel);
+await db.runTransaction(async (t) => {
+const doc = await t.get(ref);
+const atual = doc.exists ? (doc.data().selos || 0) : 0;
+const novo = eraGift ? TOTAL_SELOS - 1 : Math.max(0, atual - 1);
+t.set(ref, {selos: novo, atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()});
+});
+}
+
+function textoSelos(selos){
+if(selos >= TOTAL_SELOS - 1) return `🎁 Cartão fidelidade COMPLETO (${selos} selos): o próximo atendimento é o Design grátis.`;
+return `Cartão fidelidade: ${selos} selo(s). Faltam ${TOTAL_SELOS - 1 - selos} atendimento(s) para o Design grátis.`;
+}
+
+let timerCartaoPro = null;
+function checarCartaoPro(){
+clearTimeout(timerCartaoPro);
+const alvo = document.getElementById("pro-fid");
+alvo.textContent = "";
+alvo.style.color = "";
+timerCartaoPro = setTimeout(async () => {
+const tel = telNorm(document.getElementById("pro-tel").value);
+if(tel.length < 10) return;
+const s = await selosDe(tel);
+if(s === null) return;
+alvo.textContent = textoSelos(s);
+alvo.style.color = s >= TOTAL_SELOS - 1 ? "#b3261e" : "";
+alvo.style.fontWeight = s >= TOTAL_SELOS - 1 ? "600" : "";
+}, 400);
+}
+
+async function avisarCartoesCompletos(futuros){
+const caixa = document.getElementById("pro-fid-alerta");
+caixa.hidden = true;
+caixa.innerHTML = "";
+const tels = [...new Set(futuros.map(a => telNorm(a.tel)).filter(t => t.length >= 10))];
+if(!tels.length) return;
+const mapa = {};
+await Promise.all(tels.map(async t => { mapa[t] = await selosDe(t); }));
+const completas = futuros.filter(a => (mapa[telNorm(a.tel)] ?? 0) >= TOTAL_SELOS - 1);
+if(!completas.length) return;
+completas.forEach(a => {
+const item = agItens[a.id];
+if(!item) return;
+const b = document.createElement("div");
+b.className = "fid-item";
+b.textContent = "🎁 Cartão fidelidade completo: este atendimento é o Design grátis (10º).";
+item.insertBefore(b, item.firstChild);
+});
+caixa.innerHTML = "<b>🎁 Cartão fidelidade completo</b><br>" + completas.map(a => `${a.nome || a.titulo} — ${formatarDataBR(a.data)} às ${a.hora}`).join("<br>") + "<br>O Design é grátis nesse atendimento.";
+caixa.hidden = false;
+}
+
+function renderPresenca(lista){
+const box = document.getElementById("pro-presenca-box");
+const alvo = document.getElementById("pro-presenca");
+alvo.innerHTML = "";
+const ordenada = [...lista].reverse();
+box.hidden = ordenada.length === 0;
+if(!ordenada.length) return;
+const pend = ordenada.filter(a => !a.status);
+if(!pend.length){
+const ok = document.createElement("p");
+ok.className = "vazio";
+ok.textContent = "Tudo confirmado por enquanto. ✓";
+alvo.appendChild(ok);
+}
+ordenada.forEach(a => {
+const l = document.createElement("div");
+l.className = "presenca-linha" + (a.status ? " feito" : "");
+const tx = document.createElement("div");
+tx.textContent = `${formatarDataBR(a.data)} às ${a.hora} · ${a.titulo}`;
+l.appendChild(tx);
+const ac = document.createElement("div");
+ac.className = "acoes-p";
+if(a.status){
+const st = document.createElement("span");
+st.textContent = a.status === "compareceu" ? "✓ Compareceu (selo registrado)" : "Não compareceu";
+ac.appendChild(st);
+const des = document.createElement("button");
+des.className = "btn sec peq";
+des.type = "button";
+des.textContent = "Desfazer";
+des.onclick = () => marcarPresenca(a, "");
+ac.appendChild(des);
+}else{
+const sim = document.createElement("button");
+sim.className = "btn peq";
+sim.type = "button";
+sim.textContent = "✓ Compareceu";
+sim.onclick = () => marcarPresenca(a, "compareceu");
+ac.appendChild(sim);
+const nao = document.createElement("button");
+nao.className = "btn sec peq";
+nao.type = "button";
+nao.textContent = "Não veio";
+nao.onclick = () => marcarPresenca(a, "faltou");
+ac.appendChild(nao);
+}
+l.appendChild(ac);
+alvo.appendChild(l);
+});
+}
+
+async function marcarPresenca(a, status){
+const r = await chamarAdmin({acao:"pro_presenca", id:a.id, status});
+if(!r.ok){ alert(r.erro || "Não foi possível salvar."); return; }
+const tel = telNorm(r.tel || a.tel);
+try{
+if(status === "compareceu" && r.mudou){
+const res = await darSelo(tel);
+if(res.ganhou){
+await chamarAdmin({acao:"pro_presenca", id:a.id, status:"compareceu", ganhou:true});
+alert(`🎁 ${a.nome || "A cliente"} completou o cartão fidelidade! Este atendimento foi o Design grátis. O cartão recomeça do zero.`);
+}else{
+alert(`Selo registrado para ${a.nome || "a cliente"}: ${res.selos} de ${TOTAL_SELOS - 1}.` + (res.selos >= TOTAL_SELOS - 1 ? "\n\n🎁 Cartão completo! O próximo atendimento é o Design grátis." : ""));
+}
+}else if(r.antes === "compareceu" && status !== "compareceu"){
+await tirarSelo(tel, r.eraGift);
+}
+}catch(e){
+console.error(e);
+await chamarAdmin({acao:"pro_presenca", id:a.id, status:r.antes || ""});
+alert("Não consegui mexer no cartão fidelidade agora, então não salvei a confirmação. Tente de novo.");
+}
+listarAgendamentosPro();
+}
+
+/* Editar nome, WhatsApp e e-mail de uma cliente (e dos agendamentos futuros dela). */
+function editarClienteForm(c){
+
+const card = document.getElementById("cliente-card");
+card.hidden = false;
+card.innerHTML = "";
+
+const h = document.createElement("h3");
+h.textContent = "Editar dados da cliente";
+card.appendChild(h);
+
+const dica = document.createElement("div");
+dica.className = "meta";
+dica.textContent = "As mudanças valem também para os agendamentos futuros dela.";
+card.appendChild(dica);
+
+const campo = (rotulo, tipo, valor) => {
+const l = document.createElement("label");
+l.className = "rotulo";
+l.textContent = rotulo;
+const i = document.createElement("input");
+i.type = tipo;
+i.value = valor || "";
+card.appendChild(l);
+card.appendChild(i);
+return i;
+};
+
+const iNome = campo("Nome", "text", c.nome);
+const iTel = campo("WhatsApp (com DDD)", "tel", c.tel ? formatarTelefone(c.tel) : "");
+const iEmail = campo("E-mail (opcional)", "email", c.email);
+
+const msg = document.createElement("p");
+msg.className = "msg";
+card.appendChild(msg);
+
+const botoes = document.createElement("div");
+botoes.className = "botoes";
+
+const salvar = document.createElement("button");
+salvar.className = "btn peq";
+salvar.type = "button";
+salvar.textContent = "Salvar";
+salvar.onclick = async () => {
+msg.textContent = "Salvando...";
+salvar.disabled = true;
+try{
+const r = await chamarAdmin({acao:"clientes_editar", tel:c.tel, nome:c.nome, novoNome:iNome.value, novoTel:iTel.value, novoEmail:iEmail.value});
+if(!r.ok){ msg.textContent = r.erro || "Não foi possível salvar."; salvar.disabled = false; return; }
+const novoTel = soDigitos(iTel.value).replace(/^55(?=\d{10,11}$)/, "");
+if(r.antTel && r.antTel !== novoTel && r.restantesNoTelAntigo === 0) await moverSelos(r.antTel, novoTel);
+await listarAgendamentosPro();
+selecionarCliente({nome:iNome.value.trim(), tel:novoTel, email:iEmail.value.trim()});
+}catch(e){
+msg.textContent = "Não foi possível salvar agora. Tente de novo.";
+salvar.disabled = false;
+}
+};
+botoes.appendChild(salvar);
+
+const cancelar = document.createElement("button");
+cancelar.className = "btn sec peq";
+cancelar.type = "button";
+cancelar.textContent = "Cancelar";
+cancelar.onclick = () => selecionarCliente(c);
+botoes.appendChild(cancelar);
+
+card.appendChild(botoes);
+card.scrollIntoView({behavior:"smooth", block:"center"});
+}
+
+// Se o WhatsApp mudou, leva o cartão fidelidade (selos) para o número novo.
+async function moverSelos(antigo, novo){
+if(!db) return;
+try{
+for(const id of [antigo, "55" + antigo]){
+const ref = db.collection("fidelidade").doc(id);
+const doc = await ref.get();
+if(!doc.exists) continue;
+const destino = db.collection("fidelidade").doc(novo);
+const existe = await destino.get();
+if(!existe.exists) await destino.set(doc.data());
+await ref.delete();
+}
+}catch(e){ console.error(e); }
+}
+
 function preencherCliente(c, retorno){
 document.getElementById("pro-nome").value = c.nome || "";
 document.getElementById("pro-tel").value = c.tel || "";
@@ -950,6 +1246,7 @@ document.getElementById("pro-email").value = c.email || "";
 document.querySelectorAll("#pro-procs input").forEach(x => { x.checked = retorno && x.value === "Retorno"; });
 somarDuracaoPro();
 abrirAba("novo");
+checarCartaoPro();
 }
 
 /* ---------------- Fidelidade ---------------- */
