@@ -800,10 +800,35 @@ const partes = iso.split("-");
 return `${partes[2]}/${partes[1]}/${partes[0]}`;
 }
 
+/* Cada consulta recebe um número; só a mais recente pode mexer na lista. Sem isso, respostas lentas
+   (a agenda do Google às vezes demora) chegavam fora de ordem, duplicavam/misturavam horários e a
+   lista mudava enquanto a cliente tentava escolher. */
+let consultaHorarios = 0;
+let consultaRemarcar = 0;
+
+function preencherHorarios(select, horarios){
+const anterior = select.value;
+const frag = document.createDocumentFragment();
+const vazio = document.createElement("option");
+vazio.value = "";
+vazio.textContent = "Selecione um horário";
+frag.appendChild(vazio);
+[...new Set(horarios)].forEach(h => {
+const opcao = document.createElement("option");
+opcao.value = h;
+opcao.textContent = h;
+frag.appendChild(opcao);
+});
+select.innerHTML = "";
+select.appendChild(frag);
+if(anterior && horarios.indexOf(anterior) !== -1) select.value = anterior;
+}
+
 async function carregarHorarios(){
 
 if(!URL_AGENDA) return;
 
+const minha = ++consultaHorarios;
 const data = document.getElementById("data").value;
 const select = document.getElementById("hora");
 const aviso = document.getElementById("horarios-aviso");
@@ -826,6 +851,7 @@ aviso.textContent = "Buscando horários livres...";
 try{
 const resp = await fetch(`${URL_AGENDA}?acao=horarios&data=${encodeURIComponent(data)}&duracao=${duracao}`);
 const json = await resp.json();
+if(minha !== consultaHorarios) return;
 
 if(!json.ok) throw new Error(json.erro || "erro");
 
@@ -834,16 +860,12 @@ aviso.textContent = `Não há horários livres nesse dia para ${formatarDuracao(
 return;
 }
 
-json.horarios.forEach(h => {
-const opcao = document.createElement("option");
-opcao.value = h;
-opcao.textContent = h;
-select.appendChild(opcao);
-});
+preencherHorarios(select, json.horarios);
 
 aviso.textContent = `Duração estimada: ${formatarDuracao(duracao)}. Escolha um dos horários livres.`;
 
 }catch(erro){
+if(minha !== consultaHorarios) return;
 aviso.textContent = "Não foi possível carregar os horários agora. Tente de novo ou chame a Thainá no WhatsApp.";
 }
 
@@ -1064,6 +1086,7 @@ async function carregarHorariosRemarcar(){
 
 if(!meuAgendamento) return;
 
+const minha = ++consultaRemarcar;
 const data = document.getElementById("meu-data").value;
 const select = document.getElementById("meu-hora");
 const aviso = document.getElementById("meu-aviso");
@@ -1076,6 +1099,7 @@ aviso.textContent = "Buscando horários livres...";
 
 try{
 const json = await postAgenda({acao:"meu_horarios", telefone: meuAgendamento.telefone, codigo: meuAgendamento.codigo, data});
+if(minha !== consultaRemarcar) return;
 
 if(!json.ok){ aviso.textContent = json.erro || "Não foi possível carregar os horários."; return; }
 
@@ -1084,16 +1108,12 @@ aviso.textContent = "Não há horários livres nesse dia. Tente outra data.";
 return;
 }
 
-json.horarios.forEach(h => {
-const opcao = document.createElement("option");
-opcao.value = h;
-opcao.textContent = h;
-select.appendChild(opcao);
-});
+preencherHorarios(select, json.horarios);
 
 aviso.textContent = "Escolha o novo horário.";
 
 }catch(erro){
+if(minha !== consultaRemarcar) return;
 aviso.textContent = "Não foi possível carregar os horários agora. Tente de novo.";
 }
 

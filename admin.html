@@ -295,6 +295,21 @@ const d = String(tel).replace(/\D/g,"");
 return "https://wa.me/" + (d.length <= 11 ? "55" + d : d);
 }
 
+function formatarTelefone(tel){
+let d = String(tel).replace(/\D/g,"");
+if((d.length === 12 || d.length === 13) && d.indexOf("55") === 0) d = d.slice(2);
+if(d.length === 11) return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
+if(d.length === 10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
+return d;
+}
+
+// Link de confirmação já com o nome, a data e a hora da própria cliente (para não errar de pessoa).
+function linkWhatsConfirmacao(a){
+const [ano,mes,dia] = String(a.data || "").split("-");
+const msg = `Olá, ${a.nome || "tudo bem"}! Seu horário na Thainá Mendes Beauty está confirmado para ${dia}/${mes}/${ano} às ${a.hora}. Qualquer mudança é só avisar. 💖`;
+return linkWhatsCliente(a.tel) + "?text=" + encodeURIComponent(msg);
+}
+
 /* ---------------- Entrar / sair ---------------- */
 
 // A senha fica só no Apps Script (SENHA_PROFISSIONAL). Aqui ela só é guardada
@@ -499,7 +514,9 @@ enviarImportacao({acao:"clientes_varrer"});
 function somarDuracaoPro(){
 const marcados = [...document.querySelectorAll("#pro-procs input:checked")];
 const soma = marcados.reduce((acc,c) => acc + (DURACOES[c.value] || DURACAO_PADRAO), 0);
-if(soma > 0) document.getElementById("pro-duracao").value = soma;
+// Sem procedimento marcado volta para 60 min (antes ficava a duração do atendimento anterior e os
+// horários livres sumiam, mesmo com a agenda vazia).
+document.getElementById("pro-duracao").value = soma > 0 ? soma : 60;
 carregarHorariosPro();
 }
 
@@ -546,8 +563,11 @@ caixa.appendChild(item);
 
 }
 
+let consultaPro = 0;
+
 async function carregarHorariosPro(){
 
+const minha = ++consultaPro;
 const data = document.getElementById("pro-data").value;
 const duracao = document.getElementById("pro-duracao").value;
 const select = document.getElementById("pro-hora");
@@ -561,15 +581,17 @@ aviso.textContent = "Buscando horários livres...";
 
 try{
 const json = await chamarAdmin({acao:"pro_horarios", data, duracao});
+if(minha !== consultaPro) return;
 if(!json.ok){ aviso.textContent = json.erro || "Erro ao buscar horários."; return; }
-if(json.horarios.length === 0){ aviso.textContent = "Sem horários livres nesse dia (use Horários extras para abrir o dia)."; return; }
-json.horarios.forEach(h => {
+if(json.horarios.length === 0){ aviso.textContent = `Sem horários livres nesse dia para ${duracao} min de atendimento. Se a agenda está vazia, confira a duração acima ou use Horários extras.`; return; }
+[...new Set(json.horarios)].forEach(h => {
 const o = document.createElement("option");
 o.value = h; o.textContent = h;
 select.appendChild(o);
 });
-aviso.textContent = "Escolha o horário.";
+aviso.textContent = `Horários livres para ${duracao} min de atendimento. Escolha o horário.`;
 }catch(e){
+if(minha !== consultaPro) return;
 aviso.textContent = "Não foi possível buscar os horários agora.";
 }
 
@@ -598,6 +620,7 @@ alert(`Agendado! ${nome} — ${formatarDataBR(data)} às ${hora}. Código: ${jso
 
 ["pro-nome","pro-tel","pro-email","pro-data"].forEach(id => document.getElementById(id).value = "");
 document.querySelectorAll("#pro-procs input:checked").forEach(c => c.checked = false);
+document.getElementById("pro-duracao").value = 60;
 document.getElementById("pro-hora").innerHTML = '<option value="">Selecione um horário</option>';
 document.getElementById("pro-aviso").textContent = "";
 listarAgendamentosPro();
@@ -666,20 +689,39 @@ item.appendChild(linha1);
 
 const meta = document.createElement("div");
 meta.className = "meta";
-meta.textContent = `${formatarDuracao(a.duracao)} · ${a.tel || "sem telefone"}`;
+meta.textContent = `${formatarDuracao(a.duracao)} · ${a.tel ? formatarTelefone(a.tel) : "sem WhatsApp cadastrado"}`;
 item.appendChild(meta);
+
+if(a.compart && a.compart.length){
+const av = document.createElement("div");
+av.className = "meta";
+av.style.color = "#b3261e";
+av.textContent = `⚠ Esse número também está cadastrado para: ${a.compart.join(", ")}. A mensagem vai para esse WhatsApp — confira antes de enviar.`;
+item.appendChild(av);
+}
 
 const acoes = document.createElement("div");
 acoes.className = "acoes-ag";
 
 if(a.tel){
 const zap = document.createElement("a");
-zap.href = linkWhatsCliente(a.tel);
+zap.href = linkWhatsConfirmacao(a);
 zap.target = "_blank";
 zap.rel = "noopener";
-zap.textContent = "WhatsApp";
+zap.textContent = "WhatsApp" + (a.nome ? " de " + a.nome.split(" ")[0] : "");
 acoes.appendChild(zap);
 }
+
+const corrigir = document.createElement("a");
+corrigir.textContent = a.tel ? "Corrigir WhatsApp" : "Adicionar WhatsApp";
+corrigir.onclick = async () => {
+const novo = prompt(`WhatsApp de ${a.nome || a.titulo} (com DDD):`, a.tel || "");
+if(novo === null) return;
+const r = await chamarAdmin({acao:"pro_definir_tel", id:a.id, telefone:novo});
+if(!r.ok){ alert(r.erro || "Não foi possível salvar o WhatsApp."); return; }
+listarAgendamentosPro();
+};
+acoes.appendChild(corrigir);
 
 const remarcar = document.createElement("a");
 remarcar.textContent = "Remarcar";
@@ -727,12 +769,14 @@ data.min = hojeISO();
 const hora = document.createElement("select");
 hora.innerHTML = '<option value="">Selecione um horário</option>';
 
+let consulta = 0;
 data.onchange = async () => {
+const minha = ++consulta;
 hora.innerHTML = '<option value="">Selecione um horário</option>';
 if(!data.value) return;
 const r = await chamarAdmin({acao:"pro_horarios", data:data.value, duracao:a.duracao, ignorar:a.id});
-if(!r.ok) return;
-r.horarios.forEach(h => {
+if(minha !== consulta || !r.ok) return;
+[...new Set(r.horarios)].forEach(h => {
 const o = document.createElement("option");
 o.value = h; o.textContent = h;
 hora.appendChild(o);
@@ -904,7 +948,7 @@ document.getElementById("pro-nome").value = c.nome || "";
 document.getElementById("pro-tel").value = c.tel || "";
 document.getElementById("pro-email").value = c.email || "";
 document.querySelectorAll("#pro-procs input").forEach(x => { x.checked = retorno && x.value === "Retorno"; });
-if(retorno) somarDuracaoPro();
+somarDuracaoPro();
 abrirAba("novo");
 }
 
