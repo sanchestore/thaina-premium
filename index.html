@@ -21,8 +21,8 @@ body{font-family:'Poppins',sans-serif;background:var(--creme);color:var(--texto)
 header{position:fixed;top:0;left:0;width:100%;background:rgba(248,242,236,0.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;gap:20px;z-index:999;border-bottom:1px solid rgba(194,155,87,0.45);}
 .logo{font-family:var(--serif);font-style:italic;font-size:28px;font-weight:500;color:var(--vinho);white-space:nowrap;}
 .logo span{color:var(--dourado);}
-nav{display:flex;gap:26px;flex-wrap:wrap;}
-nav a{text-decoration:none;color:var(--texto);font-size:12px;font-weight:500;letter-spacing:1.6px;text-transform:uppercase;transition:0.3s;}
+nav{display:flex;gap:16px;flex-wrap:wrap;}
+nav a{text-decoration:none;color:var(--texto);font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;transition:0.3s;}
 nav a:hover{color:var(--vinho-medio);}
 .hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:140px 7% 90px;background:radial-gradient(circle at 82% 28%,rgba(194,155,87,0.30),transparent 42%),radial-gradient(circle at 8% 95%,rgba(138,26,53,0.65),transparent 50%),linear-gradient(135deg,#3f0716 0%,#6b0f24 62%,#4a0a1b 100%);color:var(--creme);}
 .hero-content{max-width:620px;text-align:left;}
@@ -146,6 +146,8 @@ textarea:focus{border-color:var(--dourado);box-shadow:0 0 0 3px rgba(194,155,87,
 @media(max-width:900px){.resumo-flutuante strong{flex:1;}}
 .grupo-titulo{font-family:var(--serif);font-style:italic;font-weight:500;font-size:22px;color:var(--vinho);margin:22px 0 4px;display:flex;align-items:center;gap:14px;}
 .grupo-titulo::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--dourado),transparent);}
+nav a.nav-pro{white-space:nowrap;background:var(--vinho);color:#fff !important;border-radius:50px;padding:8px 16px;}
+nav a.nav-pro:hover{background:var(--vinho-medio);}
 </style>
 
 <meta name="theme-color" content="#3f0716">
@@ -159,6 +161,7 @@ textarea:focus{border-color:var(--dourado);box-shadow:0 0 0 3px rgba(194,155,87,
 <div class="logo">Thainá Mendes <span>Beauty</span></div>
 
 <nav>
+<a href="#" class="nav-pro" onclick="abrirPainelProfissional(); return false;">Área profissional</a>
 <a href="#quem-somos">Quem somos</a>
 <a href="#catalogo">Procedimentos</a>
 <a href="#fidelidade">Cartão fidelidade</a>
@@ -1162,7 +1165,7 @@ campoData.min = hoje.getFullYear() + "-" + String(hoje.getMonth()+1).padStart(2,
 const nota = document.getElementById("nota-agendamento");
 
 if(URL_AGENDA){
-nota.innerHTML = "📌 <strong>Como funciona:</strong> escolha os procedimentos, a data e um horário livre (terça a sexta, das 9h às 18h; sábado, das 9h às 13h). Depois de solicitar, você envia uma mensagem para o WhatsApp da Thainá para confirmar o agendamento.";
+nota.innerHTML = "📌 <strong>Como funciona:</strong> escolha os procedimentos, a data e um horário livre (terça a sexta, das 9h às 18h30; sábado, das 9h às 13h). Depois de solicitar, você envia uma mensagem para o WhatsApp da Thainá para confirmar o agendamento.";
 }else{
 nota.innerHTML = "📌 <strong>Importante:</strong> o envio deste formulário gera um <strong>pedido</strong> de horário, ele só é confirmado quando você recebe a resposta da Thainá pelo WhatsApp.";
 }
