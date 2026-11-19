@@ -27,6 +27,9 @@ a{color:var(--vinho-medio);}
 /* campos e botões */
 input,select,textarea{width:100%;padding:15px 18px;margin-bottom:16px;border-radius:16px;border:1.5px solid #e6d8cc;background:#fffdfb;font-size:16px;font-family:'Poppins',sans-serif;color:var(--texto);outline:none;transition:.2s;-webkit-appearance:none;appearance:none;}
 textarea{resize:vertical;}
+.grade-horas{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px;margin:0 0 12px;}
+.hora-btn{padding:12px 0;border:1px solid var(--vinho);background:#fff;color:var(--vinho);border-radius:10px;font-size:15px;cursor:pointer;}
+.hora-btn.sel{background:var(--vinho);color:#fff;}
 select{background-image:linear-gradient(45deg,transparent 50%,var(--vinho) 50%),linear-gradient(135deg,var(--vinho) 50%,transparent 50%);background-position:calc(100% - 22px) 50%,calc(100% - 16px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:44px;}
 input:focus,select:focus,textarea:focus{border-color:var(--dourado);box-shadow:0 0 0 3px rgba(194,155,87,.22);}
 input[type=checkbox]{width:auto;margin:0 10px 0 0;accent-color:var(--vinho);-webkit-appearance:auto;appearance:auto;}
@@ -174,7 +177,8 @@ main{max-width:760px;margin:0 auto;padding:16px 20px 60px;}
 <label class="rotulo">Data</label>
 <input type="date" id="pro-data" onchange="carregarHorariosPro()">
 <label class="rotulo">Horário</label>
-<select id="pro-hora"><option value="">Selecione um horário</option></select>
+<input type="hidden" id="pro-hora" value="">
+<div id="pro-grade" class="grade-horas"></div>
 <p id="pro-aviso" class="msg" style="margin:-6px 0 18px;"></p>
 <button class="btn" onclick="agendarPelaPro()">Agendar</button>
 </div>
@@ -583,10 +587,11 @@ async function carregarHorariosPro(){
 const minha = ++consultaPro;
 const data = document.getElementById("pro-data").value;
 const duracao = document.getElementById("pro-duracao").value;
-const select = document.getElementById("pro-hora");
+const grade = document.getElementById("pro-grade");
 const aviso = document.getElementById("pro-aviso");
 
-select.innerHTML = '<option value="">Selecione um horário</option>';
+grade.innerHTML = "";
+document.getElementById("pro-hora").value = "";
 
 if(!data){ aviso.textContent = ""; return; }
 
@@ -598,9 +603,14 @@ if(minha !== consultaPro) return;
 if(!json.ok){ aviso.textContent = json.erro || "Erro ao buscar horários."; return; }
 if(json.horarios.length === 0){ aviso.textContent = `Sem horários livres nesse dia para ${duracao} min de atendimento. Se a agenda está vazia, confira a duração acima ou use Horários extras.`; return; }
 [...new Set(json.horarios)].forEach(h => {
-const o = document.createElement("option");
-o.value = h; o.textContent = h;
-select.appendChild(o);
+const b = document.createElement("button");
+b.type = "button"; b.className = "hora-btn"; b.textContent = h;
+b.onclick = () => {
+document.getElementById("pro-hora").value = h;
+grade.querySelectorAll(".hora-btn").forEach(x => x.classList.toggle("sel", x === b));
+aviso.textContent = `Horário escolhido: ${h}. Toque em Agendar.`;
+};
+grade.appendChild(b);
 });
 aviso.textContent = `Horários livres para ${duracao} min de atendimento. Escolha o horário.`;
 }catch(e){
@@ -636,7 +646,8 @@ alert(`Agendado! ${nome} — ${formatarDataBR(data)} às ${hora}. Código: ${jso
 ["pro-nome","pro-tel","pro-email","pro-data"].forEach(id => document.getElementById(id).value = "");
 document.querySelectorAll("#pro-procs input:checked").forEach(c => c.checked = false);
 document.getElementById("pro-duracao").value = 60;
-document.getElementById("pro-hora").innerHTML = '<option value="">Selecione um horário</option>';
+document.getElementById("pro-hora").value = "";
+document.getElementById("pro-grade").innerHTML = "";
 document.getElementById("pro-aviso").textContent = "";
 listarAgendamentosPro();
 abrirAba("agenda");
