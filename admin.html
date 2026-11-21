@@ -27,6 +27,8 @@ a{color:var(--vinho-medio);}
 /* campos e botões */
 input,select,textarea{width:100%;padding:15px 18px;margin-bottom:16px;border-radius:16px;border:1.5px solid #e6d8cc;background:#fffdfb;font-size:16px;font-family:'Poppins',sans-serif;color:var(--texto);outline:none;transition:.2s;-webkit-appearance:none;appearance:none;}
 textarea{resize:vertical;}
+.dup-aviso{margin:8px 0 0;padding:10px 12px;border-radius:10px;background:#fff4e0;color:#8a4b00;font-size:14px;line-height:1.4;}
+.dup-aviso button{display:block;margin-top:8px;padding:8px 14px;border:1px solid #8a4b00;background:#fff;color:#8a4b00;border-radius:8px;cursor:pointer;}
 .grade-horas{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px;margin:0 0 12px;}
 .hora-btn{padding:12px 0;border:1px solid var(--vinho);background:#fff;color:var(--vinho);border-radius:10px;font-size:15px;cursor:pointer;}
 .hora-btn.sel{background:var(--vinho);color:#fff;}
@@ -672,6 +674,15 @@ checarCartaoPro();
 let agCache = [];
 let agItens = {};
 
+function primeiroNome(n){ return String(n||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").split(/\s+/)[0] || ""; }
+function outrosDaCliente(a, lista){
+if(!a.tel) return [];
+return lista.filter(o => o.id !== a.id && o.tel === a.tel && (!primeiroNome(o.nome) || !primeiroNome(a.nome) || primeiroNome(o.nome) === primeiroNome(a.nome)));
+}
+function chaveDup(a, outros){ return [a.id].concat(outros.map(o => o.id)).sort().join("|"); }
+function dupVisto(c){ try{ return (JSON.parse(localStorage.getItem("dup_ok")||"[]")).indexOf(c) >= 0; }catch(e){ return false; } }
+function dupMarcar(c){ try{ const l = JSON.parse(localStorage.getItem("dup_ok")||"[]"); l.push(c); localStorage.setItem("dup_ok", JSON.stringify(l.slice(-300))); }catch(e){} }
+
 async function listarAgendamentosPro(){
 
 const caixa = document.getElementById("pro-lista");
@@ -728,6 +739,21 @@ av.className = "meta";
 av.style.color = "#b3261e";
 av.textContent = `⚠ Esse número também está cadastrado para: ${a.compart.join(", ")}. A mensagem vai para esse WhatsApp — confira antes de enviar.`;
 item.appendChild(av);
+}
+
+const outros = outrosDaCliente(a, futuros);
+if(outros.length){
+const chave = chaveDup(a, outros);
+if(!dupVisto(chave)){
+const dv = document.createElement("div");
+dv.className = "dup-aviso"; dv.dataset.k = chave;
+dv.appendChild(document.createTextNode(`⚠ ${a.nome ? a.nome.split(" ")[0] : "Essa cliente"} tem outro agendamento: ` + outros.map(o => `${formatarDataBR(o.data)} às ${o.hora}`).join("; ") + ". Mantenha os dois ou cancele o que ela não for usar."));
+const ok = document.createElement("button");
+ok.type = "button"; ok.textContent = "Manter os dois";
+ok.onclick = () => { dupMarcar(chave); document.querySelectorAll(".dup-aviso").forEach(x => { if(x.dataset.k === chave) x.remove(); }); };
+dv.appendChild(ok);
+item.appendChild(dv);
+}
 }
 
 const acoes = document.createElement("div");
