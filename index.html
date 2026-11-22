@@ -10,7 +10,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cinzel:wght@400;500&family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
@@ -148,17 +148,190 @@ textarea:focus{border-color:var(--dourado);box-shadow:0 0 0 3px rgba(194,155,87,
 .grupo-titulo::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--dourado),transparent);}
 nav a.nav-pro{white-space:nowrap;background:var(--vinho);color:#fff !important;border-radius:50px;padding:8px 16px;}
 nav a.nav-pro:hover{background:var(--vinho-medio);}
+
+/* ===== Thainá Mendes Beauty: minimalista, editorial, interativo ao rolar ===== */
+:root{--bg:#f8f2ec;--paper:#ffffff;--ink:#2a1218;--choc:#6b0f24;--choc-esc:#3f0716;--ouro:#c29b57;--ouro-esc:#9a7432;--linha:rgba(107,15,36,0.16);--serif:'Italiana','Cormorant Garamond',serif;--marca:'Cinzel',serif;--ease:cubic-bezier(.2,.7,.2,1);}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-weight:300;}
+.progresso{position:fixed;left:0;top:0;height:2px;width:100%;background:var(--ouro);transform-origin:0 50%;transform:scaleX(0);z-index:1200;}
+header{background:transparent;border-bottom:1px solid transparent;padding:20px 5%;transition:transform .5s var(--ease),background .4s,border-color .4s,padding .4s;}
+header.fixo{background:rgba(248,242,236,0.92);border-bottom-color:var(--linha);padding:12px 5%;}
+header.oculto{transform:translateY(-100%);}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;font-style:normal;color:var(--choc);}
+.logo .tm{font-family:var(--marca);font-weight:500;font-size:22px;letter-spacing:1px;color:var(--ouro-esc);border:1px solid var(--ouro);padding:5px 8px 3px;line-height:1;}
+.logo .logo-txt{font-family:var(--marca);font-size:13px;letter-spacing:3px;text-transform:uppercase;line-height:1.2;color:var(--choc);}
+.logo .logo-txt small{display:block;font-size:9px;letter-spacing:6px;color:var(--ouro-esc);margin-top:2px;}
+nav{gap:26px;align-items:center;}
+nav a{color:var(--choc);font-size:11px;font-weight:500;letter-spacing:2px;position:relative;}
+nav a:not(.nav-pro)::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--ouro);transform:scaleX(0);transform-origin:0 50%;transition:transform .4s var(--ease);}
+nav a:not(.nav-pro):hover::after,nav a.ativo::after{transform:scaleX(1);}
+nav a:hover{color:var(--choc);}
+nav a.nav-pro{background:transparent;border:1px solid var(--choc);color:var(--choc) !important;border-radius:2px;padding:8px 14px;}
+nav a.nav-pro:hover{background:var(--choc);color:var(--bg) !important;}
+
+.hero{position:relative;min-height:100vh;min-height:100svh;display:grid;grid-template-columns:1.05fr 0.95fr;gap:4vw;align-items:center;padding:130px 7% 90px;background:var(--bg);color:var(--ink);overflow:hidden;}
+.hero::before,.hero::after{content:none;}
+.hero-texto{position:relative;z-index:2;max-width:620px;}
+.saudacao{display:inline-block;font-family:var(--marca);font-size:12px;letter-spacing:6px;text-transform:uppercase;color:var(--ouro-esc);padding-top:14px;border-top:1px solid var(--ouro);margin-bottom:34px;}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(56px,8.4vw,128px);line-height:0.95;color:var(--choc);margin-bottom:30px;letter-spacing:-1px;}
+.hero h1 em{font-style:normal;color:var(--ouro);display:inline-block;margin-left:0.9em;}
+.hero p{font-size:17px;line-height:1.9;max-width:470px;color:#5b4047;margin-bottom:40px;font-weight:300;}
+.hero-botoes{display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
+.link-seta{color:var(--choc);text-decoration:none;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--ouro);padding-bottom:4px;transition:gap .3s;display:inline-flex;gap:10px;}
+.link-seta span{transition:transform .4s var(--ease);}
+.link-seta:hover span{transform:translateX(6px);}
+.hero .btn{background:var(--choc);color:var(--bg);border:1px solid var(--choc);}
+.hero .btn.secundario{background:transparent;}
+.hero-visual{position:relative;height:min(76vh,640px);z-index:1;}
+.hero-visual .aro{position:absolute;right:-12%;top:6%;width:78%;aspect-ratio:1;border-radius:50%;border:1px solid var(--ouro);opacity:.7;will-change:transform;}
+.hero-visual .foto-recorte{position:absolute;right:4%;top:0;width:66%;height:88%;overflow:hidden;clip-path:polygon(16% 0,100% 0,84% 100%,0 100%);background:var(--choc);}
+.hero-visual .foto-recorte img{width:100%;height:118%;object-fit:cover;display:block;will-change:transform;}
+.hero-visual .foto-mini{position:absolute;left:2%;bottom:2%;width:34%;aspect-ratio:3/4;overflow:hidden;border:8px solid var(--bg);will-change:transform;}
+.hero-visual .foto-mini img{width:100%;height:100%;object-fit:cover;display:block;}
+.rolar{position:absolute;left:7%;bottom:28px;display:flex;align-items:center;gap:14px;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--choc);}
+.rolar i{display:block;width:56px;height:1px;background:var(--linha);position:relative;overflow:hidden;}
+.rolar i::after{content:"";position:absolute;inset:0;background:var(--ouro);transform:translateX(-100%);animation:corre 2.4s var(--ease) infinite;}
+@keyframes corre{60%,100%{transform:translateX(100%);}}
+.faixa{border-top:1px solid var(--linha);border-bottom:1px solid var(--linha);overflow:hidden;background:var(--bg);padding:22px 0;}
+.faixa-trilho{display:flex;gap:48px;width:max-content;font-family:var(--serif);font-size:clamp(30px,4vw,52px);color:var(--choc);will-change:transform;white-space:nowrap;}
+.faixa-trilho span::after{content:"✦";font-family:'Poppins',sans-serif;font-size:14px;color:var(--ouro);margin-left:48px;vertical-align:middle;}
+.faixa-trilho span:nth-child(even){color:transparent;-webkit-text-stroke:1px var(--choc);}
+
+section{padding:130px 7%;}
+.section-title{max-width:1100px;margin:0 auto 64px;text-align:left;}
+.section-title h2{font-family:var(--serif);font-style:normal;font-weight:400;font-size:clamp(42px,5.4vw,76px);line-height:1;color:var(--choc);letter-spacing:-0.5px;margin-bottom:24px;text-transform:none;}
+.section-title h2::after{margin:22px 0 0;width:64px;height:1px;background:var(--ouro);}
+.section-title p{margin:0;max-width:560px;font-size:15px;line-height:1.9;color:#5b4047;}
+#quem-somos .grid{max-width:1100px;margin:0 auto;grid-template-columns:5fr 6fr;gap:56px;align-items:start;}
+.card{background:transparent;border-radius:0;box-shadow:none;overflow:visible;}
+.card:hover{transform:none;}
+.card img{border-radius:0;}
+#quem-somos .card:nth-child(1) img{height:auto;aspect-ratio:3/4;object-fit:cover !important;background:var(--creme-2);clip-path:polygon(0 0,100% 0,100% 100%,8% 100%);}
+#quem-somos .card:nth-child(2){margin-top:90px;}
+#quem-somos .card:nth-child(2) img{height:auto;aspect-ratio:1;object-fit:cover;}
+.card-content{padding:22px 0 0;}
+.card-content h3{font-family:var(--serif);font-style:normal;font-weight:400;font-size:28px;color:var(--choc);letter-spacing:0.5px;}
+.card-content p{font-size:14px;color:#5b4047;}
+#catalogo{background:var(--creme-2);}
+#catalogo .section-title,#catalogo .categoria-tabs,#catalogo .categoria-painel,#catalogo .resumo-flutuante{max-width:860px;margin-left:auto;margin-right:auto;}
+#catalogo .section-title{max-width:1100px;}
+.categoria-tabs{justify-content:flex-start;gap:6px 30px;margin-bottom:34px;position:sticky;top:64px;background:var(--creme-2);z-index:20;padding:14px 0;border-bottom:1px solid var(--linha);}
+.categoria-tab{border:none;border-radius:0;background:transparent;padding:8px 0;font-size:11px;letter-spacing:2.2px;font-weight:500;color:#8a6a72;border-bottom:1px solid transparent;}
+.categoria-tab.ativa,.categoria-tab:hover{background:transparent;color:var(--choc);border-bottom-color:var(--ouro);}
+.resultado-foto-grande{border-radius:0;box-shadow:none;max-width:340px;margin:0 0 30px;clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);}
+.procedimentos-mobile{max-width:none;gap:0;margin-bottom:24px;}
+.procedimento-card{background:transparent;border-radius:0;box-shadow:none;border:none;border-bottom:1px solid var(--linha);padding:18px 6px;transition:padding .4s var(--ease),background .3s;}
+.procedimento-card:hover{padding-left:16px;border-color:var(--ouro);}
+.procedimento-card.active{background:rgba(194,155,87,0.10);border-bottom-color:var(--ouro);}
+.procedimento-foto{width:64px;height:64px;border-radius:0;clip-path:polygon(14% 0,100% 0,86% 100%,0 100%);}
+.procedimento-info h3{font-family:'Poppins',sans-serif;font-weight:500;font-size:15px;color:var(--choc-esc);}
+.procedimento-preco{font-weight:500;font-size:14px;color:var(--ouro-esc);letter-spacing:0.5px;}
+.checkbox-custom{width:24px;height:24px;border-radius:0;border:1px solid var(--choc);background:transparent;font-size:13px;color:transparent;}
+.procedimento-card.active .checkbox-custom{background:var(--choc);color:#fff;}
+.resumo-flutuante{border-radius:999px;background:var(--choc-esc);border:1px solid var(--ouro);padding:14px 26px;}
+.resumo-flutuante strong{font-family:var(--serif);font-weight:400;font-size:24px;}
+.btn{border-radius:2px;background:var(--choc);border:1px solid var(--choc);color:var(--bg);letter-spacing:2px;text-transform:uppercase;font-size:12px;font-weight:500;box-shadow:none;padding:17px 34px;}
+.btn:hover{transform:none;box-shadow:none;background:var(--choc-esc);}
+.btn.secundario{background:transparent;color:var(--choc);}
+.resumo-btn{background:var(--ouro);border-color:var(--ouro);color:var(--choc-esc);padding:10px 22px;}
+
+#fidelidade{background:var(--choc-esc);position:relative;overflow:hidden;text-align:left;}
+#fidelidade::before,#fidelidade::after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(194,155,87,0.4);pointer-events:none;}
+#fidelidade::before{right:-160px;top:-160px;width:520px;height:520px;}
+#fidelidade::after{right:-90px;top:-90px;width:380px;height:380px;border-color:rgba(194,155,87,0.22);}
+#fidelidade .section-title{position:relative;z-index:1;}
+#fidelidade .section-title h2{color:var(--bg);}
+#fidelidade .section-title p{color:rgba(248,242,236,0.8);}
+.fidelidade-card{border-radius:0;background:rgba(255,255,255,0.04);border:1px solid rgba(194,155,87,0.5);margin:0 0 0 max(0px,calc((100% - 1100px) / 2));box-shadow:none;position:relative;z-index:1;}
+.fidelidade-card h3{font-family:var(--serif);font-style:normal;color:var(--ouro);letter-spacing:1px;}
+.selo{transition:transform .5s var(--ease),background .4s;}
+.selo.preenchido{transform:scale(1.04);}
+
+#agendamento{background:var(--bg);}
+#agendamento .section-title,#agendamento .nota-agendamento,#agendamento .form-box,#agendamento .passos{max-width:760px;margin-left:auto;margin-right:auto;}
+.passos{position:sticky;top:62px;z-index:15;background:rgba(248,242,236,0.95);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:14px 0 12px;margin-bottom:26px;border-bottom:1px solid var(--linha);}
+.passos ol{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.passos li{display:flex;flex-direction:column;gap:6px;font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:#8a7078;}
+.passos li::before{content:"";height:2px;background:var(--linha);transition:background .5s var(--ease);}
+.passos li b{font-family:var(--serif);font-weight:400;font-size:15px;color:#8a7078;margin-right:6px;letter-spacing:0;}
+.passos li.feito{color:var(--choc);}
+.passos li.feito::before{background:var(--ouro);}
+.passos li.feito b{color:var(--ouro-esc);}
+.passos li.atual{color:var(--choc);font-weight:600;}
+.passos li.atual::before{background:var(--choc);}
+.passos-dica{margin-top:10px;font-size:13px;color:var(--choc);min-height:20px;transition:opacity .3s;}
+.nota-agendamento{background:transparent;box-shadow:none;border-left:1px solid var(--ouro);border-radius:0;font-size:13.5px;padding:6px 0 6px 20px;}
+.form-box{background:var(--paper);border:1px solid var(--linha);border-radius:0;box-shadow:none;padding:48px;}
+input,select,textarea{border-radius:0;background:transparent;border:none;border-bottom:1px solid var(--linha);padding:14px 2px;font-weight:300;}
+input:focus,select:focus,textarea:focus{border-bottom-color:var(--ouro);box-shadow:none;}
+.data-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--ouro-esc);font-weight:500;}
+.form-box h3,.grupo-titulo,#agendamento-sucesso strong{font-family:var(--serif);font-style:normal;font-weight:400;letter-spacing:0.5px;}
+#agendamento-sucesso{border-radius:0;}
+.grade-horas{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;margin:0 0 20px;}
+.hora-btn{padding:13px 0;border:1px solid var(--linha);background:transparent;color:var(--choc);border-radius:0;font-size:14px;font-family:'Poppins',sans-serif;cursor:pointer;transition:all .3s var(--ease);}
+.hora-btn:hover{border-color:var(--ouro);}
+.hora-btn.sel{background:var(--choc);color:var(--bg);border-color:var(--choc);}
+#localizacao{background:var(--creme-2);}
+#localizacao .section-title{margin-bottom:0;}
+footer{background:var(--choc-esc);font-family:var(--marca);letter-spacing:3px;font-size:11px;text-transform:uppercase;}
+
+.rail{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:900;display:flex;flex-direction:column;gap:16px;}
+.rail a{position:relative;width:9px;height:9px;border-radius:50%;border:1px solid var(--choc);background:transparent;transition:all .4s var(--ease);}
+.rail a.on{background:var(--ouro);border-color:var(--ouro);transform:scale(1.3);}
+.rail a span{position:absolute;right:20px;top:50%;transform:translateY(-50%);white-space:nowrap;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--choc);opacity:0;pointer-events:none;transition:opacity .3s;background:var(--bg);padding:3px 8px;}
+.rail a:hover span{opacity:1;}
+.rail.sobre-escuro a{border-color:var(--bg);}
+.rail.sobre-escuro a.on{border-color:var(--ouro);}
+
+.js .rv{opacity:0;transform:translateY(34px);transition:opacity 1s var(--ease),transform 1s var(--ease);transition-delay:var(--d,0s);}
+.js .rv.in{opacity:1;transform:none;}
+.js .rv-img{clip-path:inset(0 0 100% 0);transition:clip-path 1.2s var(--ease);transition-delay:var(--d,0s);}
+.js .rv-img.in{clip-path:inset(0 0 0 0);}
+
+@media(max-width:900px){
+header{flex-direction:column;align-items:center;gap:8px;padding:12px 0 0;background:rgba(248,242,236,0.96);border-bottom-color:var(--linha);}
+header.fixo{padding:8px 0 0;}
+.logo .tm{font-size:19px;}.logo .logo-txt{font-size:12px;}
+nav{flex-wrap:nowrap;overflow-x:auto;gap:8px;padding:6px 16px 10px;width:100%;}
+nav a,nav a.nav-pro{flex:0 0 auto;background:transparent;border:1px solid var(--linha);padding:8px 14px;border-radius:2px;font-size:10px;}
+nav a:not(.nav-pro)::after{display:none;}
+.hero{grid-template-columns:1fr;gap:24px;padding:150px 22px 70px;min-height:auto;}
+.hero > *{min-width:0;}
+.hero h1{font-size:clamp(44px,12.4vw,84px);}
+.hero-botoes{gap:18px;}
+.hero-botoes .btn{width:100%;}
+.hero h1 em{margin-left:0.5em;}
+.hero-visual{height:420px;}
+.rolar{display:none;}
+section{padding:80px 22px;}
+.section-title{margin-bottom:40px;}
+#quem-somos .grid{grid-template-columns:1fr;gap:36px;}
+#quem-somos .card:nth-child(2){margin-top:0;}
+.categoria-tabs{position:static;}
+.passos{top:92px;}
+.passos li{font-size:9px;letter-spacing:1.2px;}
+.passos li b{display:block;margin:0;}
+.form-box{padding:28px 20px;}
+.rail{display:none;}
+.fidelidade-card{margin:0;}
+}
+@media(prefers-reduced-motion:reduce){
+.js .rv,.js .rv-img{opacity:1;transform:none;clip-path:none;transition:none;}
+.rolar i::after{animation:none;}
+html{scroll-behavior:auto;}
+}
 </style>
 
-<meta name="theme-color" content="#3f0716">
+<meta name="theme-color" content="#f8f2ec">
 
 </head>
 
-<body>
+<body id="top">
 
-<header>
+<div class="progresso" id="progresso"></div>
+<header id="topo">
 
-<div class="logo">Thainá Mendes <span>Beauty</span></div>
+<a class="logo" href="#top" aria-label="Thainá Mendes Beauty"><span class="tm">TM</span><span class="logo-txt">Thainá Mendes<small>Beauty</small></span></a>
 
 <nav>
 <a href="#" class="nav-pro" onclick="abrirPainelProfissional(); return false;">Área profissional</a>
@@ -171,28 +344,24 @@ nav a.nav-pro:hover{background:var(--vinho-medio);}
 
 </header>
 
-<section class="hero">
-
-<div class="hero-content">
-
-<span class="eyebrow">Cílios · Sobrancelhas · Micropigmentação · Maquiagem</span>
-
-<h1>
-Beleza <em>sofisticada</em> e experiência única
-</h1>
-
-<p>
-Especialistas em cílios, sobrancelhas, micropigmentação e maquiagem. Piracicaba - SP.
-</p>
-
+<section class="hero" id="inicio">
+<div class="hero-texto">
+<span class="saudacao" id="saudacao">Piracicaba · SP</span>
+<h1>Transformando<br><em>olhares</em></h1>
+<p>Sobrancelhas, cílios, micropigmentação e maquiagem com técnica precisa e olhar personalizado. Há mais de 6 anos realçando o que já é seu.</p>
 <div class="hero-botoes">
-<a href="#agendamento" class="btn">Agendar atendimento</a>
-<a href="#catalogo" class="btn secundario">Ver procedimentos</a>
+<a href="#catalogo" class="btn">Escolher procedimento</a>
+<a href="#agendamento" class="link-seta">Ir direto ao agendamento <span>→</span></a>
 </div>
-
 </div>
-
+<div class="hero-visual" aria-hidden="true">
+<div class="aro"></div>
+<div class="foto-recorte"><img id="hero-img" src="sobrancelha-design-personalizado.jpg" alt=""></div>
+<div class="foto-mini"><img id="hero-img2" src="labial-revitalizacao-2.jpg" alt=""></div>
+</div>
+<div class="rolar" aria-hidden="true"><span>role</span><i></i></div>
 </section>
+<div class="faixa" aria-hidden="true"><div class="faixa-trilho" id="faixa"><span>Sobrancelhas</span><span>Cílios</span><span>Micropigmentação</span><span>Maquiagem</span><span>Revitalização labial</span><span>Sobrancelhas</span><span>Cílios</span><span>Micropigmentação</span><span>Maquiagem</span><span>Revitalização labial</span></div></div>
 
 <section id="quem-somos">
 
@@ -518,7 +687,7 @@ A cada 9 atendimentos concluídos (qualquer procedimento), o 10º vem com um Des
 
 <div class="fidelidade-card">
 
-<h3>✨ Cartão Thainá Mendes Beauty</h3>
+<h3>Cartão Thainá Mendes Beauty</h3>
 <p class="sub">Consulte pelo mesmo WhatsApp usado no agendamento</p>
 
 <div class="fidelidade-form">
@@ -555,7 +724,7 @@ Escolha os procedimentos no catálogo acima, preencha seus dados e escolha a dat
 </div>
 
 <div class="nota-agendamento" id="nota-agendamento">
-📌 <strong>Importante:</strong> depois de solicitar seu horário, envie a mensagem para o WhatsApp da Thainá para <strong>confirmar o agendamento</strong>. Ele só fica garantido quando ela responder.
+<strong>Importante:</strong> depois de solicitar seu horário, envie a mensagem para o WhatsApp da Thainá para <strong>confirmar o agendamento</strong>. Ele só fica garantido quando ela responder.
 </div>
 
 <div class="form-box">
@@ -567,13 +736,13 @@ Escolha os procedimentos no catálogo acima, preencha seus dados e escolha a dat
 <input type="email" id="email" placeholder="E-mail (opcional) — para receber o convite no Google Agenda">
 
 <label class="data-label">
-📅 Escolha a data
+Escolha a data
 </label>
 
 <input type="date" id="data" onchange="carregarHorarios()">
 
 <label class="data-label">
-⏰ Escolha o horário
+Escolha o horário
 </label>
 
 <select id="hora">
@@ -598,7 +767,7 @@ Solicitar agendamento
 <div class="form-box" id="meu-agendamento" style="margin-top:30px;">
 
 <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;margin-bottom:8px;">Já agendou? Altere ou cancele</h3>
-<p style="font-size:14px;color:#666;margin-bottom:16px;line-height:1.6;">Informe o WhatsApp e o código que você recebeu ao agendar. Assim você muda o horário sem ficar com dois agendamentos.</p>
+<p style="font-size:14px;color:#666;margin-bottom:16px;line-height:1.6;">Informe o WhatsApp e o código que você recebeu ao agendar. Assim você troca o horário ou cancela com facilidade.</p>
 
 <input type="tel" id="meu-telefone" placeholder="WhatsApp usado no agendamento">
 <input type="text" id="meu-codigo" placeholder="Código do agendamento" maxlength="8" style="text-transform:uppercase;">
@@ -607,9 +776,9 @@ Solicitar agendamento
 <div id="meu-resumo" style="display:none;margin-top:20px;line-height:1.7;"></div>
 
 <div id="meu-acoes" style="display:none;margin-top:16px;">
-<label class="data-label">📅 Nova data</label>
+<label class="data-label">Nova data</label>
 <input type="date" id="meu-data" onchange="carregarHorariosRemarcar()">
-<label class="data-label">⏰ Novo horário</label>
+<label class="data-label">Novo horário</label>
 <select id="meu-hora"><option value="">Selecione um horário</option></select>
 <p id="meu-aviso" style="font-size:14px;color:#666;margin:-8px 0 20px;"></p>
 <button class="btn" style="width:100%;margin-bottom:12px;" onclick="remarcarAgendamento()">Confirmar novo horário</button>
@@ -1185,9 +1354,9 @@ campoData.min = hoje.getFullYear() + "-" + String(hoje.getMonth()+1).padStart(2,
 const nota = document.getElementById("nota-agendamento");
 
 if(URL_AGENDA){
-nota.innerHTML = "📌 <strong>Como funciona:</strong> escolha os procedimentos, a data e um horário livre (terça a sexta, das 9h às 18h30; sábado, das 9h às 13h). Depois de solicitar, você envia uma mensagem para o WhatsApp da Thainá para confirmar o agendamento.";
+nota.innerHTML = "<strong>Como funciona:</strong> escolha os procedimentos, a data e um horário livre (terça a sexta, das 9h às 18h30; sábado, das 9h às 13h). Depois de solicitar, você envia uma mensagem para o WhatsApp da Thainá para confirmar o agendamento.";
 }else{
-nota.innerHTML = "📌 <strong>Importante:</strong> o envio deste formulário gera um <strong>pedido</strong> de horário, ele só é confirmado quando você recebe a resposta da Thainá pelo WhatsApp.";
+nota.innerHTML = "<strong>Importante:</strong> o envio deste formulário gera um <strong>pedido</strong> de horário, ele só é confirmado quando você recebe a resposta da Thainá pelo WhatsApp.";
 }
 
 })();
@@ -1388,6 +1557,98 @@ href="https://wa.me/5519981397668">
 
 </a>
 
+<script>
+/* ===== Interações ao rolar ===== */
+(function(){
+document.documentElement.classList.add("js");
+var reduz = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+var $ = function(s,r){return (r||document).querySelector(s);};
+var $$ = function(s,r){return [].slice.call((r||document).querySelectorAll(s));};
+
+/* saudação conforme a hora */
+var sd=$("#saudacao");
+if(sd){var h=new Date().getHours();var g=h<12?"Bom dia":h<18?"Boa tarde":"Boa noite";sd.textContent=g+" · Piracicaba, SP";}
+
+/* revelar ao rolar */
+var alvos=$$(".section-title, #quem-somos .card, .categoria-tabs, .resultado-foto-grande, .fidelidade-card, .nota-agendamento, .form-box, #localizacao .btn, .passos");
+alvos.forEach(function(el,i){el.classList.add("rv");el.style.setProperty("--d",(i%3)*0.08+"s");});
+$$("#quem-somos .card img").forEach(function(el){el.classList.add("rv-img");});
+if("IntersectionObserver" in window){
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:0.12,rootMargin:"0px 0px -6% 0px"});
+$$(".rv,.rv-img").forEach(function(el){io.observe(el);});
+}else{$$(".rv,.rv-img").forEach(function(el){el.classList.add("in");});}
+/* lista de procedimentos: entra em cascata quando o painel abre */
+function cascata(){$$(".categoria-painel.ativa .procedimento-card").forEach(function(c,i){c.style.opacity=0;c.style.transform="translateY(16px)";setTimeout(function(){c.style.transition="opacity .6s, transform .6s";c.style.opacity=1;c.style.transform="none";},60*i+40);});}
+$$(".categoria-tab").forEach(function(t){t.addEventListener("click",function(){if(!reduz)setTimeout(cascata,20);});});
+
+/* barra de progresso, cabeçalho e parallax */
+var barra=$("#progresso"),topo=$("#topo"),ultimo=0,faixa=$("#faixa"),im1=$("#hero-img"),im2=$("#hero-img2"),aro=$(".hero-visual .aro"),mini=$(".hero-visual .foto-mini");
+var tick=false;
+function frame(){
+tick=false;
+var y=window.pageYOffset||0,max=document.documentElement.scrollHeight-innerHeight;
+if(barra)barra.style.transform="scaleX("+(max>0?Math.min(1,y/max):0)+")";
+if(topo){topo.classList.toggle("fixo",y>40);topo.classList.toggle("oculto",y>ultimo+6&&y>320&&innerWidth>900);if(y<ultimo-6)topo.classList.remove("oculto");}
+ultimo=y;
+if(!reduz){
+if(y<innerHeight*1.4){
+if(im1)im1.style.transform="translateY("+(y*-0.06)+"px) scale(1.04)";
+if(mini)mini.style.transform="translateY("+(y*-0.14)+"px)";
+if(aro)aro.style.transform="translateY("+(y*0.1)+"px) rotate("+(y*0.04)+"deg)";
+}
+if(faixa){var r=faixa.parentNode.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0)faixa.style.transform="translateX("+(-(r.top-innerHeight)*0.35-300)+"px)";}
+}
+}
+addEventListener("scroll",function(){if(!tick){tick=true;requestAnimationFrame(frame);}},{passive:true});
+addEventListener("resize",frame);frame();
+
+/* pontos de navegação lateral */
+var secs=[["inicio","Início"],["quem-somos","Quem somos"],["catalogo","Procedimentos"],["fidelidade","Fidelidade"],["agendamento","Agendar"],["localizacao","Onde estamos"]];
+var rail=document.createElement("div");rail.className="rail";
+secs.forEach(function(s){var a=document.createElement("a");a.href="#"+s[0];a.setAttribute("aria-label",s[1]);a.innerHTML="<span>"+s[1]+"</span>";rail.appendChild(a);});
+document.body.appendChild(rail);
+var links=$$("nav a[href^='#']:not(.nav-pro)");
+function ativo(){
+var meio=innerHeight*0.4,atual=secs[0][0];
+secs.forEach(function(s){var el=document.getElementById(s[0]);if(el&&el.getBoundingClientRect().top<=meio)atual=s[0];});
+$$("a",rail).forEach(function(a){a.classList.toggle("on",a.getAttribute("href")==="#"+atual);});
+links.forEach(function(a){a.classList.toggle("ativo",a.getAttribute("href")==="#"+atual);});
+rail.classList.toggle("sobre-escuro",atual==="fidelidade");
+}
+addEventListener("scroll",ativo,{passive:true});ativo();
+
+/* passos do agendamento: acompanham o que a cliente já fez */
+var ag=$("#agendamento .nota-agendamento");
+if(ag){
+var p=document.createElement("div");p.className="passos";
+p.innerHTML='<ol><li data-p="proc"><span><b>1</b>Procedimento</span></li><li data-p="data"><span><b>2</b>Data</span></li><li data-p="hora"><span><b>3</b>Horário</span></li><li data-p="dados"><span><b>4</b>Seus dados</span></li></ol><div class="passos-dica" id="passos-dica"></div>';
+ag.parentNode.insertBefore(p,ag);
+var dica=$("#passos-dica");
+var msg={proc:"Comece escolhendo o procedimento no catálogo acima.",data:"Ótima escolha. Agora escolha a data.",hora:"Toque no horário que combina com você.",dados:"Quase lá. Preencha seu nome e WhatsApp.",pronto:"Tudo certo. É só solicitar o agendamento."};
+function passos(){
+var n=0;try{n=procedimentosSelecionados.length;}catch(e){}
+var okProc=n>0,okData=!!($("#data")||{}).value,okHora=!!($("#hora")||{}).value;
+var okDados=!!($("#nome")||{}).value.trim()&&(($("#telefone")||{}).value||"").replace(/\D/g,"").length>=10;
+var est={proc:okProc,data:okData,hora:okHora,dados:okDados};
+var prox=null;["proc","data","hora","dados"].forEach(function(k){if(!est[k]&&!prox)prox=k;});
+$$(".passos li").forEach(function(li){var k=li.getAttribute("data-p");li.classList.toggle("feito",est[k]);li.classList.toggle("atual",k===prox);});
+dica.textContent=msg[prox||"pronto"];
+}
+["click","change","input"].forEach(function(ev){document.addEventListener(ev,function(){setTimeout(passos,30);});});
+setInterval(passos,1200);passos();
+}
+
+/* horários em botões */
+function grade(select){
+if(!select||select.dataset.grade)return;select.dataset.grade="1";select.style.display="none";
+var g=document.createElement("div");g.className="grade-horas";select.parentNode.insertBefore(g,select.nextSibling);
+function desenhar(){g.innerHTML="";[].forEach.call(select.options,function(o){if(!o.value)return;var b=document.createElement("button");b.type="button";b.className="hora-btn"+(select.value===o.value?" sel":"");b.textContent=o.value;b.onclick=function(){select.value=o.value;select.dispatchEvent(new Event("change",{bubbles:true}));$$(".hora-btn",g).forEach(function(x){x.classList.toggle("sel",x===b);});};g.appendChild(b);});}
+new MutationObserver(desenhar).observe(select,{childList:true});desenhar();
+}
+grade($("#hora"));grade($("#meu-hora"));
+})();
+
+</script>
 </body>
 
 </html>
